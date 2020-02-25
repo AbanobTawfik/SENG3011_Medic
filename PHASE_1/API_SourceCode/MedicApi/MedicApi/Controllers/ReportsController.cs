@@ -18,5 +18,13 @@ namespace MedicApi.Controllers
         {
             return Ok("this api is working remotely");
         }
+
+        [HttpGet]
+        // can change routes 
+        [Route("Test2")]
+        public ActionResult TestEndPoint2()
+        {
+            return Ok("testing CI/CD");
+        }
     }
 }
