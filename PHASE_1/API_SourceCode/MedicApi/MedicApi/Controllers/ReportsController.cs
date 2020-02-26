@@ -16,7 +16,7 @@ namespace MedicApi.Controllers
         [Route("Test")]
         public ActionResult TestEndPoint()
         {
-            return Ok("fixed the pipeline");
+            return Ok("changed to free plan");
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("testing commit, should only show in staging not production till i aprove");
+            return Ok("should only see on production after i approve");
         }
     }
 }
