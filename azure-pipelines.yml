@@ -34,3 +34,17 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure for Students (160d424b-7fdf-484c-a418-d7182a69e4cf)'
+    appType: 'webApp'
+    WebAppName: 'SENG3011medics'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Azure App Service Deploy: SENG3011medics'
+  inputs:
+    azureSubscription: 'Azure for Students (160d424b-7fdf-484c-a418-d7182a69e4cf)'
+    WebAppName: SENG3011medics
+    enableCustomDeployment: true
+    TakeAppOfflineFlag: false
