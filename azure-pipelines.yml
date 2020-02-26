@@ -40,3 +40,5 @@ steps:
     appType: 'webApp'
     WebAppName: 'SENG3011medics'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    
+- task: PublishBuildArtifacts@1
