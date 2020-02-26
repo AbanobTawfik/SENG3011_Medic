@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("testing commit");
+            return Ok("testing commit, i just pushed hopefully i see this");
         }
     }
 }
