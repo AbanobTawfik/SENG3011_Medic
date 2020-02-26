@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("should only see on production after i approve");
+            return Ok("removed payed app service");
         }
     }
 }
