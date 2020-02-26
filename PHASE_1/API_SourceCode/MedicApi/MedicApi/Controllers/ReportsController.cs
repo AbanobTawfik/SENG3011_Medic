@@ -16,7 +16,7 @@ namespace MedicApi.Controllers
         [Route("Test")]
         public ActionResult TestEndPoint()
         {
-            return Ok("this api is working remotely");
+            return Ok("fixed the pipeline");
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("testing commit, should only show in staging not production till i approve");
+            return Ok("testing commit, should only show in staging not production till i aprove");
         }
     }
 }
