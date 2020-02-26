@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("testing CI/CD pipeline working");
+            return Ok("testing CI/CD pipeline working automatically on push");
         }
     }
 }
