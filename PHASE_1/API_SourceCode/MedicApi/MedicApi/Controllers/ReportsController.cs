@@ -24,7 +24,7 @@ namespace MedicApi.Controllers
         [Route("Test2")]
         public ActionResult TestEndPoint2()
         {
-            return Ok("testing commit, i just pushed hopefully i see this");
+            return Ok("testing commit, should only show in staging not production till i approve");
         }
     }
 }
