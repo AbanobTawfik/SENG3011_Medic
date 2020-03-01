@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using MedicApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,11 @@ namespace MedicApi.Services
             }
 
             return ret;
+        }
+
+        public Article ScrapeCDCOutbreak(string url)
+        {
+            return null;
         }
     }
 }
