@@ -1,18 +1,10 @@
 # SENG3011_Medic
 
-Reports\Design	Details
-1. Describe	 how	 you	 intend	 to	 develop	 the	 API	 module	 and	 provide the	 ability	 to	 run	 it	 in	 Web	
-service	mode
-2. Discuss	 your	 current	 thinking	 about	 how	 parameters	 can	 be	 passed	 to your	 module and	 how	
-results	are	collected.	Show	an	example	of	a	possible	interaction. (e.g.- sample	HTTP	calls	with	URL	
-and	parameters)
-3. Present	 and	 justify	 implementation	 language,	 development	 and	 deployment	 environment	 (e.g.	
-Linux,	Windows)	and	specific	libraries	that	you	plan	to	use.
+Deliverable 1 (Tuesday 3rd March 2020)
 
-Reports\Management	Information
-Provide	a	project	plan	showing	team	member	responsibilities,	work	arrangements	and	any	information	
-team	members	will	 be	using	 to	 coordinate	 their	activities.	You	 should	also	mention	any	 software	 tools	
-used	by	the	team	to	assist	project	management.
-These reports	are	working	documents	and	expected	to	be	updated	continuously	throughout	the	project.
-Each	repository	will	be	inspected	anytime	 from	Tuesday Week	3 at	5pm. You	are	 free	to	keep	updating	
-the	information	afterwards.
+1. Phase 1: Basic Structure of API Source Code in SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi
+2. Reports: 
+     -  Management Information: Outlines Our team Responsibilities, Gannt Chart, Work Breakdown Schedule, Team Coordination   Tools,
+     -  Design Details: States Our API Design Plan, Development Plan and Justification for Technologies Used
+     -  Testing Documentation: Outlines the types of testing to be conducted (White Box, Black Box, Load Testing)
+     -  Final Report: Emcompasses all 3 sections (Mangement Information, Design Details, Testing)
