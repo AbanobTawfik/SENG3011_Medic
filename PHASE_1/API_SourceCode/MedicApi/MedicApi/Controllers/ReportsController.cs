@@ -18,7 +18,7 @@ namespace MedicApi.Controllers
             this._scraperService = scraperService;
         }
 
-        // example of GET api/Vampire
+        // GET api/Reports/Test
         [HttpGet]
         // can change routes 
         [Route("Test")]

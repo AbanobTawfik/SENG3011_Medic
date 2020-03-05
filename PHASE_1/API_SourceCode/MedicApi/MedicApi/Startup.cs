@@ -27,6 +27,7 @@ namespace MedicApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            var connectionString = Configuration.GetSection("ConnectionString").Value;
             services.AddSingleton<Scraper>();
         }
 
