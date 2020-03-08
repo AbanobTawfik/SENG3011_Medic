@@ -29,10 +29,49 @@ namespace MedicApi.Services
                 ret.Add(linkToArticle);
             }
 
+            var internationalOutbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'bullet-list feed-item-list']").Nodes().Where(n => n.HasChildNodes);
+
+            foreach(var outbreak in internationalOutbreaks)
+            {
+                var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
+                var linkToArticle = outbreak.FirstChild.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
+                ret.Add(linkToArticle);
+            }
+
             return ret;
         }
 
+        public Article ScrapeUrl(string url)
+        {
+            return null;
+        }
+
         public Article ScrapeCDCOutbreak(string url)
+        {
+            return null;
+        }
+
+        public Article ScrapeCDCBasicInformation(string url)
+        {
+            return null;
+        }
+
+        public Article ScrapeCDCExposure(string url)
+        {
+            return null;
+        }
+
+        public Article ScrapeCDCTravelNoticeAlert(string url)
+        {
+            return null;
+        }
+
+        public Article ScrapeCDCTravelNoticeWatch(string url)
+        {
+            return null;
+        }
+
+        public Article ScrapeCDCTravelNoticeWarning(string url)
         {
             return null;
         }

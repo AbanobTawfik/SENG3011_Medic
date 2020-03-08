@@ -24,8 +24,8 @@ namespace MedicApi.Controllers
         [Route("Test")]
         public ActionResult TestEndPoint()
         {
-            var xx = new testdb();
-            xx.test();
+            //var xx = new testdb();
+            //xx.test();
             var x = _scraperService.ScrapeData("https://www.cdc.gov/outbreaks/");
             return Ok(x);
         }

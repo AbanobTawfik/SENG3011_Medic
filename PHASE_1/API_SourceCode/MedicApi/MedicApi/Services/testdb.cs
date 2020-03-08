@@ -21,7 +21,7 @@ namespace MedicApi.Services
                 {"count", 1 },
                 {"info", new BsonDocument
                     {
-                        {"x", 203 },
+                        {"x", "poop" },
                         {"y", 102 },
                     }
                 },
