@@ -24,18 +24,31 @@ namespace MedicApi.Controllers
         [Route("Test")]
         public ActionResult TestEndPoint()
         {
-            var xx = new testdb();
-            xx.test();
             var x = _scraperService.ScrapeData("https://www.cdc.gov/outbreaks/");
             return Ok(x);
         }
 
         [HttpGet]
-        // can change routes 
-        [Route("Test2")]
-        public ActionResult TestEndPoint2()
+        // can change routes
+        [Route("TestApi")]
+        public ActionResult TestApi(string start_date,
+                                    string end_date,  string timezone,
+                                    string key_terms, string location,
+                                    int max = 25, int offset = 0)
         {
-            return Ok("removed payed app service");
+            var service = new ReportFinder();
+            var res = service.FindReports(start_date, end_date, timezone,
+                                          key_terms, location, max, offset);
+            return Ok(res);
+        }
+
+        [HttpGet]
+        [Route("TestGenerate")]
+        public ActionResult TestGenerate()
+        {
+            var service = new Generator();
+            service.GenerateAdd();
+            return Ok("done");
         }
     }
 }

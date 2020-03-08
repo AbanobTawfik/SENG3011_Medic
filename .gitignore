@@ -2,13 +2,13 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/PHASE_2/Application_SourceCode/MedicApplicationBackEnd/MedicBackEnd
-/PHASE_1/API_SourceCode/MedicApi/.vs/MedicApi
-/PHASE_1/API_SourceCode/MedicApi/obj
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/bin/Debug/netcoreapp2.2
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Debug/netcoreapp2.2
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/bin/Release/netcoreapp2.2
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2/PubTmp/Out
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2/PubTmp
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2
-/PHASE_1/API_SourceCode/MedicApi/MedicApi/Properties/PublishProfiles
+PHASE_2/Application_SourceCode/MedicApplicationBackEnd/MedicBackEnd
+PHASE_1/API_SourceCode/MedicApi/.vs/MedicApi
+PHASE_1/API_SourceCode/MedicApi/obj
+PHASE_1/API_SourceCode/MedicApi/MedicApi/bin/Debug/netcoreapp2.2
+PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Debug/netcoreapp2.2
+PHASE_1/API_SourceCode/MedicApi/MedicApi/bin/Release/netcoreapp2.2
+PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2/PubTmp/Out
+PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2/PubTmp
+PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/Release/netcoreapp2.2
+PHASE_1/API_SourceCode/MedicApi/MedicApi/Properties/PublishProfiles
