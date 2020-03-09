@@ -20,7 +20,7 @@
     "MedicApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/reports/testrss",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

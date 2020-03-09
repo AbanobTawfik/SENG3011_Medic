@@ -50,5 +50,14 @@ namespace MedicApi.Controllers
             service.GenerateAdd();
             return Ok("done");
         }
+
+        // GET api/Reports/TestRSS
+        [HttpGet]
+        [Route("TestRSS")]
+        public ActionResult TestRSS()
+        {
+            var x = _scraperService.ScrapeRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
+            return Ok(x);
+        }
     }
 }

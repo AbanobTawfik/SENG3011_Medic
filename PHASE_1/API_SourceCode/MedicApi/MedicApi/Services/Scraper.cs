@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 
 namespace MedicApi.Services
 {
@@ -38,6 +40,20 @@ namespace MedicApi.Services
                 ret.Add(linkToArticle);
             }
 
+            return ret;
+        }
+
+        public string ScrapeRSS(string url)
+        {
+            XmlReader reader = XmlReader.Create(url);
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            reader.Close();
+
+            string ret = "Scraping '" + url + "':\n\n";
+            foreach (SyndicationItem item in feed.Items)
+            {
+                ret += "'" + item.Title.Text + "'\n  '" + item.Links.First().Uri + "'\n  '" + item.PublishDate + "'\n\n";
+            }
             return ret;
         }
 
