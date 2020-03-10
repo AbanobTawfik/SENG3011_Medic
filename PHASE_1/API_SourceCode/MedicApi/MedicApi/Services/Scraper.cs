@@ -45,12 +45,12 @@ namespace MedicApi.Services
 
         public string ScrapeRSS(string url)
         {
-            XmlReader reader = XmlReader.Create(url);
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            var reader = XmlReader.Create(url);
+            var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
             string ret = "Scraping '" + url + "':\n\n";
-            foreach (SyndicationItem item in feed.Items)
+            foreach (var item in feed.Items)
             {
                 ret += "'" + item.Title.Text + "'\n  '" + item.Links.First().Uri + "'\n  '" + item.PublishDate + "'\n\n";
             }
