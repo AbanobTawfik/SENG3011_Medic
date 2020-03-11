@@ -77,7 +77,7 @@ namespace MedicApi.Controllers
         [Route("TestRSS")]
         public ActionResult TestRSS()
         {
-            var x = _scraperService.ScrapeRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
+            var x = _scraperService.ScrapeOutbreaksRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
             return Ok(x);
         }
     }

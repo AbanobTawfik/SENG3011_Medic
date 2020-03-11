@@ -43,18 +43,43 @@ namespace MedicApi.Services
             return ret;
         }
 
-        public string ScrapeRSS(string url)
+        /*
+         * Returns a list of Articles from a given RSS feed url.
+         * Currently returns a string for debugging.
+         */
+        public string ScrapeOutbreaksRSS(string url)
         {
             var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
-            string ret = "Scraping '" + url + "':\n\n";
-            foreach (var item in feed.Items)
+            var ret = "Scraping '" + url + "':\n\n";
+            var webClient = new HtmlWeb();
+            foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
             {
-                ret += "'" + item.Title.Text + "'\n  '" + item.Links.First().Uri + "'\n  '" + item.PublishDate + "'\n\n";
+                var webPageHtml = webClient.Load(item.Links[0].Uri);
+                var uri = item.Links[0].Uri = webClient.ResponseUri;
+                ret += "'" + item.Title.Text + "'\n  '" + uri.ToString() + "'\n  '" + item.PublishDate + "'\n";
+
+                if (uri.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
+                    ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
+                else
+                    ret += "  " + ScrapeOutbreakArticle(item, webPageHtml) + "\n";
+                ret += "\n";
             }
             return ret;
+        }
+
+        public Article ScrapeOutbreakArticle(SyndicationItem item, HtmlDocument page)
+        {
+            var article = new Article
+            {
+                url = item.Links[0].Uri.ToString(),
+                headline = item.Title.Text,
+                main_text = "WIP",
+                date_of_publication = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+            return article;
         }
 
         public Article ScrapeUrl(string url)
