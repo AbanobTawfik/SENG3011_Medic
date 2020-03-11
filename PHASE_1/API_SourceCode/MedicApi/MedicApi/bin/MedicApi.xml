@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MedicApi</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)" -->
+    </members>
+</doc>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MedicApi.Services;
@@ -29,10 +30,18 @@ namespace MedicApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var connectionString = Configuration.GetSection("ConnectionString").Value;
             services.AddSingleton<Scraper>();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { 
-                Title = "Medics API", Description = "This API is an endpoint to retrieve all outbreak articles. This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website." 
-            
-            }));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Medics API",
+                    Description = "This API is an endpoint to retrieve all outbreak articles. This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website."
+                });
+                var filePath = Path.Combine(AppContext.BaseDirectory, "MedicApi.xml");
+                c.IncludeXmlComments(filePath);
+            }
+            ) ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
