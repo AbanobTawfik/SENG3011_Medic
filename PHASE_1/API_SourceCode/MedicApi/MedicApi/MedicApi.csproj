@@ -9,6 +9,10 @@
     <DocumentationFile>bin\MedicApi.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\MedicApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.21" />
     <PackageReference Include="Microsoft.AspNetCore.App">
