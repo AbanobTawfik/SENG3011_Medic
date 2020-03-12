@@ -27,5 +27,13 @@ namespace MedicApi.Models
                 date_of_publication = date_of_publication_str,
             };
         }
+
+        public override string ToString()
+        {
+            return "[Article: {url: '" + url +
+                "', headline: '" + headline +
+                "', main_text: '" + main_text +
+                "', date_of_publication_str: '" + date_of_publication_str + "'}]";
+        }
     }
 }
