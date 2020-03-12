@@ -3159,6 +3159,31 @@
           "build/Swashbuckle.AspNetCore.props": {}
         }
       },
+      "Swashbuckle.AspNetCore.Annotations/5.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Swashbuckle.AspNetCore.SwaggerGen": "5.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Swashbuckle.AspNetCore.Annotations.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Swashbuckle.AspNetCore.Annotations.dll": {}
+        }
+      },
+      "Swashbuckle.AspNetCore.Examples/2.9.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "Swashbuckle.AspNetCore.SwaggerGen": "1.0.0"
+        },
+        "compile": {
+          "lib/netstandard1.6/Swashbuckle.AspNetCore.Examples.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/Swashbuckle.AspNetCore.Examples.dll": {}
+        }
+      },
       "Swashbuckle.AspNetCore.Swagger/5.0.0": {
         "type": "package",
         "dependencies": {
@@ -8296,11 +8321,12 @@
       ]
     },
     "runtime.native.System.Net.Security/4.3.0": {
-      "sha512": "ARfgeRYF2AnYIcqEvy9VE0agN/3zexMMPtcegq1THpOMS63rIGMi706vCo6pbv9Xzw4qhdX1Gu1zyLZHj2WtLA==",
+      "sha512": "M2nN92ePS8BgQ2oi6Jj3PlTUzadYSIWLdZrHY1n1ZcW9o4wAQQ6W+aQ2lfq1ysZQfVCgDwY58alUdowrzezztg==",
       "type": "package",
       "path": "runtime.native.system.net.security/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -8518,6 +8544,34 @@
         "build/Swashbuckle.AspNetCore.props",
         "swashbuckle.aspnetcore.5.0.0.nupkg.sha512",
         "swashbuckle.aspnetcore.nuspec"
+      ]
+    },
+    "Swashbuckle.AspNetCore.Annotations/5.0.0": {
+      "sha512": "HrCFKfQNFFEdCdbsMiuZK2NDYlIR1Osik46XK4X3rJlDKngdMrGenUb2ax7JWO5wEr77OGPEMidQ39fgCyTaDQ==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore.annotations/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Annotations.dll",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Annotations.xml",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.Annotations.dll",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.Annotations.xml",
+        "swashbuckle.aspnetcore.annotations.5.0.0.nupkg.sha512",
+        "swashbuckle.aspnetcore.annotations.nuspec"
+      ]
+    },
+    "Swashbuckle.AspNetCore.Examples/2.9.0": {
+      "sha512": "MCVCoOgvvaTk/X3vaCX94xv7lh4Sy3ahwyGbiXyqSedHs29Fe88IQzeSlWL3K8POtf3Tc2DErugELqNmj3AcKw==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore.examples/2.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net451/Swashbuckle.AspNetCore.Examples.dll",
+        "lib/netstandard1.6/Swashbuckle.AspNetCore.Examples.dll",
+        "swashbuckle.aspnetcore.examples.2.9.0.nupkg.sha512",
+        "swashbuckle.aspnetcore.examples.nuspec"
       ]
     },
     "Swashbuckle.AspNetCore.Swagger/5.0.0": {
@@ -12122,11 +12176,12 @@
       ]
     },
     "System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "vOYy7Jv9KsG3ld2hLt0GoERd82SZi4BelrbXLwI9yFBYX7kpbvUCWYo4eyevk47cuJXZ9ZLVAryANcc7iY71aA==",
+      "sha512": "h4CEgOgv5PKVF/HwaHzJRiVboL2THYCou97zpmhjghx5frc7fIvlkY1jL+lnIQyChrJDMNEXS6r7byGif8Cy4w==",
       "type": "package",
       "path": "system.security.cryptography.openssl/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.6/System.Security.Cryptography.OpenSsl.dll",
@@ -13284,11 +13339,12 @@
       ]
     },
     "System.Xml.XmlSerializer/4.3.0": {
-      "sha512": "VShQJhOxgD/5M2Z1IWm1vMaSqlbjo1zdFf8H7Ahte6bTvSUhUko/gDpAVVhGgGgTDeue4QyNg1fu1Zz2GKSEuQ==",
+      "sha512": "MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "type": "package",
       "path": "system.xml.xmlserializer/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13479,6 +13535,8 @@
       "MongoDB.Driver.Core >= 2.10.2",
       "NodaTime >= 2.4.7",
       "Swashbuckle.AspNetCore >= 5.0.0",
+      "Swashbuckle.AspNetCore.Annotations >= 5.0.0",
+      "Swashbuckle.AspNetCore.Examples >= 2.9.0",
       "Swashbuckle.AspNetCore.Swagger >= 5.0.0",
       "Swashbuckle.AspNetCore.SwaggerGen >= 5.0.0",
       "Swashbuckle.AspNetCore.SwaggerUI >= 5.0.0",
@@ -13486,30 +13544,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pizza\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/rasonchia/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
+      "projectUniqueName": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj",
       "projectName": "MedicApi",
-      "projectPath": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
-      "packagesPath": "C:\\Users\\pizza\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\obj\\",
+      "projectPath": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj",
+      "packagesPath": "/Users/rasonchia/.nuget/packages/",
+      "outputPath": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\pizza\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/rasonchia/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -13567,6 +13623,14 @@
             "target": "Package",
             "version": "[5.0.0, )"
           },
+          "Swashbuckle.AspNetCore.Annotations": {
+            "target": "Package",
+            "version": "[5.0.0, )"
+          },
+          "Swashbuckle.AspNetCore.Examples": {
+            "target": "Package",
+            "version": "[2.9.0, )"
+          },
           "Swashbuckle.AspNetCore.Swagger": {
             "target": "Package",
             "version": "[5.0.0, )"
@@ -13585,10 +13649,16 @@
           }
         },
         "imports": [
-          "net461"
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
         ],
         "assetTargetFallback": true,
-        "warn": true
+        "warn": true,
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.102/RuntimeIdentifierGraph.json"
       }
     }
   }

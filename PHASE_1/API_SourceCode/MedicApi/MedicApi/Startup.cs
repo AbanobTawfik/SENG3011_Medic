@@ -35,9 +35,11 @@ namespace MedicApi
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Medics API",
-                    Description = "This API is an endpoint to retrieve all outbreak articles. This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website."
+                    Title = "Medics SENG3011 CDC Articles API",
+                    Description = "This API is an endpoint to retrieve all outbreak articles.<br/> This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website.",
+                    Version = "0.01"
                 });
+                
                 var filePath = Path.Combine(AppContext.BaseDirectory, "MedicApi.xml");
                 c.IncludeXmlComments(filePath);
             }

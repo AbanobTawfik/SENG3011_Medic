@@ -4,6 +4,31 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)" -->
+        <member name="M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of articles from CDC website that fit into the criteria provided.
+            </summary>
+            <remarks>API Usage Information:<br/>
+            API Returns list of articles with nested info in a JSON format. <br/>
+            This API will return data to be used by EPIWatch Frontend.<br/>
+            Only start time and end time is Mandatory.<br/>
+            All other fields for query is optional and determines what is returned.<br/>
+            
+            
+            </remarks>
+            
+            <param name="start_date">Starting time of the period of interest. <example>“yyyy-MM-ddTHH:mm:ss”</example></param>
+            
+            
+            <param name="end_date">Ending time of the period of interest. “yyyy-MM-ddTHH:mm:ss” </param>
+            <param name="timezone">The time zone associated with the given start and end dates. Example: “AEST”</param>
+            <param name="key_terms">Keywords for Search. Example: “Anthrax,Ebola” </param>
+            <param name="location">The name of a location. Example: “Sydney” </param>
+            <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>
+            <param name="offset">The number of the first report returned. (default: 0)</param>
+            <response code="200">Successful Query</response>
+            <response code="500">Invalid ID supplied</response>
+            <response code="404">Anomaly not found</response>
+        </member>
     </members>
 </doc>

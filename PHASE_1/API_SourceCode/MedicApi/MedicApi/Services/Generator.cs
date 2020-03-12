@@ -11,7 +11,7 @@ namespace MedicApi.Services
 {
     public class Generator
     {
-        static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
+        static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&ampampampampampampampampampampampampampw=majority");
 
         public async void GenerateAdd()
         {
