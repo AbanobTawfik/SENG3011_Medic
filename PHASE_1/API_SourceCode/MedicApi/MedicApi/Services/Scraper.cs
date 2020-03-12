@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.ServiceModel.Syndication;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
@@ -55,12 +57,16 @@ namespace MedicApi.Services
 
             var ret = "Scraping '" + url + "':\n\n";
             var webClient = new HtmlWeb();
+            var jsonClient = new WebClient();
             foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
             {
-                var webPageHtml = webClient.Load(item.Links[0].Uri);
-                var uri = item.Links[0].Uri = webClient.ResponseUri;
-                ret += "'" + item.Title.Text + "'\n  '" + uri.ToString() + "'\n  '" + item.PublishDate + "'\n";
+                var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
+                var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
+                var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
+                var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
+                ret += "'" + item.Title.Text + "'\n  '" + sourceUrl.ToString() + "'\n  '" + item.PublishDate + "'\n";
 
+<<<<<<< HEAD
                 if (uri.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
                 {
                     continue;
@@ -74,20 +80,29 @@ namespace MedicApi.Services
                     ret += ScrapeCDCOutbreak(uri.ToString());
                 }
                     ret += "========================================================================\n";
+=======
+                if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
+                    ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
+                else
+                    ret += "  " + ScrapeOutbreakArticle(item, contentHtml) + "\n";
+                ret += "\n";
+>>>>>>> 854884a9c80eec907c98ce3357b459cf397b7a39
             }
+            jsonClient.Dispose();
             return ret;
         }
 
-        public Article ScrapeOutbreakArticle(SyndicationItem item, HtmlDocument page)
+        public StoredArticle ScrapeOutbreakArticle(SyndicationItem item, HtmlDocument page)
         {
-            var article = new Article
+            var article = new StoredArticle
             {
                 url = item.Links[0].Uri.ToString(),
                 headline = item.Title.Text,
                 main_text = "WIP",
-                date_of_publication = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss")
+                date_of_publication_str = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss")
             };
             return article;
+            // use page.DocumentNode to scrape article ...
         }
 
 
