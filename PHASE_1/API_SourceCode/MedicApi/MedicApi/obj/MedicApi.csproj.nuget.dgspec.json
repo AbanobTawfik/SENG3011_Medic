@@ -1,28 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj": {}
+    "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {}
   },
   "projects": {
-    "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj": {
+    "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj",
+        "projectUniqueName": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
         "projectName": "MedicApi",
-        "projectPath": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/MedicApi.csproj",
-        "packagesPath": "/Users/rasonchia/.nuget/packages/",
-        "outputPath": "/Users/rasonchia/Desktop/uni/2020/SENG3011/SENG3011_Medic/PHASE_1/API_SourceCode/MedicApi/MedicApi/obj/",
+        "projectPath": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
+        "packagesPath": "C:\\Users\\pizza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pizza\\source\\repos\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/Users/rasonchia/.config/NuGet/NuGet.Config"
+          "C:\\Users\\pizza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -41,7 +43,7 @@
           "dependencies": {
             "HtmlAgilityPack": {
               "target": "Package",
-              "version": "[1.11.21, )"
+              "version": "[1.11.22, )"
             },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
@@ -78,27 +80,27 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "Swashbuckle.AspNetCore.Annotations": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
-            "Swashbuckle.AspNetCore.Examples": {
+            "Swashbuckle.AspNetCore.Filters": {
               "target": "Package",
-              "version": "[2.9.0, )"
+              "version": "[5.0.2, )"
             },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "System.ServiceModel.Syndication": {
               "target": "Package",
@@ -106,16 +108,10 @@
             }
           },
           "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
+            "net461"
           ],
           "assetTargetFallback": true,
-          "warn": true,
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.102/RuntimeIdentifierGraph.json"
+          "warn": true
         }
       }
     }
