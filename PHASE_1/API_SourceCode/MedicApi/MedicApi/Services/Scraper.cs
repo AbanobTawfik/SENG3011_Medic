@@ -66,27 +66,19 @@ namespace MedicApi.Services
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
                 ret += "'" + item.Title.Text + "'\n  '" + sourceUrl.ToString() + "'\n  '" + item.PublishDate + "'\n";
 
-<<<<<<< HEAD
-                if (uri.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
+                if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
                 {
+                    // ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
                     continue;
-                    //ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
                 }
                 else
                 {
-                    var ArticleFromPage = ScrapeCDCOutbreak(uri.ToString());
+                    var ArticleFromPage = ScrapeCDCOutbreak(sourceUrl.ToString());
                     ret += "  " + ScrapeOutbreakArticle(item, webPageHtml) + "\n";
                     ret += "MAIN TEXT\n";
                     ret += ScrapeCDCOutbreak(uri.ToString());
                 }
                     ret += "========================================================================\n";
-=======
-                if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
-                    ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
-                else
-                    ret += "  " + ScrapeOutbreakArticle(item, contentHtml) + "\n";
-                ret += "\n";
->>>>>>> 854884a9c80eec907c98ce3357b459cf397b7a39
             }
             jsonClient.Dispose();
             return ret;
