@@ -62,10 +62,18 @@ namespace MedicApi.Services
                 ret += "'" + item.Title.Text + "'\n  '" + uri.ToString() + "'\n  '" + item.PublishDate + "'\n";
 
                 if (uri.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
-                    ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
+                {
+                    continue;
+                    //ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
+                }
                 else
+                {
+                    var ArticleFromPage = ScrapeCDCOutbreak(uri.ToString());
                     ret += "  " + ScrapeOutbreakArticle(item, webPageHtml) + "\n";
-                ret += "\n";
+                    ret += "MAIN TEXT\n";
+                    ret += ScrapeCDCOutbreak(uri.ToString());
+                }
+                    ret += "========================================================================\n";
             }
             return ret;
         }
@@ -82,14 +90,19 @@ namespace MedicApi.Services
             return article;
         }
 
-        public Article ScrapeUrl(string url)
-        {
-            return null;
-        }
 
-        public Article ScrapeCDCOutbreak(string url)
+        public string ScrapeCDCOutbreak(string url)
         {
-            return null;
+            var webClient = new HtmlWeb();
+            var webPageHtml = webClient.Load(url);
+
+            var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
+            var articleMainText = "";
+            foreach(var textSegment in mainTextSegment)
+            {
+                articleMainText += HttpUtility.HtmlDecode(textSegment.InnerText);
+            }
+            return articleMainText;
         }
 
         public Article ScrapeCDCBasicInformation(string url)
