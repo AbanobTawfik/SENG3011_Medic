@@ -30,7 +30,7 @@ namespace MedicApi.Services
             {
                 foreach (var keyValue in map.Keys)
                 {
-                    keyCheck = map[keyValue].Where(s => s.ToLower() == keyValue.ToLower()).FirstOrDefault();
+                    keyCheck = map[keyValue].Where(s => s.ToLower() == key.ToLower()).FirstOrDefault();
                     if (keyCheck != null)
                     {
                         keyCheck = keyValue;

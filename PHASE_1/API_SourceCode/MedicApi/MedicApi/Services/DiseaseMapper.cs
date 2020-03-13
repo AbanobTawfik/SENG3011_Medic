@@ -9,6 +9,7 @@ namespace MedicApi.Services
     {
         public DiseaseMapper(List<string> keys) : base(keys)
         {
+            base.AddReference("COVID-19", "coronavirus");
         }
     }
 }
