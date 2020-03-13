@@ -13,6 +13,7 @@ namespace MedicApi.Models
         public List<string> syndromes { get; set; }
         public DateTime event_date_start { get; set; }
         public DateTime event_date_end { get; set; }
+        public string event_date_str { get; set; }
         public List<StoredPlace> locations { get; set; }
         public Report ToReport()
         {
@@ -20,7 +21,7 @@ namespace MedicApi.Models
             {
                 diseases = diseases,
                 syndromes = syndromes,
-                event_date = event_date_start.ToString("yyyy-MM-dd HH:mm:ss"),
+                event_date = event_date_str,
                 locations = locations.Select(p => p.ToPlace()).ToList(),
             };
         }
