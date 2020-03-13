@@ -73,10 +73,10 @@ namespace MedicApi.Services
                 }
                 else
                 {
-                    var ArticleFromPage = ScrapeCDCOutbreak(sourceUrl.ToString());
-                    ret += "  " + ScrapeOutbreakArticle(item, webPageHtml) + "\n";
+                    var ArticleFromPage = ScrapeCDCOutbreak(contentHtml);
+                    ret += "  " + ScrapeOutbreakArticle(item, contentHtml) + "\n";
                     ret += "MAIN TEXT\n";
-                    ret += ScrapeCDCOutbreak(uri.ToString());
+                    ret += ScrapeCDCOutbreak(contentHtml);
                 }
                     ret += "========================================================================\n";
             }
@@ -98,16 +98,13 @@ namespace MedicApi.Services
         }
 
 
-        public string ScrapeCDCOutbreak(string url)
+        public string ScrapeCDCOutbreak(HtmlDocument webPageHtml)
         {
-            var webClient = new HtmlWeb();
-            var webPageHtml = webClient.Load(url);
-
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
             var articleMainText = "";
             foreach(var textSegment in mainTextSegment)
             {
-                articleMainText += HttpUtility.HtmlDecode(textSegment.InnerText);
+                articleMainText += Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ") + "\n";
             }
             return articleMainText;
         }
