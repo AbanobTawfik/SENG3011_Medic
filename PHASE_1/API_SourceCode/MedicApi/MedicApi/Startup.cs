@@ -28,9 +28,17 @@ namespace MedicApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            var connectionString = Configuration.GetSection("ConnectionString").Value;
-            services.AddSingleton<Scraper>();
-
+            var diseases = new List<string>();
+            Configuration.GetSection("Diseases").Bind(diseases);
+            var syndromes = new List<string>();
+            Configuration.GetSection("Syndromes").Bind(syndromes);
+            var diseaseMapper = new DiseaseMapper(diseases);
+            var syndromeMapper = new SyndromeMapper(syndromes);
+            var scraper = new Scraper(diseaseMapper, syndromeMapper);
+            services.AddSingleton(diseaseMapper);
+            services.AddSingleton(syndromeMapper);
+            services.AddSingleton(scraper);
+            // swagger generation
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo

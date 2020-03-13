@@ -15,7 +15,14 @@ namespace MedicApi.Services
 {
     public class Scraper
     {
-        public ObservableCollection<Object> ScrapedData { get; set; }
+        private DiseaseMapper _diseaseMapper;
+        private SyndromeMapper _syndromeMapper;
+
+        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper)
+        {
+            this._diseaseMapper = diseaseMapper;
+            this._syndromeMapper = syndromeMapper;
+        }
 
         /*
          * Returns a list of Articles from a given RSS feed url.
@@ -98,6 +105,7 @@ namespace MedicApi.Services
                     locations.Add(locationString);
                 }
             }
+            var x = _diseaseMapper.GetCommonKeyName("coronavirus");
             // scrape diseases
 
             // scrape symptoms

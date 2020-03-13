@@ -7,11 +7,20 @@ namespace MedicApi.Services
 {
     public class Mapper
     {
-        public Dictionary<string, List<string>> map;
-        public Mapper()
+        private Dictionary<string, List<string>> map;
+        public Mapper(List<string> keys)
         {
             var comparer = StringComparer.OrdinalIgnoreCase;
             map = new Dictionary<string, List<string>>(comparer);
+            initaliseMapper(keys);
+        }
+
+        private void initaliseMapper(List<string> keys)
+        {
+            foreach(var key in keys)
+            {
+                AddKey(key);
+            }
         }
 
         public string GetCommonKeyName(string key)
