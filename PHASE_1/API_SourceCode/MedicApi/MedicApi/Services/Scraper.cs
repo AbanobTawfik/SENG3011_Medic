@@ -17,34 +17,6 @@ namespace MedicApi.Services
     {
         public ObservableCollection<Object> ScrapedData { get; set; }
 
-        public List<String> ScrapeData(string url)
-        {
-            var webClient = new HtmlWeb();
-            var webPageHtml = webClient.Load(url);
-
-            var outbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'feed-item-title']");
-
-            List<String> ret = new List<String>();
-            
-            foreach (var outbreak in outbreaks)
-            {
-                var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-                var linkToArticle = outbreak.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-                ret.Add(linkToArticle);
-            }
-
-            var internationalOutbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'bullet-list feed-item-list']").Nodes().Where(n => n.HasChildNodes);
-
-            foreach(var outbreak in internationalOutbreaks)
-            {
-                var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-                var linkToArticle = outbreak.FirstChild.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-                ret.Add(linkToArticle);
-            }
-
-            return ret;
-        }
-
         /*
          * Returns a list of Articles from a given RSS feed url.
          * Currently returns a string for debugging.
@@ -73,12 +45,12 @@ namespace MedicApi.Services
                 }
                 else
                 {
-                    var ArticleFromPage = ScrapeCDCOutbreak(contentHtml);
                     ret += "  " + ScrapeOutbreakArticle(item, contentHtml) + "\n";
                     ret += "MAIN TEXT\n";
-                    ret += ScrapeCDCOutbreak(contentHtml);
+                    var locationPageUrl = new Uri(Regex.Replace(sourceUrl.ToString(), @"/index.html*$", "/map.html"));
+                    ret += ScrapeCDCOutbreak(locationPageUrl, contentHtml);
                 }
-                    ret += "========================================================================\n";
+                ret += "========================================================================\n";
             }
             jsonClient.Dispose();
             return ret;
@@ -98,20 +70,34 @@ namespace MedicApi.Services
         }
 
 
-        public string ScrapeCDCOutbreak(HtmlDocument webPageHtml)
+        public string ScrapeCDCOutbreak(Uri locationUrl, HtmlDocument webPageHtml)
         {
+            // scrape main text
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
             var articleMainText = "";
-            foreach(var textSegment in mainTextSegment)
+            foreach (var textSegment in mainTextSegment)
             {
                 string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
                 Regex rgx = new Regex(pattern);
-                var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ") ;
+                var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
                 articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
                 var cleanText = rgx.Replace(uncleanText, " ");
-
-             }
-
+            }
+            // scrape locations
+            var locations = new List<string>();
+            var locationWebClient = new HtmlWeb();
+            var locationWebHtml = locationWebClient.Load(locationUrl);
+            var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[@class = 'table table-bordered table-striped']")
+                                                            .Nodes().Where(c => c.Name == "tbody").FirstOrDefault().ChildNodes
+                                                            .Where(c => c.Name == "tr");
+            foreach (var location in locationTable)
+            {
+                var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
+                if (!locationString.ToLower().Equals("total"))
+                {
+                    locations.Add(locationString);
+                }
+            }
             return articleMainText;
         }
 
@@ -141,3 +127,31 @@ namespace MedicApi.Services
         }
     }
 }
+
+//public List<String> ScrapeData(string url)
+//{
+//    var webClient = new HtmlWeb();
+//    var webPageHtml = webClient.Load(url);
+
+//    var outbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'feed-item-title']");
+
+//    List<String> ret = new List<String>();
+
+//    foreach (var outbreak in outbreaks)
+//    {
+//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
+//        var linkToArticle = outbreak.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
+//        ret.Add(linkToArticle);
+//    }
+
+//    var internationalOutbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'bullet-list feed-item-list']").Nodes().Where(n => n.HasChildNodes);
+
+//    foreach(var outbreak in internationalOutbreaks)
+//    {
+//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
+//        var linkToArticle = outbreak.FirstChild.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
+//        ret.Add(linkToArticle);
+//    }
+
+//    return ret;
+//}

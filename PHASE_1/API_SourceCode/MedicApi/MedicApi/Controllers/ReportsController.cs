@@ -23,18 +23,6 @@ namespace MedicApi.Controllers
             this._scraperService = scraperService;
         }
 
-
-        
-        [HttpGet]
-        // can change routes 
-        [Route("Test")]
-        public ActionResult TestEndPoint()
-        {
-            var x = _scraperService.ScrapeData("https://www.cdc.gov/outbreaks/");
-            return Ok(x);
-        }
-
-
         /// <summary>
         /// Retrieves a list of articles from CDC website that fit into the criteria provided.
         /// </summary>
