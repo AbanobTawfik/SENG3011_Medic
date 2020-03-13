@@ -10,10 +10,12 @@ namespace MedicApi.Models
     public class StoredArticle
     {
         public string url { get; set; }
-        public DateTime date_of_publication { get; set; }
+        public DateTime date_of_publication_start { get; set; }
+        public DateTime date_of_publication_end { get; set; }
         public string date_of_publication_str { get; set; }
         public string headline { get; set; }
         public string main_text { get; set; }
+        public List<string> keywords { get; set; }
         public List<StoredReport> reports { get; set; }
 
         public Article ToArticle()
