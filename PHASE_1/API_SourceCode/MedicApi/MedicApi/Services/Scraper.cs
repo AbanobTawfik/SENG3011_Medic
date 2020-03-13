@@ -104,8 +104,14 @@ namespace MedicApi.Services
             var articleMainText = "";
             foreach(var textSegment in mainTextSegment)
             {
-                articleMainText += Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ") + "\n";
-            }
+                string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
+                Regex rgx = new Regex(pattern);
+                var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ") ;
+                articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+                var cleanText = rgx.Replace(uncleanText, " ");
+
+             }
+
             return articleMainText;
         }
 
