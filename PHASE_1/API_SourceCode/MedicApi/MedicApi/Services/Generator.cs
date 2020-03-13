@@ -25,7 +25,6 @@ namespace MedicApi.Services
                     new StoredArticle
                     {
                         url = "url11",
-                        date_of_publication = new DateTime(2020, 3, 8),
                         date_of_publication_str = "2020-03-08 xx:xx:xx",
                         headline = "Headline 11",
                         main_text = "This is the main text of article 11.",
