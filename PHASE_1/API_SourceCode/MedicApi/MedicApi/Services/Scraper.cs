@@ -98,6 +98,11 @@ namespace MedicApi.Services
                     locations.Add(locationString);
                 }
             }
+            // scrape diseases
+
+            // scrape symptoms
+
+            // scrape date of incident
             return articleMainText;
         }
 
