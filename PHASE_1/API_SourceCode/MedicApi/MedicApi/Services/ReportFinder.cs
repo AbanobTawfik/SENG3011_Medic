@@ -100,15 +100,15 @@ namespace MedicApi.Services
         /// Converts the raw parameters into their proper types. Handles default
         /// values and reduces parameters to their maximum allowed values.
         /// </summary>
-        public static void ParseRawInput(string start_date,
-                                         string end_date, string timezone,
-                                         string key_terms, string location,
-                                         string max, string offset,
-                                         out DateTime start_date_value,
-                                         out DateTime end_date_value,
-                                         out List<string> key_terms_value,
-                                         out string location_value,
-                                         out int max_value, out int offset_value)
+        private void ParseRawInput(string start_date,
+                                   string end_date, string timezone,
+                                   string key_terms, string location,
+                                   string max, string offset,
+                                   out DateTime start_date_value,
+                                   out DateTime end_date_value,
+                                   out List<string> key_terms_value,
+                                   out string location_value,
+                                   out int max_value, out int offset_value)
         {
             start_date_value = DateTime.Parse(start_date);
             end_date_value   = DateTime.Parse(end_date);
@@ -154,7 +154,7 @@ namespace MedicApi.Services
             return e;
         }
 
-        public static void CheckDates(ApiError e, string start_date, string end_date)
+        private void CheckDates(ApiError e, string start_date, string end_date)
         {
             // start_date
             DateTime start_date_value = DateTime.Now;
@@ -200,7 +200,7 @@ namespace MedicApi.Services
             }
         }
 
-        public static void CheckTimezone(ApiError e, string timezone)
+        private void CheckTimezone(ApiError e, string timezone)
         {
             if (timezone != null)
             {
@@ -208,7 +208,7 @@ namespace MedicApi.Services
             }
         }
 
-        public static void CheckMaxAndOffset(ApiError e, string max, string offset)
+        private void CheckMaxAndOffset(ApiError e, string max, string offset)
         {
             // max
             int  max_value = 0;
