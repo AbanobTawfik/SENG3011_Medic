@@ -4,7 +4,7 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <member name="M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+        <member name="M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Retrieves a list of articles from CDC website that fit into the criteria provided.
             </summary>
@@ -29,6 +29,19 @@
             <response code="200">Successful Query</response>
             <response code="500">Invalid ID supplied</response>
             <response code="404">Anomaly not found</response>
+        </member>
+        <member name="M:MedicApi.Services.ReportFinder.ParseRawInput(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.DateTime@,System.DateTime@,System.Collections.Generic.List{System.String}@,System.String@,System.Int32@,System.Int32@)">
+            <summary>
+            Converts the raw parameters into their proper types. Handles default
+            values and reduces parameters to their maximum allowed values.
+            </summary>
+        </member>
+        <member name="M:MedicApi.Services.ReportFinder.CheckRawInput(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Checks the raw parameters passed to the API.  Arguments can be null,
+            indicating that no value was specified for the parameter.
+            </summary>
+            <returns>All errors encountered</returns>
         </member>
     </members>
 </doc>

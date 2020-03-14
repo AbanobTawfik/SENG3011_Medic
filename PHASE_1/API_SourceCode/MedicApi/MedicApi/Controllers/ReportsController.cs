@@ -52,14 +52,21 @@ namespace MedicApi.Controllers
         [HttpGet]
         // can change routes
         [Route("TestApi")]
-        public ActionResult TestApi(string start_date,
-                                    string end_date,  string timezone,
-                                    string key_terms, string location,
-                                    int max = 25, int offset = 0)
+        public ActionResult TestApi(string start_date, string end_date,
+                                    string timezone, string key_terms,
+                                    string location, string max,
+                                    string offset)
         {
             var service = new ReportFinder();
-            var res = service.FindReports(start_date, end_date, timezone,
-                                          key_terms, location, max, offset);
+            var errors = service.CheckRawInput(start_date, end_date, timezone,
+                                               key_terms, location, max, offset);
+            if (errors.NumErrors() > 0)
+            {
+                return BadRequest(errors);
+            }
+
+            var res = service.Retrieve(start_date, end_date, timezone,
+                                       key_terms, location, max, offset);
             return Ok(res);
         }
 
