@@ -44,7 +44,7 @@ namespace MedicApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Medics SENG3011 CDC Articles API",
-                    Description = "This API is an endpoint to retrieve all outbreak articles.<br/> This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website.",
+                    Description = "This API is an endpoint to retrieve all outbreak articles.<br/> This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website. <br/> Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. The resulting list of articles is then returned to the user in an 200 response. <br/> If any of the query parameters are invalid or any of the dates are missing, we will return a 400 Request response alongside an error message to inform the user of the issue. <br/>",
                     Version = "0.01"
                 });
                 

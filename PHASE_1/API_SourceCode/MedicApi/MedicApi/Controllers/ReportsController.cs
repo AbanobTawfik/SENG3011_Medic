@@ -77,9 +77,10 @@ namespace MedicApi.Controllers
         /// <param name="location">The name of a location. Example: “Sydney” </param>
         /// <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>
         /// <param name="offset">The number of the first report returned. (default: 0)</param>
-        /// <response code="200">Successful Query</response>
-        /// <response code="500">Invalid ID supplied</response>
-        /// <response code="404">Anomaly not found</response>
+        /// <response code="200">Successful Query with Response</response>
+        /// <response code="400">Invalid Input Parameters</response>
+        /// <response code="500">Internal Server Error. Try Again Later</response>
+        /// <response code="404">Not Found</response>
 
         // GET api/Reports/Test
         [HttpGet]
