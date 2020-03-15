@@ -31,7 +31,40 @@ namespace MedicApi.Controllers
         /// This API will return data to be used by EPIWatch Frontend.<br/>
         /// Only start time and end time is Mandatory.<br/>
         /// All other fields for query is optional and determines what is returned.<br/>
+        /// <heading>How it Works!</heading>
         /// 
+        /// Example Query: <br/>
+        /// 
+        /// 
+        /// Sample request:
+        /// /reports?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+        ///
+        /// Return:
+        /// [
+        ///    {
+        ///       "url":"url1",
+        ///       "reports":[
+        ///          {
+        ///             "diseases":[
+        ///                "ebola haemorrhagic fever"
+        ///             ],
+        ///             "syndromes":[
+        ///                "Haemorrhagic fever"
+        ///             ],
+        ///             "event_date":"2019-01-01 00:00:00",
+        ///             "locations":[
+        ///                {
+        ///                   "country":"Uganda",
+        ///                   "location":"Kampala"
+        ///                }
+        ///             ]
+        ///          }
+        ///       ],
+        ///       "headline":"Headline 1",
+        ///       "main_text":"This is the main text for article 1.",
+        ///       "date_of_publication":"2019-01-02 xx:xx:xx"
+        ///    }
+        /// ]
         /// 
         /// </remarks>
         /// 
