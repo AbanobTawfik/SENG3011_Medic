@@ -37,7 +37,7 @@ namespace MedicApi.Controllers
         /// 
         /// 
         /// Sample request:
-        /// /reports?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+        /// /TestApi?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
         ///
         /// Return:
         /// [
