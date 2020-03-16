@@ -204,7 +204,14 @@ namespace MedicApi.Services
         {
             if (timezone != null)
             {
-
+                if (TimezoneUtils.IsDuplicateAbbreviation(timezone))
+                {
+                    e.AddError("timezone", $"ambiguous timezone abbreviation '{timezone}'; use the timezone name instead");
+                }
+                else if (!TimezoneUtils.IsValidTimezoneString(timezone))
+                {
+                    e.AddError("timezone", $"unknown timezone '{timezone}'");
+                }
             }
         }
 

@@ -5,30 +5,64 @@
     </assembly>
     <members>
         <member name="M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            Retrieves a list of articles from CDC website that fit into the criteria provided.
-            </summary>
-            <remarks>API Usage Information:<br/>
-            API Returns list of articles with nested info in a JSON format. <br/>
-            This API will return data to be used by EPIWatch Frontend.<br/>
-            Only start time and end time is Mandatory.<br/>
-            All other fields for query is optional and determines what is returned.<br/>
+             <summary>
+             Retrieves a list of articles from CDC website that fit into the criteria provided.
+             </summary>
+             <remarks>API Usage Information:<br/>
+             API Returns list of articles with nested info in a JSON format. <br/>
+             This API will return data to be used by EPIWatch Frontend.<br/>
+             Only start time and end time is Mandatory.<br/>
+             All other fields for query is optional and determines what is returned.<br/>
+             <heading>How it Works!</heading>
+             
+             Example Query: <br/>
+             
+             
+             Sample request:
+             /TestApi?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
             
-            
-            </remarks>
-            
-            <param name="start_date">Starting time of the period of interest. <example>“yyyy-MM-ddTHH:mm:ss”</example></param>
-            
-            
-            <param name="end_date">Ending time of the period of interest. “yyyy-MM-ddTHH:mm:ss” </param>
-            <param name="timezone">The time zone associated with the given start and end dates. Example: “AEST”</param>
-            <param name="key_terms">Keywords for Search. Example: “Anthrax,Ebola” </param>
-            <param name="location">The name of a location. Example: “Sydney” </param>
-            <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>
-            <param name="offset">The number of the first report returned. (default: 0)</param>
-            <response code="200">Successful Query</response>
-            <response code="500">Invalid ID supplied</response>
-            <response code="404">Anomaly not found</response>
+             Return:
+             [
+                {
+                   "url":"url1",
+                   "reports":[
+                      {
+                         "diseases":[
+                            "ebola haemorrhagic fever"
+                         ],
+                         "syndromes":[
+                            "Haemorrhagic fever"
+                         ],
+                         "event_date":"2019-01-01 00:00:00",
+                         "locations":[
+                            {
+                               "country":"Uganda",
+                               "location":"Kampala"
+                            }
+                         ]
+                      }
+                   ],
+                   "headline":"Headline 1",
+                   "main_text":"This is the main text for article 1.",
+                   "date_of_publication":"2019-01-02 xx:xx:xx"
+                }
+             ]
+             
+             </remarks>
+             
+             <param name="start_date">Starting time of the period of interest. <example>“yyyy-MM-ddTHH:mm:ss”</example></param>
+             
+             
+             <param name="end_date">Ending time of the period of interest. “yyyy-MM-ddTHH:mm:ss” </param>
+             <param name="timezone">The time zone associated with the given start and end dates. Example: “AEST”</param>
+             <param name="key_terms">Keywords for Search. Example: “Anthrax,Ebola” </param>
+             <param name="location">The name of a location. Example: “Sydney” </param>
+             <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>
+             <param name="offset">The number of the first report returned. (default: 0)</param>
+             <response code="200">Successful Query with Response</response>
+             <response code="400">Invalid Input Parameters</response>
+             <response code="500">Internal Server Error. Try Again Later</response>
+             <response code="404">Not Found</response>
         </member>
         <member name="M:MedicApi.Services.ReportFinder.ParseRawInput(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.DateTime@,System.DateTime@,System.Collections.Generic.List{System.String}@,System.String@,System.Int32@,System.Int32@)">
             <summary>
