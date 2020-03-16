@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kevin\\Documents\\SENG3011-Project\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {}
+    "C:\\Users\\Lucas\\seng3011\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kevin\\Documents\\SENG3011-Project\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {
+    "C:\\Users\\Lucas\\seng3011\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kevin\\Documents\\SENG3011-Project\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
+        "projectUniqueName": "C:\\Users\\Lucas\\seng3011\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
         "projectName": "MedicApi",
-        "projectPath": "C:\\Users\\Kevin\\Documents\\SENG3011-Project\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
-        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kevin\\Documents\\SENG3011-Project\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\obj\\",
+        "projectPath": "C:\\Users\\Lucas\\seng3011\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\MedicApi.csproj",
+        "packagesPath": "C:\\Users\\Lucas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lucas\\seng3011\\SENG3011_Medic\\PHASE_1\\API_SourceCode\\MedicApi\\MedicApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
