@@ -51,7 +51,10 @@ namespace MedicApi.Services
 
         public void AddKey(string key)
         {
-            map.Add(key, new List<string>());
+            if (!map.ContainsKey(key))
+            {
+                map.Add(key, new List<string>());
+            }
         }
 
     }
