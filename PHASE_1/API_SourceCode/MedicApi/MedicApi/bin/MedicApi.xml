@@ -4,7 +4,7 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
              <summary>
              Retrieves a list of articles from CDC website that fit into the criteria provided.
              </summary>
@@ -54,7 +54,7 @@
              
              
              <param name="end_date">Ending time of the period of interest. “yyyy-MM-ddTHH:mm:ss” </param>
-             <param name="timezone">The time zone associated with the given start and end dates. Example: “AEST”</param>
+             <param name="timezone">The time zone associated with the given start and end dates in CAPS. Example: “AEST”</param>
              <param name="key_terms">Keywords for Search. Example: “Anthrax,Ebola” </param>
              <param name="location">The name of a location. Example: “Sydney” </param>
              <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>

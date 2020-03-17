@@ -65,7 +65,7 @@ namespace MedicApi.Controllers
         /// 
         /// 
         /// <param name="end_date">Ending time of the period of interest. “yyyy-MM-ddTHH:mm:ss” </param>
-        /// <param name="timezone">The time zone associated with the given start and end dates. Example: “AEST”</param>
+        /// <param name="timezone">The time zone associated with the given start and end dates in CAPS. Example: “AEST”</param>
         /// <param name="key_terms">Keywords for Search. Example: “Anthrax,Ebola” </param>
         /// <param name="location">The name of a location. Example: “Sydney” </param>
         /// <param name="max">Max number of reports to search. (default: 25, maximum: 50)</param>
@@ -79,21 +79,23 @@ namespace MedicApi.Controllers
         [HttpGet]
         // can change routes
         [Route("TestApi")]
-        public ActionResult GetArticles(string start_date, string end_date,
-                                    string timezone, string key_terms,
-                                    string location, string max,
-                                    string offset)
+        public ActionResult GetArticles(string start_date = "2015-01-01T00:00:00", string end_date = "2015-01-01T00:00:00",
+                                    string timezone = "AEST", string key_terms = "anthrax,ebola,coronavirus",
+                                    string location = "Sydney", int max = 25,
+                                    int offset = 0)
         {
             var service = new ReportFinder();
+            String maxStr = max.ToString();
+            String offsetStr = offset.ToString();
             var errors = service.CheckRawInput(start_date, end_date, timezone,
-                                               key_terms, location, max, offset);
+                                               key_terms, location, maxStr, offsetStr);
             if (errors.NumErrors() > 0)
             {
                 return BadRequest(errors);
             }
 
             var res = service.Retrieve(start_date, end_date, timezone,
-                                       key_terms, location, max, offset);
+                                       key_terms, location, maxStr, offsetStr);
             return Ok(res);
         }
     }
