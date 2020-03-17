@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MedicApi.Services;
+using MedicApi.Swashbuckle;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -47,7 +48,8 @@ namespace MedicApi
                     Description = "This API is an endpoint to retrieve all outbreak articles.<br/> This API is developed for a new system that automates the extraction of latest outbreaks data from the US health department’s Centers for Disease Control and Prevention (CDC) website. <br/> Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. The resulting list of articles is then returned to the user in an 200 response. <br/> If any of the query parameters are invalid or any of the dates are missing, we will return a 400 Request response alongside an error message to inform the user of the issue. <br/>API can be accessed at https://seng3011medics-staging.azurewebsites.net/api/reports/TestApi with the various input parameters per definitions below.",
                     Version = "0.01"
                 });
-                
+                c.OperationFilter<AddExampleValues>();
+
                 var filePath = Path.Combine(AppContext.BaseDirectory, "MedicApi.xml");
                 c.IncludeXmlComments(filePath);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MedicApi.Services;
+using MedicApi.Swashbuckle;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Swashbuckle.AspNetCore.Swagger;
@@ -79,8 +80,12 @@ namespace MedicApi.Controllers
         [HttpGet]
         // can change routes
         [Route("TestApi")]
-        public ActionResult GetArticles(string start_date = "2015-01-01T00:00:00", string end_date = "2020-01-01T00:00:00",
-                                    string timezone = "AEST", string key_terms = "anthrax,ebola,coronavirus",
+        [SwaggerExampleValue("start_date", "2015-01-01T00:00:00")]
+        [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
+        [SwaggerExampleValue("timezone", "AEST")]
+        [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
+        public ActionResult GetArticles(string start_date, string end_date,
+                                    string timezone, string key_terms,
                                     string location = "", int max = 25,
                                     int offset = 0)
         {
