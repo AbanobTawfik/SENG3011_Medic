@@ -79,7 +79,7 @@ namespace MedicApi.Controllers
         [HttpGet]
         // can change routes
         [Route("TestApi")]
-        public ActionResult GetArticles(string start_date = "2015-01-01T00:00:00", string end_date = "2015-01-01T00:00:00",
+        public ActionResult GetArticles(string start_date = "2015-01-01T00:00:00", string end_date = "2020-01-01T00:00:00",
                                     string timezone = "AEST", string key_terms = "anthrax,ebola,coronavirus",
                                     string location = "Sydney", int max = 25,
                                     int offset = 0)
