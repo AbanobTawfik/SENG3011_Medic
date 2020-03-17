@@ -4,7 +4,7 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <member name="M:MedicApi.Controllers.ReportsController.TestApi(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
              <summary>
              Retrieves a list of articles from CDC website that fit into the criteria provided.
              </summary>

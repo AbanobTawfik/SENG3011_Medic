@@ -16,13 +16,6 @@ namespace MedicApi.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
-        private Scraper _scraperService;
-
-        public ReportsController(Scraper scraperService)
-        {
-            this._scraperService = scraperService;
-        }
-
         /// <summary>
         /// Retrieves a list of articles from CDC website that fit into the criteria provided.
         /// </summary>
@@ -86,7 +79,7 @@ namespace MedicApi.Controllers
         [HttpGet]
         // can change routes
         [Route("TestApi")]
-        public ActionResult TestApi(string start_date, string end_date,
+        public ActionResult GetArticles(string start_date, string end_date,
                                     string timezone, string key_terms,
                                     string location, string max,
                                     string offset)
@@ -102,24 +95,6 @@ namespace MedicApi.Controllers
             var res = service.Retrieve(start_date, end_date, timezone,
                                        key_terms, location, max, offset);
             return Ok(res);
-        }
-
-        [HttpGet]
-        [Route("TestGenerate")]
-        public ActionResult TestGenerate()
-        {
-            var service = new Generator();
-            service.GenerateAdd();
-            return Ok("done");
-        }
-
-        // GET api/Reports/TestRSS
-        [HttpGet]
-        [Route("TestRSS")]
-        public ActionResult TestRSS()
-        {
-            var x = _scraperService.ScrapeOutbreaksRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
-            return Ok(x);
         }
     }
 }
