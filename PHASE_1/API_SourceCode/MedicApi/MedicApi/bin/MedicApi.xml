@@ -19,7 +19,7 @@
              
              
              Sample request:
-             /TestApi?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+             /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
             
              Return:
              [
@@ -76,6 +76,18 @@
             indicating that no value was specified for the parameter.
             </summary>
             <returns>All errors encountered</returns>
+        </member>
+        <member name="T:MedicApi.Swashbuckle.SwaggerExampleValue">
+            <summary>
+            A custom attribute for setting default parameter values in Swagger.
+            Decorate the desired API endpoint '[SwaggerExampleValue(name, value)]'.
+            </summary>
+        </member>
+        <member name="T:MedicApi.Swashbuckle.AddExampleValues">
+            <summary>
+            A Swashbuckle filter that applies the default values.
+            Add 'c.OperationFilter/<AddExampleValues/>' to AddSwaggerGen in Startup
+            </summary>
         </member>
     </members>
 </doc>

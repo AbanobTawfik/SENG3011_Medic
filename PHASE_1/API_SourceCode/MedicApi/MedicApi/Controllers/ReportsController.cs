@@ -31,7 +31,7 @@ namespace MedicApi.Controllers
         /// 
         /// 
         /// Sample request:
-        /// /TestApi?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+        /// /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
         ///
         /// Return:
         /// [
@@ -76,10 +76,10 @@ namespace MedicApi.Controllers
         /// <response code="500">Internal Server Error. Try Again Later</response>
         /// <response code="404">Not Found</response>
 
-        // GET api/Reports/Test
+        // GET api/Reports/GetArticles
         [HttpGet]
         // can change routes
-        [Route("TestApi")]
+        [Route("GetArticles")]
         [SwaggerExampleValue("start_date", "2015-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
         [SwaggerExampleValue("timezone", "AEST")]
