@@ -80,6 +80,7 @@ namespace MedicApi.Services
         public string ScrapeCDCOutbreak(Uri locationUrl, HtmlDocument webPageHtml)
         {
             // scrape main text
+            var sentences = new List<string>();
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
             var articleMainText = "";
             foreach (var textSegment in mainTextSegment)
@@ -89,6 +90,11 @@ namespace MedicApi.Services
                 var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
                 articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
                 var cleanText = rgx.Replace(uncleanText, " ");
+                string[] sectionSentences = Regex.Split(cleanText, @"(?<=[\.!\?])\s+");
+                foreach (var sentence in sectionSentences)
+                {
+                    sentences.Add(sentence);
+                }
             }
             // scrape locations
             var locations = new List<string>();
