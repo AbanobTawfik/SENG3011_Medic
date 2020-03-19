@@ -2,38 +2,63 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+// NOTES:
+// - All public methods should normalise given timezone strings
+// - All private methods assume that given strings are normalised
+
 namespace MedicApi.Services
 {
     public static class TimezoneUtils
     {
-        public static bool ToTimeSpan(string tz, out TimeSpan ts)
+        /**********************************************************************/
+
+        public static TimeSpan ToTimeSpan(string tz)
         {
             tz = Normalize(tz);
 
-            ////////////////////////////////////////////////////////////
-            // Find the offset
-
-            string offset;
-
-            // first try abbreviation
-            if (tzAbbreviations.ContainsKey(tz))
+            TimeSpan res;
+            if (TryToTimeSpan(tz, out res))
             {
-                offset = tzAbbreviations[tz];
-            }
-            else if (tzNames.ContainsKey(tz))
-            {
-                offset = tzNames[tz];
+                return res;
             }
             else
+            {
+                throw new FormatException($"invalid timezone: '{tz}'");
+            }
+        }
+
+        /**********************************************************************/
+
+        public static bool TryToTimeSpan(string tz, out TimeSpan ts)
+        {
+            tz = Normalize(tz);
+
+            if (!IsValidTimezoneString(tz))
             {
                 ts = new TimeSpan();
                 return false;
             }
 
-            ////////////////////////////////////////////////////////////
-            // Convert the offset to a timespan
+            string offset = ToOffsetString(tz);
+            ts = ParseOffsetString(offset);
+            return true;
+        }
 
-            // for extracting the +/−/±
+        // Assumes timezone string is valid
+        private static string ToOffsetString(string tz)
+        {
+            if (tzAbbreviations.ContainsKey(tz))
+            {
+                return tzAbbreviations[tz];
+            }
+            else
+            {
+                return tzNames[tz];
+            }
+        }
+
+        private static TimeSpan ParseOffsetString(string offset)
+        {
             Regex re = new Regex(@"([+−±])([0-9]{2}):([0-9]{2})");
 
             Match m = re.Match(offset);
@@ -44,26 +69,20 @@ namespace MedicApi.Services
             if (sign == "−")
             {
                 hours *= -1;
+                minutes *= -1;
             }
 
-            ts = new TimeSpan(hours, minutes, 0);
-            return true;
+            TimeSpan ts = new TimeSpan(hours, minutes, 0);
+            return ts;
         }
 
-        public static string Normalize(string tz)
-        {
-            return tz.Replace("-", " ")
-                     .Replace("–", " ")
-                     .Replace("–", " ")
-                     .Replace("á", "a")
-                     .Replace("é", "e")
-                     .Replace("í", "i")
-                     .ToLower().Trim();
-        }
+        /**********************************************************************/
 
-        public static bool IsDuplicateAbbreviation(string tz)
+        public static bool IsAmbiguousTimezoneAbbreviation(string tz)
         {
-            return duplicateAbbreviations.Contains(tz.ToUpper());
+            tz = Normalize(tz);
+
+            return ambiguousTzAbbreviations.Contains(tz);
         }
 
         public static bool IsValidTimezoneString(string tz)
@@ -73,8 +92,23 @@ namespace MedicApi.Services
             return tzAbbreviations.ContainsKey(tz) || tzNames.ContainsKey(tz);
         }
 
+        /**********************************************************************/
+
+        private static string Normalize(string tz)
+        {
+            return tz.Trim().ToLower()
+                     .Replace("-", " ")
+                     .Replace("–", " ")
+                     .Replace("–", " ")
+                     .Replace("á", "a")
+                     .Replace("é", "e")
+                     .Replace("í", "i")
+            ;
+        }
+
+        /**********************************************************************/
+
         // normalised timezone names
-        // convert to lowercase --> replace dashes with spaces --> remove diacritics
         private static Dictionary<string, string> tzNames = new Dictionary<string, string>
         {
             {"australian central daylight savings time",           "+10:30"},
@@ -280,7 +314,7 @@ namespace MedicApi.Services
             {"yekaterinburg time",                                 "+05:00"},
         };
 
-        private static HashSet<string> duplicateAbbreviations = new HashSet<string>
+        private static HashSet<string> ambiguousTzAbbreviations = new HashSet<string>
         {
             "amt", "ast", "bst", "cdt", "cst", "ect", "gst", "ist", "lhst", "pst", "sst",
         };
@@ -299,13 +333,9 @@ namespace MedicApi.Services
             { "akst",  "−09:00" },
             { "almt",  "+06:00" },
             { "amst",  "−03:00" },
-            // { "amt",   "−04:00" },
-            // { "amt",   "+04:00" },
             { "anat",  "+12:00" },
             { "aqtt",  "+05:00" },
             { "art",   "−03:00" },
-            // { "ast",   "+03:00" },
-            // { "ast",   "−04:00" },
             { "awst",  "+08:00" },
             { "azost", "±00:00" },
             { "azot",  "−01:00" },
@@ -316,13 +346,9 @@ namespace MedicApi.Services
             { "bot",   "−04:00" },
             { "brst",  "−02:00" },
             { "brt",   "−03:00" },
-            // { "bst",   "+06:00" },
-            // { "bst",   "+11:00" },
             { "btt",   "+06:00" },
             { "cat",   "+02:00" },
             { "cct",   "+06:30" },
-            // { "cdt",   "−05:00" },
-            // { "cdt",   "−04:00" },
             { "cest",  "+02:00" },
             { "cet",   "+01:00" },
             { "chadt", "+13:45" },
@@ -338,9 +364,6 @@ namespace MedicApi.Services
             { "clt",   "−04:00" },
             { "cost",  "−04:00" },
             { "cot",   "−05:00" },
-            // { "cst",   "−06:00" },
-            // { "cst",   "+08:00" },
-            // { "cst",   "−05:00" },
             { "ct",    "+08:00" },
             { "cvt",   "−01:00" },
             { "cwst",  "+08:45" },
@@ -351,8 +374,6 @@ namespace MedicApi.Services
             { "easst", "−05:00" },
             { "east",  "−06:00" },
             { "eat",   "+03:00" },
-            // { "ect",   "−04:00" },
-            // { "ect",   "−05:00" },
             { "edt",   "−04:00" },
             { "eest",  "+03:00" },
             { "eet",   "+02:00" },
@@ -372,8 +393,6 @@ namespace MedicApi.Services
             { "gilt",  "+12:00" },
             { "git",   "−09:00" },
             { "gmt",   "±00:00" },
-            // { "gst",   "−02:00" },
-            // { "gst",   "+04:00" },
             { "gyt",   "−04:00" },
             { "hdt",   "−09:00" },
             { "haec",  "+02:00" },
@@ -389,17 +408,12 @@ namespace MedicApi.Services
             { "irdt",  "+04:30" },
             { "irkt",  "+08:00" },
             { "irst",  "+03:30" },
-            // { "ist",   "+05:30" },
-            // { "ist",   "+01:00" },
-            // { "ist",   "+02:00" },
             { "jst",   "+09:00" },
             { "kalt",  "+02:00" },
             { "kgt",   "+06:00" },
             { "kost",  "+11:00" },
             { "krat",  "+07:00" },
             { "kst",   "+09:00" },
-            // { "lhst",  "+10:30" },
-            // { "lhst",  "+11:00" },
             { "lint",  "+14:00" },
             { "magt",  "+12:00" },
             { "mart",  "−09:30" },
@@ -412,8 +426,6 @@ namespace MedicApi.Services
             { "mit",   "−09:30" },
             { "mmt",   "+06:30" },
             { "msk",   "+03:00" },
-            // { "mst",   "+08:00" },
-            // { "mst",   "−07:00" },
             { "mut",   "+04:00" },
             { "mvt",   "+05:00" },
             { "myt",   "+08:00" },
@@ -439,8 +451,6 @@ namespace MedicApi.Services
             { "pmdt",  "−02:00" },
             { "pmst",  "−03:00" },
             { "pont",  "+11:00" },
-            // { "pst",   "−08:00" },
-            // { "pst",   "+08:00" },
             { "pyst",  "−03:00" },
             { "pyt",   "−04:00" },
             { "ret",   "+04:00" },
@@ -455,8 +465,6 @@ namespace MedicApi.Services
             { "slst",  "+05:30" },
             { "sret",  "+11:00" },
             { "srt",   "−03:00" },
-            // { "sst",   "−11:00" },
-            // { "sst",   "+08:00" },
             { "syot",  "+03:00" },
             { "taht",  "−10:00" },
             { "tha",   "+07:00" },
@@ -490,6 +498,34 @@ namespace MedicApi.Services
             { "wst",   "+08:00" },
             { "yakt",  "+09:00" },
             { "yekt",  "+05:00" },
+
+            // ambiguous abbreviations
+            // { "amt",   "−04:00" },
+            // { "amt",   "+04:00" },
+            // { "ast",   "+03:00" },
+            // { "ast",   "−04:00" },
+            // { "bst",   "+06:00" },
+            // { "bst",   "+11:00" },
+            // { "cdt",   "−05:00" },
+            // { "cdt",   "−04:00" },
+            // { "cst",   "−06:00" },
+            // { "cst",   "+08:00" },
+            // { "cst",   "−05:00" },
+            // { "ect",   "−04:00" },
+            // { "ect",   "−05:00" },
+            // { "gst",   "−02:00" },
+            // { "gst",   "+04:00" },
+            // { "ist",   "+05:30" },
+            // { "ist",   "+01:00" },
+            // { "ist",   "+02:00" },
+            // { "lhst",  "+10:30" },
+            // { "lhst",  "+11:00" },
+            // { "mst",   "+08:00" },
+            // { "mst",   "−07:00" },
+            // { "pst",   "−08:00" },
+            // { "pst",   "+08:00" },
+            // { "sst",   "−11:00" },
+            // { "sst",   "+08:00" },
         };
     }
 }

@@ -85,22 +85,20 @@ namespace MedicApi.Controllers
         [SwaggerExampleValue("timezone", "AEST")]
         [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
         public ActionResult GetArticles(string start_date, string end_date,
-                                    string timezone, string key_terms,
-                                    string location = "", int max = 25,
-                                    int offset = 0)
+                                        string timezone, string key_terms,
+                                        string location, string max,
+                                        string offset)
         {
             var service = new ReportFinder();
-            String maxStr = max.ToString();
-            String offsetStr = offset.ToString();
             var errors = service.CheckRawInput(start_date, end_date, timezone,
-                                               key_terms, location, maxStr, offsetStr);
+                                               key_terms, location, max, offset);
             if (errors.NumErrors() > 0)
             {
                 return BadRequest(errors);
             }
 
             var res = service.Retrieve(start_date, end_date, timezone,
-                                       key_terms, location, maxStr, offsetStr);
+                                       key_terms, location, max, offset);
             return Ok(res);
         }
     }
