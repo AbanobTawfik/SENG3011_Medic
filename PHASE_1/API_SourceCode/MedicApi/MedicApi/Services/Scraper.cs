@@ -140,6 +140,7 @@ namespace MedicApi.Services
             var reportToAdd = new Report();
             var diseasesToAddToReport = new List<string>();
             var syndromesToAddToReport = new List<string>();
+            var symptomsToConvertToSyndromes = new List<string>();
             var dateToAddToReport = "";
             foreach (var sentence in ArticleSentences)
             {
@@ -149,6 +150,8 @@ namespace MedicApi.Services
                     reportToAdd.event_date = dateToAddToReport;
                     reportToAdd.diseases = diseasesToAddToReport;
                     reportToAdd.locations = locationsToAdd;
+                    // add new symptoms from syndromes
+                    AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
                     reportToAdd.syndromes = syndromesToAddToReport;
                     // add the report
                     reportList.Add(reportToAdd);
@@ -156,6 +159,7 @@ namespace MedicApi.Services
                     reportToAdd = new Report();
                     diseasesToAddToReport = new List<string>();
                     syndromesToAddToReport = new List<string>();
+                    symptomsToConvertToSyndromes = new List<string>();
                 }
                 if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
                 {
@@ -169,6 +173,7 @@ namespace MedicApi.Services
                 }
                 var allDiseases = _diseaseMapper.AllReferences();
                 var allSyndromes = _syndromeMapper.AllReferences();
+                var allSymptoms = _symptomMapper.AllReferences();
                 foreach(var disease in allDiseases)
                 {
                     var diseaseToAdd = _diseaseMapper.GetCommonKeyName(disease);
@@ -177,15 +182,25 @@ namespace MedicApi.Services
                         diseasesToAddToReport.Add(diseaseToAdd);
                     }
                 }
+                // first initial check for each syndrome
                 foreach (var syndrome in allSyndromes)
                 {
                     var syndromeToAdd = _syndromeMapper.GetCommonKeyName(syndrome);
-                    if (Regex.IsMatch(sentence.ToLower(), " " + syndromeToAdd) && !syndromesToAddToReport.Contains(syndromeToAdd))
+                    if (Regex.IsMatch(sentence.ToLower(), " " + syndromeToAdd + " ") && !syndromesToAddToReport.Contains(syndromeToAdd))
                     {
                         syndromesToAddToReport.Add(syndromeToAdd);
                     }
                 }
+                // add all symptoms
+                foreach(var symptom in allSymptoms)
+                {
+                    if (Regex.IsMatch(sentence.ToLower(), " " + symptom) && !symptomsToConvertToSyndromes.Contains(symptom))
+                    {
+                        symptomsToConvertToSyndromes.Add(symptom);
+                    }
+                }
             }
+            AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
             reportToAdd.event_date = dateToAddToReport;
             reportToAdd.diseases = diseasesToAddToReport;
             reportToAdd.locations = locationsToAdd;
@@ -193,6 +208,18 @@ namespace MedicApi.Services
             // add the report
             reportList.Add(reportToAdd);
             return reportList;
+        }
+
+        public void AddSyndromesFromSymptoms(List<string> syndromes, List<string> symptoms)
+        {
+            var syndromesToAdd = _symptomMapper.HighestRank(symptoms);
+            foreach(var syndrome in syndromesToAdd)
+            {
+                if (!syndromes.Contains(syndrome))
+                {
+                    syndromes.Add(syndrome);
+                }
+            }
         }
 
         public bool HasConjunction(string sentence, List<string> diseases)
