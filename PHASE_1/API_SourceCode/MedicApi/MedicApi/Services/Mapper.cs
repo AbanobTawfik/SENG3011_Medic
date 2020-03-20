@@ -60,6 +60,21 @@ namespace MedicApi.Services
             return allReferences;
         }
 
+        public List<string> GetKeys()
+        {
+            var allKeys = new List<string>();
+            foreach(var key in map.Keys)
+            {
+                allKeys.Add(key);
+            }
+            return allKeys;
+        }
+
+        public List<string> GetValueFromKey(string key)
+        {
+            return map[key];
+        }
+
         public void AddKey(string key)
         {
             if (!map.ContainsKey(key))

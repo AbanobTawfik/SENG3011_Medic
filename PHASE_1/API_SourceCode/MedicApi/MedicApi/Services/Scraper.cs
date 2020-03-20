@@ -17,12 +17,14 @@ namespace MedicApi.Services
     {
         private DiseaseMapper _diseaseMapper;
         private SyndromeMapper _syndromeMapper;
+        private SymptomMapper _symptomMapper;
         private List<string> _conjunctions;
 
-        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, List<string> conjunctions)
+        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, SymptomMapper symptomMapper, List<string> conjunctions)
         {
             this._diseaseMapper = diseaseMapper;
             this._syndromeMapper = syndromeMapper;
+            this._symptomMapper = symptomMapper;
             this._conjunctions = conjunctions;
         }
 
