@@ -122,7 +122,7 @@ namespace MedicApi.Services
             return articleMainText;
         }
 
-        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences)
+        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<string> locationsToAdd)
         {
             // we want to now analyse each sentence for 
             // 1. date range
@@ -132,23 +132,44 @@ namespace MedicApi.Services
             var reportToAdd = new Report();
             var diseasesToAddToReport = new List<string>();
             var syndromesToAddToReport = new List<string>();
-            foreach(var sentence in ArticleSentences)
+            var dateToAddToReport = "";
+            foreach (var sentence in ArticleSentences)
             {
-                if (HasConjunction(sentence, diseasesToAddToReport))
+                if (HasConjunction(sentence, diseasesToAddToReport) && reportList.Count > 1)
                 {
+                    // add the features to the report
+                    reportToAdd.event_date = dateToAddToReport;
+                    reportToAdd.diseases = diseasesToAddToReport;
+                    reportToAdd.locations = locationsToAdd;
+                    // add the report
                     reportList.Add(reportToAdd);
+                    // make a new report object
                     reportToAdd = new Report();
                     diseasesToAddToReport = new List<string>();
                     syndromesToAddToReport = new List<string>();
                 }
-                if(Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
+                if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
                 {
                     var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
                     if (dates.Success)
                     {
                         var start = dates.Groups[1];
                         var end = dates.Groups[2];
-                        reportToAdd.event_date = start + " - " + end;
+                        dateToAddToReport = start + " - " + end;
+                    }
+                }
+                var wordByWordSentence = Regex.Split(sentence, @"\s+");
+                foreach (var word in wordByWordSentence)
+                {
+                    var disease = _diseaseMapper.GetCommonKeyName(word);
+                    var syndrome = _syndromeMapper.GetCommonKeyName(word);
+                    if (disease != "Other" && !diseasesToAddToReport.Contains(disease))
+                    {
+                        diseasesToAddToReport.Add(disease);
+                    }
+                    if(syndrome != "Other" && !syndromesToAddToReport.Contains(syndrome))
+                    {
+                        syndromesToAddToReport.Add(syndrome);
                     }
                 }
             }
@@ -157,7 +178,23 @@ namespace MedicApi.Services
 
         public bool HasConjunction(string sentence, List<string> diseases)
         {
-            return true;
+            var hasConjunction = false;
+            var oldDisease = true;
+            foreach (var conjunction in this._conjunctions)
+            {
+                if (sentence.Contains(conjunction))
+                {
+                    hasConjunction = true;
+                }
+            }
+            foreach (var disease in diseases)
+            {
+                if (sentence.Contains(disease))
+                {
+                    oldDisease = false;
+                }
+            }
+            return hasConjunction && !oldDisease;
         }
 
         public Article ScrapeCDCBasicInformation(string url)
