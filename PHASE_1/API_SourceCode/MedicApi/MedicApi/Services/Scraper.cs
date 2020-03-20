@@ -17,11 +17,13 @@ namespace MedicApi.Services
     {
         private DiseaseMapper _diseaseMapper;
         private SyndromeMapper _syndromeMapper;
+        private List<string> _conjunctions;
 
-        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper)
+        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, List<string> conjunctions)
         {
             this._diseaseMapper = diseaseMapper;
             this._syndromeMapper = syndromeMapper;
+            this._conjunctions = conjunctions;
         }
 
         /*
@@ -113,11 +115,49 @@ namespace MedicApi.Services
             }
             var x = _diseaseMapper.GetCommonKeyName("coronavirus");
             // scrape diseases
-
+            var reports = GenerateReportsFromMainText(sentences);
             // scrape symptoms
 
             // scrape date of incident
             return articleMainText;
+        }
+
+        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences)
+        {
+            // we want to now analyse each sentence for 
+            // 1. date range
+            // 2. syndromes/diseases
+            // 3. conjunction terms (furthermore/however/also etc.)
+            var reportList = new List<Report>();
+            var reportToAdd = new Report();
+            var diseasesToAddToReport = new List<string>();
+            var syndromesToAddToReport = new List<string>();
+            foreach(var sentence in ArticleSentences)
+            {
+                if (HasConjunction(sentence, diseasesToAddToReport))
+                {
+                    reportList.Add(reportToAdd);
+                    reportToAdd = new Report();
+                    diseasesToAddToReport = new List<string>();
+                    syndromesToAddToReport = new List<string>();
+                }
+                if(Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
+                {
+                    var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
+                    if (dates.Success)
+                    {
+                        var start = dates.Groups[1];
+                        var end = dates.Groups[2];
+                        reportToAdd.event_date = start + " - " + end;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public bool HasConjunction(string sentence, List<string> diseases)
+        {
+            return true;
         }
 
         public Article ScrapeCDCBasicInformation(string url)

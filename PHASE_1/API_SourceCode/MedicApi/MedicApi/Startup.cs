@@ -33,9 +33,11 @@ namespace MedicApi
             Configuration.GetSection("Diseases").Bind(diseases);
             var syndromes = new List<string>();
             Configuration.GetSection("Syndromes").Bind(syndromes);
+            var conjunctions = new List<string>();
+            Configuration.GetSection("Conjunctions").Bind(conjunctions);
             var diseaseMapper = new DiseaseMapper(diseases);
             var syndromeMapper = new SyndromeMapper(syndromes);
-            var scraper = new Scraper(diseaseMapper, syndromeMapper);
+            var scraper = new Scraper(diseaseMapper, syndromeMapper, conjunctions);
             services.AddSingleton(diseaseMapper);
             services.AddSingleton(syndromeMapper);
             services.AddSingleton(scraper);
