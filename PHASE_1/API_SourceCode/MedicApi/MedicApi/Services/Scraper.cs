@@ -92,6 +92,7 @@ namespace MedicApi.Services
                 var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
                 articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
                 var cleanText = rgx.Replace(uncleanText, " ");
+                cleanText = Regex.Replace(cleanText, @"E\. coli", "ecolidisease");
                 string[] sectionSentences = Regex.Split(cleanText, @"(?<=[\.!\?])\s+");
                 foreach (var sentence in sectionSentences)
                 {
@@ -99,7 +100,7 @@ namespace MedicApi.Services
                 }
             }
             // scrape locations
-            var locations = new List<string>();
+            var locations = new List<Place>();
             var locationWebClient = new HtmlWeb();
             var locationWebHtml = locationWebClient.Load(locationUrl);
             var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[@class = 'table table-bordered table-striped']")
@@ -110,7 +111,12 @@ namespace MedicApi.Services
                 var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
                 if (!locationString.ToLower().Equals("total"))
                 {
-                    locations.Add(locationString);
+                    var place = new Place()
+                    {
+                        country = locationString,
+                        location = locationString
+                    };
+                    locations.Add(place);
                 }
             }
             var x = _diseaseMapper.GetCommonKeyName("coronavirus");
@@ -122,7 +128,7 @@ namespace MedicApi.Services
             return articleMainText;
         }
 
-        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<string> locationsToAdd)
+        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<Place> locationsToAdd)
         {
             // we want to now analyse each sentence for 
             // 1. date range
@@ -141,6 +147,7 @@ namespace MedicApi.Services
                     reportToAdd.event_date = dateToAddToReport;
                     reportToAdd.diseases = diseasesToAddToReport;
                     reportToAdd.locations = locationsToAdd;
+                    reportToAdd.syndromes = syndromesToAddToReport;
                     // add the report
                     reportList.Add(reportToAdd);
                     // make a new report object
@@ -158,22 +165,32 @@ namespace MedicApi.Services
                         dateToAddToReport = start + " - " + end;
                     }
                 }
-                var wordByWordSentence = Regex.Split(sentence, @"\s+");
-                foreach (var word in wordByWordSentence)
+                var allDiseases = _diseaseMapper.AllReferences();
+                var allSyndromes = _syndromeMapper.AllReferences();
+                foreach(var disease in allDiseases)
                 {
-                    var disease = _diseaseMapper.GetCommonKeyName(word);
-                    var syndrome = _syndromeMapper.GetCommonKeyName(word);
-                    if (disease != "Other" && !diseasesToAddToReport.Contains(disease))
+                    var diseaseToAdd = _diseaseMapper.GetCommonKeyName(disease);
+                    if (Regex.IsMatch(sentence.ToLower(), " " + disease + " ") && !diseasesToAddToReport.Contains(diseaseToAdd))
                     {
-                        diseasesToAddToReport.Add(disease);
+                        diseasesToAddToReport.Add(diseaseToAdd);
                     }
-                    if(syndrome != "Other" && !syndromesToAddToReport.Contains(syndrome))
+                }
+                foreach (var syndrome in allSyndromes)
+                {
+                    var syndromeToAdd = _syndromeMapper.GetCommonKeyName(syndrome);
+                    if (Regex.IsMatch(sentence.ToLower(), " " + syndromeToAdd) && !syndromesToAddToReport.Contains(syndromeToAdd))
                     {
-                        syndromesToAddToReport.Add(syndrome);
+                        syndromesToAddToReport.Add(syndromeToAdd);
                     }
                 }
             }
-            return null;
+            reportToAdd.event_date = dateToAddToReport;
+            reportToAdd.diseases = diseasesToAddToReport;
+            reportToAdd.locations = locationsToAdd;
+            reportToAdd.syndromes = syndromesToAddToReport;
+            // add the report
+            reportList.Add(reportToAdd);
+            return reportList;
         }
 
         public bool HasConjunction(string sentence, List<string> diseases)
@@ -187,9 +204,11 @@ namespace MedicApi.Services
                     hasConjunction = true;
                 }
             }
-            foreach (var disease in diseases)
+            var allDiseases = _diseaseMapper.AllReferences();
+            foreach (var disease in allDiseases)
             {
-                if (sentence.Contains(disease))
+                var diseaseToAdd = _diseaseMapper.GetCommonKeyName(disease);
+                if (Regex.IsMatch(sentence.ToLower(), " " + disease + " ") && !diseases.Contains(diseaseToAdd))
                 {
                     oldDisease = false;
                 }

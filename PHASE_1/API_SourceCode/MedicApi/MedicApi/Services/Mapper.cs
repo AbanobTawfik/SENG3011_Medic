@@ -49,6 +49,17 @@ namespace MedicApi.Services
             }
         }
 
+        public List<string> AllReferences()
+        {
+            var allReferences = new List<string>();
+            foreach(var key in map.Keys)
+            {
+                allReferences.Add(key);
+                allReferences.AddRange(map[key]);
+            }
+            return allReferences;
+        }
+
         public void AddKey(string key)
         {
             if (!map.ContainsKey(key))

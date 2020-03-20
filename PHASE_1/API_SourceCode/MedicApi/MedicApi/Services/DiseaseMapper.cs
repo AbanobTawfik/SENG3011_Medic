@@ -32,6 +32,7 @@ namespace MedicApi.Services
             base.AddReference("ehec (e.coli)", "ehec");
             base.AddReference("ehec (e.coli)", "e. coli");
             base.AddReference("ehec (e.coli)", "escherichia coli");
+            base.AddReference("ehec (e.coli)", "ecolidisease");
             base.AddReference("enterovirus 71 infection", "enterovirus 71"); // <-- the virus
             base.AddReference("enterovirus 71 infection", "enterovirus a71"); // <-- the virus
             base.AddReference("enterovirus 71 infection", "ev71"); // <-- the virus

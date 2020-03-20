@@ -22,6 +22,7 @@ namespace MedicApi.Services
             base.AddReference("Acute gastroenteritis", "diarrhea");
             base.AddReference("Acute gastroenteritis", "cramps");
             base.AddReference("Acute gastroenteritis", "vomit");
+            base.AddReference("Acute gastroenteritis", "vomiting");
 
             // Acute respiratory syndrome
             base.AddReference("Acute respiratory syndrome", "shortness of breath");
