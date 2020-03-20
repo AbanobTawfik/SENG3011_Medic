@@ -115,7 +115,7 @@ namespace MedicApi.Services
             }
             var x = _diseaseMapper.GetCommonKeyName("coronavirus");
             // scrape diseases
-            var reports = GenerateReportsFromMainText(sentences);
+            var reports = GenerateReportsFromMainText(sentences, locations);
             // scrape symptoms
 
             // scrape date of incident
