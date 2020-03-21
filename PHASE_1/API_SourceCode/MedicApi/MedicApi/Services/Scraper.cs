@@ -32,13 +32,13 @@ namespace MedicApi.Services
          * Returns a list of Articles from a given RSS feed url.
          * Currently returns a string for debugging.
          */
-        public string ScrapeOutbreaksRSS(string url)
+        public List<Article> ScrapeOutbreaksRSS(string url)
         {
             var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
-            var ret = "Scraping '" + url + "':\n\n";
+            var ret = new List<Article>();
             var webClient = new HtmlWeb();
             var jsonClient = new WebClient();
             foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
@@ -47,8 +47,6 @@ namespace MedicApi.Services
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
-                ret += "'" + item.Title.Text + "'\n  '" + sourceUrl.ToString() + "'\n  '" + item.PublishDate + "'\n";
-
                 if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
                 {
                     // ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
@@ -56,45 +54,31 @@ namespace MedicApi.Services
                 }
                 else
                 {
-                    ret += "  " + ScrapeOutbreakArticle(item, contentHtml) + "\n";
-                    ret += "MAIN TEXT\n";
                     var locationPageUrl = new Uri(Regex.Replace(sourceUrl.ToString(), @"/index.html*$", "/map.html"));
-                    ret += ScrapeCDCOutbreak(locationPageUrl, contentHtml);
+                    ret.Add(ScrapeCDCOutbreak(item, contentHtml));
                 }
-                ret += "========================================================================\n";
             }
             jsonClient.Dispose();
             return ret;
         }
 
-        public StoredArticle ScrapeOutbreakArticle(SyndicationItem item, HtmlDocument page)
+        public Article ScrapeCDCOutbreak(SyndicationItem item, HtmlDocument webPageHtml)
         {
-            var article = new StoredArticle
-            {
-                url = item.Links[0].Uri.ToString(),
-                headline = item.Title.Text,
-                main_text = "WIP",
-                date_of_publication_str = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss")
-            };
-            return article;
-            // use page.DocumentNode to scrape article ...
-        }
-
-
-        public string ScrapeCDCOutbreak(Uri locationUrl, HtmlDocument webPageHtml)
-        {
-            // scrape main text
-            var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
+            var sourceUrl = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml);
             var sentences = SentencizeMainText(articleMainText);
-            // scrape locations
+            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
             var locations = GetLocationsFromMap(locationUrl);
-            // scrape diseases
             var reports = GenerateReportsFromMainText(sentences, locations);
-            // scrape symptoms
+            return new Article()
+            {
+                url = sourceUrl,
+                headline = item.Title.Text,
+                main_text = articleMainText,
+                date_of_publication = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                reports = reports
 
-            // scrape date of incident
-            return articleMainText;
+            };
         }
 
         public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<Place> locationsToAdd)
