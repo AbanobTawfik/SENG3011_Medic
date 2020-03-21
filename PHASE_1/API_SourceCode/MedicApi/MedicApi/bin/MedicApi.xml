@@ -17,34 +17,35 @@
             Example Query:<br/>
             Sample request:
             
-                /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+            /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
             
-                Return:
-                [
-                   {
-                      "url":"url1",
-                      "reports":[
-                         {
-                            "diseases":[
-                               "ebola haemorrhagic fever"
-                            ],
-                            "syndromes":[
-                               "Haemorrhagic fever"
-                            ],
-                            "event_date":"2019-01-01 00:00:00",
-                            "locations":[
-                               {
-                                  "country":"Uganda",
-                                  "location":"Kampala"
-                               }
-                            ]
-                         }
-                      ],
-                      "headline":"Headline 1",
-                      "main_text":"This is the main text for article 1.",
-                      "date_of_publication":"2019-01-02 xx:xx:xx"
-                   }
-                ]
+            Return:
+            [
+               {
+                  "url":"url1",
+                  "reports":[
+                     {
+                        "diseases":[
+                           "ebola haemorrhagic fever"
+                        ],
+                        "syndromes":[
+                           "Haemorrhagic fever"
+                        ],
+                        "event_date":"2019-01-01 00:00:00",
+                        "locations":[
+                           {
+                              "country":"Uganda",
+                              "location":"Kampala"
+                           }
+                        ]
+                     }
+                  ],
+                  "headline":"Headline 1",
+                  "main_text":"This is the main text for article 1.",
+                  "date_of_publication":"2019-01-02 xx:xx:xx"
+               }
+            ]
+            
             
             </remarks>
             

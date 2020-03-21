@@ -97,7 +97,7 @@ namespace MedicApi.Services
             foreach (var sentence in ArticleSentences)
             {
                 // if there is a conjunction and a new disease, we want to make a new report for it and reset our running paramters
-                if (HasConjunction(sentence, diseasesToAddToReport) && reportList.Count > 1)
+                if (HasConjunction(sentence, diseasesToAddToReport))
                 {
                     reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
                     ResetLists(diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes);
