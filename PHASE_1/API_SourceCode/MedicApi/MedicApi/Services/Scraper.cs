@@ -83,88 +83,87 @@ namespace MedicApi.Services
 
         public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<Place> locationsToAdd)
         {
-            // we want to now analyse each sentence for 
-            // 1. date range
-            // 2. syndromes/diseases
-            // 3. conjunction terms (furthermore/however/also etc.)
+
             var reportList = new List<Report>();
-            var reportToAdd = new Report();
             var diseasesToAddToReport = new List<string>();
             var syndromesToAddToReport = new List<string>();
             var symptomsToConvertToSyndromes = new List<string>();
             var dateToAddToReport = "";
             foreach (var sentence in ArticleSentences)
             {
+                // if there is a conjunction and a new disease, we want to make a new report for it and reset our running paramters
                 if (HasConjunction(sentence, diseasesToAddToReport) && reportList.Count > 1)
                 {
-                    // add the features to the report
-                    reportToAdd.event_date = dateToAddToReport;
-                    reportToAdd.diseases = diseasesToAddToReport;
-                    reportToAdd.locations = locationsToAdd;
-                    // add new symptoms from syndromes
-                    AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
-                    reportToAdd.syndromes = syndromesToAddToReport;
-                    // add the report
-                    reportList.Add(reportToAdd);
-                    // make a new report object
-                    reportToAdd = new Report();
-                    diseasesToAddToReport = new List<string>();
-                    syndromesToAddToReport = new List<string>();
-                    symptomsToConvertToSyndromes = new List<string>();
+                    reportList.Add(CreateReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
+                    ResetLists(diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes);
                 }
+                // if we get a date range phrase, extract date
                 if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
                 {
-                    var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
-                    if (dates.Success)
-                    {
-                        var start = dates.Groups[1];
-                        var end = dates.Groups[2];
-                        dateToAddToReport = start + " - " + end;
-                    }
+                    dateToAddToReport = GetDateRangeFromText(sentence);
                 }
-                var allDiseases = _diseaseMapper.AllReferences();
-                var allSyndromes = _syndromeMapper.AllReferences();
-                var allSymptoms = _symptomMapper.AllReferences();
-                foreach(var disease in allDiseases)
-                {
-                    var diseaseToAdd = _diseaseMapper.GetCommonKeyName(disease);
-                    if (Regex.IsMatch(sentence.ToLower(), " " + disease + " ") && !diseasesToAddToReport.Contains(diseaseToAdd))
-                    {
-                        diseasesToAddToReport.Add(diseaseToAdd);
-                    }
-                }
-                // first initial check for each syndrome
-                foreach (var syndrome in allSyndromes)
-                {
-                    var syndromeToAdd = _syndromeMapper.GetCommonKeyName(syndrome);
-                    if (Regex.IsMatch(sentence.ToLower(), " " + syndromeToAdd + " ") && !syndromesToAddToReport.Contains(syndromeToAdd))
-                    {
-                        syndromesToAddToReport.Add(syndromeToAdd);
-                    }
-                }
+                // extract the diseases from the sentence
+                AnalyseSentenceForKeyWords(sentence, _diseaseMapper, diseasesToAddToReport, false);
+                AnalyseSentenceForKeyWords(sentence, _symptomMapper, syndromesToAddToReport, false);
+                AnalyseSentenceForKeyWords(sentence, _syndromeMapper, symptomsToConvertToSyndromes, true);
                 // add all symptoms
-                foreach(var symptom in allSymptoms)
+
+            }
+            // add the report
+            reportList.Add(CreateReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
+            return reportList;
+        }
+
+        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool isSymptom)
+        {
+            var keyWordList = mapper.AllReferences();
+            if (!isSymptom)
+            {
+                foreach (var keyWord in keyWordList)
                 {
-                    if (Regex.IsMatch(sentence.ToLower(), " " + symptom) && !symptomsToConvertToSyndromes.Contains(symptom))
+                    var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
+                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") && !list.Contains(keyWordToAdd))
                     {
-                        symptomsToConvertToSyndromes.Add(symptom);
+                        list.Add(keyWordToAdd);
                     }
                 }
             }
-            AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
-            reportToAdd.event_date = dateToAddToReport;
-            reportToAdd.diseases = diseasesToAddToReport;
-            reportToAdd.locations = locationsToAdd;
-            reportToAdd.syndromes = syndromesToAddToReport;
-            // add the report
-            reportList.Add(reportToAdd);
-            return reportList;
+            else
+            {
+                foreach (var keyWord in keyWordList)
+                {
+                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord) && !list.Contains(keyWord))
+                    {
+                        list.Add(keyWord);
+                    }
+                }
+            }
+        }
+
+        public string GetDateRangeFromText(string sentence)
+        {
+            var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
+            if (dates.Success)
+            {
+                var start = dates.Groups[1];
+                var end = dates.Groups[2];
+                return start + " - " + end;
+            }
+            return "";
+
+        }
+
+        public void ResetLists(List<string> diseasesToAddToReport, List<string> syndromesToAddToReport, List<string> symptomsToConvertToSyndromes)
+        {
+            diseasesToAddToReport = new List<string>();
+            syndromesToAddToReport = new List<string>();
+            symptomsToConvertToSyndromes = new List<string>();
         }
 
         public void AddSyndromesFromSymptoms(List<string> syndromes, List<string> symptoms)
         {
             var syndromesToAdd = _symptomMapper.HighestRank(symptoms);
-            foreach(var syndrome in syndromesToAdd)
+            foreach (var syndrome in syndromesToAdd)
             {
                 if (!syndromes.Contains(syndrome))
                 {
@@ -194,6 +193,18 @@ namespace MedicApi.Services
                 }
             }
             return hasConjunction && !oldDisease;
+        }
+
+        public Report CreateReport(string dateToAddToReport, List<string> diseasesToAddToReport, List<string> syndromesToAddToReport, List<string> symptomsToConvertToSyndromes, List<Place> locationsToAdd)
+        {
+            AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
+            return new Report
+            {
+                event_date = dateToAddToReport,
+                diseases = diseasesToAddToReport,
+                locations = locationsToAdd,
+                syndromes = syndromesToAddToReport
+            };
         }
 
         public List<Place> GetLocationsFromMap(Uri locationUrl)
