@@ -9,7 +9,7 @@ namespace MedicApi.Services
     {
         public KeyWordsMapper(List<string> keys) : base(keys)
         {
-            base.AddKey("MapperKeyWords")
+            base.AddKey("MapperKeyWords");
         }
 
         public void AddKeysFromOtherMappers(List<Mapper> mappers)

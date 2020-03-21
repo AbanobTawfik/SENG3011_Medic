@@ -71,6 +71,7 @@ namespace MedicApi.Services
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
             var locations = GetLocationsFromMap(locationUrl);
             var reports = GenerateReportsFromMainText(sentences, locations);
+            var keywords = GetKeywordsFromMainText(sentences);
             return new Article()
             {
                 url = sourceUrl,
@@ -115,15 +116,25 @@ namespace MedicApi.Services
             return reportList;
         }
 
-        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool isSymptom)
+        public List<string> GetKeywordsFromMainText(List<string> sentences)
+        {
+            var keywords = new List<string>();
+            foreach(var sentence in sentences)
+            {
+                AnalyseSentenceForKeyWords(sentence, _keywordsMapper, keywords, true);
+            }
+            return keywords;
+        }
+
+        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool storeOriginal)
         {
             var keyWordList = mapper.AllReferences();
-            if (!isSymptom)
+            if (!storeOriginal)
             {
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord + @"\.")) && !list.Contains(keyWordToAdd))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWordToAdd);
                     }
@@ -133,7 +144,7 @@ namespace MedicApi.Services
             {
                 foreach (var keyWord in keyWordList)
                 {
-                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord + @"\.")) && !list.Contains(keyWord))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWord);
                     }
