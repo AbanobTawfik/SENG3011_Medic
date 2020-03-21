@@ -34,13 +34,13 @@ namespace MedicApi.Services
          * Returns a list of Articles from a given RSS feed url.
          * Currently returns a string for debugging.
          */
-        public List<Article> ScrapeOutbreaksRSS(string url)
+        public List<StoredArticle> ScrapeOutbreaksRSS(string url)
         {
             var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
-            var ret = new List<Article>();
+            var ret = new List<StoredArticle>();
             var webClient = new HtmlWeb();
             var jsonClient = new WebClient();
             foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
@@ -63,30 +63,33 @@ namespace MedicApi.Services
             return ret;
         }
 
-        public Article ScrapeCDCOutbreak(SyndicationItem item, HtmlDocument webPageHtml)
+        public StoredArticle ScrapeCDCOutbreak(SyndicationItem item, HtmlDocument webPageHtml)
         {
-            var sourceUrl = item.Links[0].Uri.ToString();
+            var sourceUrl       = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml);
-            var sentences = SentencizeMainText(articleMainText);
-            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
-            var locations = GetLocationsFromMap(locationUrl);
-            var reports = GenerateReportsFromMainText(sentences, locations);
-            var keywords = GetKeywordsFromMainText(sentences);
-            return new Article()
+            var sentences       = SentencizeMainText(articleMainText);
+            var locationUrl     = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
+            var locations       = GetLocationsFromMap(locationUrl);
+            var reports         = GenerateReportsFromMainText(sentences, locations);
+            var keywords        = GetKeywordsFromMainText(sentences);
+
+            return new StoredArticle()
             {
                 url = sourceUrl,
-                headline = item.Title.Text,
-                main_text = articleMainText,
-                date_of_publication = item.PublishDate.ToString("yyyy-MM-ddTHH:mm:ss"),
-                reports = reports
-
+                date_of_publication_start = item.PublishDate.UtcDateTime,
+                date_of_publication_end   = item.PublishDate.UtcDateTime,
+                date_of_publication_str   = item.PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                headline                  = item.Title.Text,
+                main_text                 = articleMainText,
+                keywords                  = keywords,
+                reports                   = reports,
             };
         }
 
-        public List<Report> GenerateReportsFromMainText(List<String> ArticleSentences, List<Place> locationsToAdd)
+        public List<StoredReport> GenerateReportsFromMainText(List<String> ArticleSentences, List<StoredPlace> locationsToAdd)
         {
 
-            var reportList = new List<Report>();
+            var reportList = new List<StoredReport>();
             var diseasesToAddToReport = new List<string>();
             var syndromesToAddToReport = new List<string>();
             var symptomsToConvertToSyndromes = new List<string>();
@@ -96,7 +99,7 @@ namespace MedicApi.Services
                 // if there is a conjunction and a new disease, we want to make a new report for it and reset our running paramters
                 if (HasConjunction(sentence, diseasesToAddToReport) && reportList.Count > 1)
                 {
-                    reportList.Add(CreateReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
+                    reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
                     ResetLists(diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes);
                 }
                 // if we get a date range phrase, extract date
@@ -112,7 +115,7 @@ namespace MedicApi.Services
 
             }
             // add the report
-            reportList.Add(CreateReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
+            reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
             return reportList;
         }
 
@@ -158,11 +161,10 @@ namespace MedicApi.Services
             if (dates.Success)
             {
                 var start = dates.Groups[1];
-                var end = dates.Groups[2];
+                var end   = dates.Groups[2];
                 return start + " - " + end;
             }
             return "";
-
         }
 
         public void ResetLists(List<string> diseasesToAddToReport, List<string> syndromesToAddToReport, List<string> symptomsToConvertToSyndromes)
@@ -207,21 +209,30 @@ namespace MedicApi.Services
             return hasConjunction && !oldDisease;
         }
 
-        public Report CreateReport(string dateToAddToReport, List<string> diseasesToAddToReport, List<string> syndromesToAddToReport, List<string> symptomsToConvertToSyndromes, List<Place> locationsToAdd)
+        public StoredReport CreateStoredReport(string dateToAddToReport,
+                                               List<string> diseasesToAddToReport,
+                                               List<string> syndromesToAddToReport,
+                                               List<string> symptomsToConvertToSyndromes,
+                                               List<StoredPlace> locationsToAdd)
         {
+            var dateStr = DateParser.ParseDateStr(dateToAddToReport);
+            var dateRange = DateUtils.DateStrToDateRange(dateStr);
+
             AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
-            return new Report
+            return new StoredReport
             {
-                event_date = dateToAddToReport,
-                diseases = diseasesToAddToReport,
-                locations = locationsToAdd,
-                syndromes = syndromesToAddToReport
+                diseases         = diseasesToAddToReport,
+                syndromes        = syndromesToAddToReport,
+                event_date_start = dateRange.Item1,
+                event_date_end   = dateRange.Item2,
+                event_date_str   = dateToAddToReport,
+                locations        = locationsToAdd,
             };
         }
 
-        public List<Place> GetLocationsFromMap(Uri locationUrl)
+        public List<StoredPlace> GetLocationsFromMap(Uri locationUrl)
         {
-            var locations = new List<Place>();
+            var locations = new List<StoredPlace>();
             var locationWebClient = new HtmlWeb();
             var locationWebHtml = locationWebClient.Load(locationUrl);
             var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[@class = 'table table-bordered table-striped']")
@@ -232,7 +243,7 @@ namespace MedicApi.Services
                 var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
                 if (!locationString.ToLower().Equals("total"))
                 {
-                    var place = new Place()
+                    var place = new StoredPlace()
                     {
                         country = locationString,
                         location = locationString

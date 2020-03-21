@@ -7,7 +7,7 @@ namespace MedicApi.Services
 {
     public static class DateUtils
     {
-        public static Tuple<DateTime, DateTime> DateStrToRange(string str)
+        public static Tuple<DateTime, DateTime> DateStrToDateRange(string str)
         {
             Regex reExact = new Regex(@"^(?<y>\d{4})-(?<M>\d\d|xx)-(?<d>\d\d|xx) (?<H>\d\d|xx):(?<m>\d\d|xx):(?<s>\d\d|xx)$");
             Regex reRange = new Regex(@"^(?<y1>\d{4})-(?<M1>\d\d|xx)-(?<d1>\d\d|xx) (?<H1>\d\d|xx):(?<m1>\d\d|xx):(?<s1>\d\d|xx) +to +(?<y2>\d{4})-(?<M2>\d\d|xx)-(?<d2>\d\d|xx) (?<H2>\d\d|xx):(?<m2>\d\d|xx):(?<s2>\d\d|xx)$");
