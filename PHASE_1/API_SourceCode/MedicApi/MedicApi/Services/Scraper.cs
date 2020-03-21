@@ -49,7 +49,6 @@ namespace MedicApi.Services
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
                 if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
                 {
-                    // ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
                     continue;
                 }
                 else
@@ -122,7 +121,7 @@ namespace MedicApi.Services
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") && !list.Contains(keyWordToAdd))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord + @"\.")) && !list.Contains(keyWordToAdd))
                     {
                         list.Add(keyWordToAdd);
                     }
@@ -132,7 +131,7 @@ namespace MedicApi.Services
             {
                 foreach (var keyWord in keyWordList)
                 {
-                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord) && !list.Contains(keyWord))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord + @"\.")) && !list.Contains(keyWord))
                     {
                         list.Add(keyWord);
                     }
