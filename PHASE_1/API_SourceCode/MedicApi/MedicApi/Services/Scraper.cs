@@ -84,44 +84,11 @@ namespace MedicApi.Services
         public string ScrapeCDCOutbreak(Uri locationUrl, HtmlDocument webPageHtml)
         {
             // scrape main text
-            var sentences = new List<string>();
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
-            var articleMainText = "";
-            foreach (var textSegment in mainTextSegment)
-            {
-                string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
-                Regex rgx = new Regex(pattern);
-                var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
-                articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
-                var cleanText = rgx.Replace(uncleanText, " ");
-                cleanText = Regex.Replace(cleanText, @"E\. coli", "ecolidisease");
-                string[] sectionSentences = Regex.Split(cleanText, @"(?<=[\.!\?])\s+");
-                foreach (var sentence in sectionSentences)
-                {
-                    sentences.Add(sentence);
-                }
-            }
+            var articleMainText = GetMainText(webPageHtml);
+            var sentences = SentencizeMainText(articleMainText);
             // scrape locations
-            var locations = new List<Place>();
-            var locationWebClient = new HtmlWeb();
-            var locationWebHtml = locationWebClient.Load(locationUrl);
-            var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[@class = 'table table-bordered table-striped']")
-                                                            .Nodes().Where(c => c.Name == "tbody").FirstOrDefault().ChildNodes
-                                                            .Where(c => c.Name == "tr");
-            foreach (var location in locationTable)
-            {
-                var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
-                if (!locationString.ToLower().Equals("total"))
-                {
-                    var place = new Place()
-                    {
-                        country = locationString,
-                        location = locationString
-                    };
-                    locations.Add(place);
-                }
-            }
-            var x = _diseaseMapper.GetCommonKeyName("coronavirus");
+            var locations = GetLocationsFromMap(locationUrl);
             // scrape diseases
             var reports = GenerateReportsFromMainText(sentences, locations);
             // scrape symptoms
@@ -245,29 +212,54 @@ namespace MedicApi.Services
             return hasConjunction && !oldDisease;
         }
 
-        public Article ScrapeCDCBasicInformation(string url)
+        public List<Place> GetLocationsFromMap(Uri locationUrl)
         {
-            return null;
+            var locations = new List<Place>();
+            var locationWebClient = new HtmlWeb();
+            var locationWebHtml = locationWebClient.Load(locationUrl);
+            var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[@class = 'table table-bordered table-striped']")
+                                                            .Nodes().Where(c => c.Name == "tbody").FirstOrDefault().ChildNodes
+                                                            .Where(c => c.Name == "tr");
+            foreach (var location in locationTable)
+            {
+                var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
+                if (!locationString.ToLower().Equals("total"))
+                {
+                    var place = new Place()
+                    {
+                        country = locationString,
+                        location = locationString
+                    };
+                    locations.Add(place);
+                }
+            }
+            return locations;
         }
 
-        public Article ScrapeCDCExposure(string url)
+        public string GetMainText(HtmlDocument webPageHtml)
         {
-            return null;
+            var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
+            var articleMainText = "";
+            foreach (var textSegment in mainTextSegment)
+            {
+                string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
+                Regex rgx = new Regex(pattern);
+                var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
+                articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+            }
+            return articleMainText;
         }
 
-        public Article ScrapeCDCTravelNoticeAlert(string url)
+        public List<string> SentencizeMainText(string mainText)
         {
-            return null;
-        }
-
-        public Article ScrapeCDCTravelNoticeWatch(string url)
-        {
-            return null;
-        }
-
-        public Article ScrapeCDCTravelNoticeWarning(string url)
-        {
-            return null;
+            mainText = Regex.Replace(mainText, @"E\. coli", "ecolidisease");
+            var sentences = new List<string>();
+            string[] sectionSentences = Regex.Split(mainText, @"(?<=[\.!\?])\s+");
+            foreach (var sentence in sectionSentences)
+            {
+                sentences.Add(sentence);
+            }
+            return sentences;
         }
     }
 }
