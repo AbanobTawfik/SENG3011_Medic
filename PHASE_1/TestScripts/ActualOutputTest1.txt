@@ -1,0 +1,214 @@
+[
+    {
+        "date_of_publication": "2019-01-02 xx:xx:xx",
+        "headline": "Headline 1",
+        "main_text": "This is the main text for article 1.",
+        "reports": [
+            {
+                "diseases": [
+                    "ebola haemorrhagic fever"
+                ],
+                "event_date": "2019-01-01 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Uganda",
+                        "location": "Kampala"
+                    }
+                ],
+                "syndromes": [
+                    "Haemorrhagic fever"
+                ]
+            }
+        ],
+        "url": "url1"
+    },
+    {
+        "date_of_publication": "2019-02-01 xx:xx:xx",
+        "headline": "Headline 2",
+        "main_text": "This is the main text for article 2.",
+        "reports": [
+            {
+                "diseases": [
+                    "anthrax inhalation"
+                ],
+                "event_date": "2019-01-25 xx:xx:xx to 2019-01-27 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Brazil",
+                        "location": "Rio de Janeiro"
+                    }
+                ],
+                "syndromes": [
+                    "Acute respiratory syndrome"
+                ]
+            }
+        ],
+        "url": "url2"
+    },
+    {
+        "date_of_publication": "2019-03-01 xx:xx:xx",
+        "headline": "Headline 3",
+        "main_text": "This is the main text for article 3.",
+        "reports": [
+            {
+                "diseases": [
+                    "sars",
+                    "COVID-19"
+                ],
+                "event_date": "2019-02-xx xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan"
+                    }
+                ],
+                "syndromes": [
+                    "Acute respiratory syndrome",
+                    "Acute fever and rash"
+                ]
+            }
+        ],
+        "url": "url3"
+    },
+    {
+        "date_of_publication": "2019-04-01 xx:xx:xx",
+        "headline": "Headline 4",
+        "main_text": "This is the main text for article 4.",
+        "reports": [
+            {
+                "diseases": [
+                    "ebola haemorrhagic fever"
+                ],
+                "event_date": "2019-03-20 xx:xx:xx to 2019-03-26 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Democratic Republic of the Congo",
+                        "location": "Kinshasa"
+                    }
+                ],
+                "syndromes": [
+                    "Haemorrhagic fever"
+                ]
+            }
+        ],
+        "url": "url4"
+    },
+    {
+        "date_of_publication": "2019-05-01 xx:xx:xx",
+        "headline": "Headline 5",
+        "main_text": "This is the main text for article 5.",
+        "reports": [
+            {
+                "diseases": [
+                    "COVID-19"
+                ],
+                "event_date": "2019-04-28 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan"
+                    }
+                ],
+                "syndromes": [
+                    "Acute respiratory syndrome",
+                    "Acute fever and rash"
+                ]
+            }
+        ],
+        "url": "url5"
+    },
+    {
+        "date_of_publication": "2019-06-01 xx:xx:xx",
+        "headline": "Headline 6",
+        "main_text": "This is the main text for article 6.",
+        "reports": [
+            {
+                "diseases": [
+                    "anthrax gastrointestinous"
+                ],
+                "event_date": "2019-05-29 xx:xx:xx to 2019-05-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Egypt",
+                        "location": "Cairo"
+                    }
+                ],
+                "syndromes": [
+                    "Acute gastroenteritis"
+                ]
+            }
+        ],
+        "url": "url6"
+    },
+    {
+        "date_of_publication": "2019-07-01 xx:xx:xx",
+        "headline": "Headline 7",
+        "main_text": "This is the main text for article 7.",
+        "reports": [
+            {
+                "diseases": [
+                    "ebola haemorrhagic fever"
+                ],
+                "event_date": "2019-06-27 xx:xx:xx to 2019-06-29 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Democratic Republic of the Congo",
+                        "location": "Lubumbashi"
+                    }
+                ],
+                "syndromes": [
+                    "Haemorrhagic fever"
+                ]
+            }
+        ],
+        "url": "url7"
+    },
+    {
+        "date_of_publication": "2019-02-28 xx:xx:xx",
+        "headline": "Headline 8",
+        "main_text": "This is the main text for article 8.",
+        "reports": [
+            {
+                "diseases": [
+                    "COVID-19"
+                ],
+                "event_date": "2019-02-27 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Italy",
+                        "location": "Rome"
+                    }
+                ],
+                "syndromes": [
+                    "Acute respiratory syndrome",
+                    "Acute fever and rash"
+                ]
+            }
+        ],
+        "url": "url8"
+    },
+    {
+        "date_of_publication": "2019-02-28 xx:xx:xx",
+        "headline": "Headline 9",
+        "main_text": "This is the main text for article 9.",
+        "reports": [
+            {
+                "diseases": [
+                    "COVID-19"
+                ],
+                "event_date": "2019-02-26 xx:xx:xx to 2019-02-27 12:00:00",
+                "locations": [
+                    {
+                        "country": "United States",
+                        "location": "Austin,Texas"
+                    }
+                ],
+                "syndromes": [
+                    "Acute respiratory syndrome",
+                    "Acute fever and rash"
+                ]
+            }
+        ],
+        "url": "url9"
+    }
+]

@@ -18,14 +18,16 @@ namespace MedicApi.Services
         private DiseaseMapper _diseaseMapper;
         private SyndromeMapper _syndromeMapper;
         private SymptomMapper _symptomMapper;
+        private KeyWordsMapper _keywordsMapper;
         private List<string> _conjunctions;
 
-        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, SymptomMapper symptomMapper, List<string> conjunctions)
+        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, SymptomMapper symptomMapper, List<string> conjunctions, KeyWordsMapper keywordsMapper)
         {
             this._diseaseMapper = diseaseMapper;
             this._syndromeMapper = syndromeMapper;
             this._symptomMapper = symptomMapper;
             this._conjunctions = conjunctions;
+            this._keywordsMapper = keywordsMapper;
         }
 
         /*
@@ -49,7 +51,6 @@ namespace MedicApi.Services
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
                 if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
                 {
-                    // ret += "  (skipping Coronavirus page)\n"; // call ScrapeOutbreaks("https://tools.cdc.gov/api/v2/resources/media/403372.rss") instead
                     continue;
                 }
                 else
@@ -70,6 +71,7 @@ namespace MedicApi.Services
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
             var locations = GetLocationsFromMap(locationUrl);
             var reports = GenerateReportsFromMainText(sentences, locations);
+            var keywords = GetKeywordsFromMainText(sentences);
             return new Article()
             {
                 url = sourceUrl,
@@ -114,15 +116,25 @@ namespace MedicApi.Services
             return reportList;
         }
 
-        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool isSymptom)
+        public List<string> GetKeywordsFromMainText(List<string> sentences)
+        {
+            var keywords = new List<string>();
+            foreach(var sentence in sentences)
+            {
+                AnalyseSentenceForKeyWords(sentence, _keywordsMapper, keywords, true);
+            }
+            return keywords;
+        }
+
+        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool storeOriginal)
         {
             var keyWordList = mapper.AllReferences();
-            if (!isSymptom)
+            if (!storeOriginal)
             {
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord + " ") && !list.Contains(keyWordToAdd))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWordToAdd);
                     }
@@ -132,7 +144,7 @@ namespace MedicApi.Services
             {
                 foreach (var keyWord in keyWordList)
                 {
-                    if (Regex.IsMatch(sentence.ToLower(), " " + keyWord) && !list.Contains(keyWord))
+                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWord);
                     }
