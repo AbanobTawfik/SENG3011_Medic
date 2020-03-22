@@ -8,9 +8,9 @@ namespace MedicApi.Services
     public class LocationMapper
     {
         // File paths for location geoname data
-        private const string countryInfo = "countryInfo.txt";
-        private const string admin1Codes = "admin1CodesASCII.txt";
-        private const string worldCities = "world-cities.txt";
+        private const string countryInfo = @"Resources\countryInfo.txt";
+        private const string admin1Codes = @"Resources\admin1CodesASCII.txt";
+        private const string worldCities = @"Resources\world-cities.txt";
 
         private Dictionary<string, int> map; // Map from location to geoname id
         private Dictionary<string, List<string>> alt; // Map from location to alternate locations
@@ -18,14 +18,15 @@ namespace MedicApi.Services
         public LocationMapper(string baseDir)
         {
             LoadLocationMap(baseDir);
+            // var x = ExtractLocations("In Sydney, Wollongong and New Zealand");
         }
 
         /*
-         * Returns a matching GeoNameID list for a given location string.
+         * Returns a list of extracted locations from a given string.
          * Returns 0 if no match was found.
          * Access GeoName data using https://www.geonames.org/<GeoNameID>
          */
-        public List<int> GetGeoNameID(string location)
+        public List<string> ExtractLocations(string location, bool geoID = false)
         {
             var parts = location.Split(',').Select(p => p.Trim());
             // Try basic lookup of the specified location
@@ -34,10 +35,10 @@ namespace MedicApi.Services
             {   // Succeed if no alternate locations with the same name
                 // and there is a perfect match
                 if (alt[full].Count() == 1 || parts.Count() == 1)
-                    return new List<int> { map[full] };
+                    return new List<string> { geoID ? map[full].ToString() : full.Replace(",", ", ") };
             }
             // Enumerate through strings formed by consecutive words
-            var ids = new List<int>();
+            var ids = new List<string>();
             var candidates = new List<string>();
             var words = full.Split(new char[] { ' ', ',' });
             for (int i = 0; i < words.Length; i++) {
@@ -46,7 +47,7 @@ namespace MedicApi.Services
                     test += (test == "" ? "" : " ") + words[j];
                     if (map.ContainsKey(test))
                     {   // 'test' is a potential location
-                        int best = 0, bestScore = 0;
+                        var best = ""; var bestScore = 0;
                         // Find the best match out of the potential locations
                         foreach (var alternative in alt[test]) {
                             var altWords = alternative.Split(new char[] { ' ', ',' });
@@ -60,7 +61,7 @@ namespace MedicApi.Services
                             }
                             if (score > bestScore)
                             {
-                                best = map[alternative];
+                                best = geoID ? map[alternative].ToString() : alternative.Replace(",", ", ");
                                 bestScore = score;
                                 j = k - 1;
                             }
