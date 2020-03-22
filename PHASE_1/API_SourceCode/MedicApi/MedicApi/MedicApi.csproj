@@ -14,6 +14,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\admin1CodesASCII.txt" />
+    <None Remove="Resources\countryInfo.txt" />
+    <None Remove="Resources\world-cities.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\admin1CodesASCII.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\countryInfo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\world-cities.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.22" />
     <PackageReference Include="Microsoft.AspNetCore.App">
       <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
