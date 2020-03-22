@@ -105,7 +105,7 @@ namespace MedicApi.Controllers
         [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
         [SwaggerExampleValue("timezone", "AEST")]
         [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
-        [ProducesResponseType(typeof(Article), 200)]
+        [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(500)]
         [HttpGet]
@@ -117,7 +117,9 @@ namespace MedicApi.Controllers
                                         [FromQuery]string max,
                                         [FromQuery]string offset)
         {
-            var service = new ReportFinder();
+            DateTime accessed_time = DateTime.Now;
+
+            var service = new ArticleRetriever();
             var errors = service.CheckRawInput(start_date, end_date, timezone,
                                                key_terms, location, max, offset);
             if (errors.NumErrors() > 0)
@@ -125,8 +127,10 @@ namespace MedicApi.Controllers
                 return BadRequest(errors);
             }
 
-            var res = service.Retrieve(start_date, end_date, timezone,
-                                       key_terms, location, max, offset);
+            List<Article> articles = service.Retrieve(start_date, end_date,
+                                                      timezone, key_terms, location,
+                                                      max, offset);
+            var res = new ApiGetArticlesResponse(accessed_time, articles);
             return Ok(res);
         }
     }
