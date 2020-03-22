@@ -23,7 +23,7 @@ namespace MedicApi.Services
 
         /*
          * Returns a list of extracted locations from a given string.
-         * Returns 0 if no match was found.
+         * Set the geoID flag to produce a list of GeoName IDs instead.
          * Access GeoName data using https://www.geonames.org/<GeoNameID>
          */
         public List<string> ExtractLocations(string location, bool geoID = false)

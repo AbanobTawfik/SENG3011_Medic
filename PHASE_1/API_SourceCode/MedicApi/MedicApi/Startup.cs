@@ -50,7 +50,7 @@ namespace MedicApi
                 syndromeMapper
             });
             var locationMapper = new LocationMapper(AppContext.BaseDirectory);
-            var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, keywordsMapper, conjunctions);
+            var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, keywordsMapper, locationMapper, conjunctions);
             services.AddSingleton(diseaseMapper);
             services.AddSingleton(syndromeMapper);
             services.AddSingleton(scraper);

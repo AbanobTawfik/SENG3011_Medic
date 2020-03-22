@@ -19,22 +19,26 @@ namespace MedicApi.Services
     public class Scraper
     {
         static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
-        static readonly bool storeArticles = false; // debugging
+        static readonly bool storeArticles = true; // debugging
+
+        protected string rssUrl = "https://tools.cdc.gov/api/v2/resources/media/285676.rss";
 
         private DiseaseMapper  _diseaseMapper;
         private SyndromeMapper _syndromeMapper;
         private SymptomMapper  _symptomMapper;
         private KeyWordsMapper _keywordsMapper;
+        private LocationMapper _locationMapper;
         private List<string>   _conjunctions;
 
         public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper,
                        SymptomMapper symptomMapper, KeyWordsMapper keywordsMapper,
-                       List<string> conjunctions)
+                       LocationMapper locationMapper, List<string> conjunctions)
         {
             this._diseaseMapper  = diseaseMapper;
             this._syndromeMapper = syndromeMapper;
             this._symptomMapper  = symptomMapper;
             this._keywordsMapper = keywordsMapper;
+            this._locationMapper = locationMapper;
             this._conjunctions   = conjunctions;
         }
 
@@ -44,12 +48,25 @@ namespace MedicApi.Services
             {
                 var db = client.GetDatabase("articles");
                 var collections = db.GetCollection<StoredArticle>("articles");
-                List<StoredArticle> articles = ScrapeOutbreaksRSS(url);
+                List<StoredArticle> articles = ScrapeRSS(url);
 
                 if (storeArticles)
                 {
-                    await collections.InsertManyAsync(articles);
+                    await collections.BulkWriteAsync(articles.Select(a =>
+                        new ReplaceOneModel<StoredArticle>(Builders<StoredArticle>.Filter.And(
+                            Builders<StoredArticle>.Filter.Eq("_id", a.url),
+                            Builders<StoredArticle>.Filter.Lt("date_of_publication_end", a.date_of_publication_end)
+                        ), a) { IsUpsert = true }), new BulkWriteOptions { IsOrdered = false });
                 }
+            }
+            catch (MongoBulkWriteException e)
+            {
+                var bulkWriteErrors = e.WriteErrors;
+                foreach (BulkWriteError bulkWriteError in bulkWriteErrors)
+                {   // Ignore duplicate key exception
+                    if (bulkWriteError.Category != ServerErrorCategory.DuplicateKey)
+                        Console.WriteLine("Exception while writing record: " + bulkWriteError.Message);
+                };
             }
             catch (Exception e)
             {
@@ -61,7 +78,7 @@ namespace MedicApi.Services
          * Returns a list of Articles from a given RSS feed url.
          * Currently returns a string for debugging.
          */
-        public List<StoredArticle> ScrapeOutbreaksRSS(string url)
+        public List<StoredArticle> ScrapeRSS(string url)
         {
             var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
@@ -72,26 +89,20 @@ namespace MedicApi.Services
             var jsonClient = new WebClient();
             foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
             {
+                if (!ValidArticle(item)) continue;
                 var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
-                if (sourceUrl.Equals("https://www.cdc.gov/coronavirus/2019-ncov/index.html"))
-                {
-                    continue;
-                }
-                else
-                {
-                    Console.WriteLine(item.Links[0].Uri);
-                    var locationPageUrl = new Uri(Regex.Replace(sourceUrl.ToString(), @"/index.html*$", "/map.html"));
-                    ret.Add(ScrapeCDCOutbreak(item, contentHtml));
-                }
+                
+                Console.WriteLine(item.Links[0].Uri);
+                ret.Add(ScrapeArticle(item, contentHtml));
             }
             jsonClient.Dispose();
             return ret;
         }
 
-        public StoredArticle ScrapeCDCOutbreak(SyndicationItem item, HtmlDocument webPageHtml)
+        protected virtual StoredArticle ScrapeArticle(SyndicationItem item, HtmlDocument webPageHtml)
         {
             var sourceUrl       = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml);
@@ -315,6 +326,11 @@ namespace MedicApi.Services
                 sentences.Add(sentence);
             }
             return sentences;
+        }
+
+        protected virtual bool ValidArticle(SyndicationItem item)
+        {
+            return item.Links[0].Uri.Query != "?m=285676&c=403352"; // skip coronavirus page
         }
     }
 }
