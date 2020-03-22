@@ -7,13 +7,20 @@ namespace MedicApi.Services
 {
     public class Location
     {
-        public string name { get; set; }
-        public int geoID { get; set; }
+        public string Name { get; set; }
+        public int GeoID { get; set; }
 
         public Location(string name, int geoID)
         {
-            this.name = name;
-            this.geoID = geoID;
+            Name = name;
+            GeoID = geoID;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Location;
+            if (other == null) return false;
+            return (this.Name == other.Name && this.GeoID == other.GeoID);
         }
     }
 
