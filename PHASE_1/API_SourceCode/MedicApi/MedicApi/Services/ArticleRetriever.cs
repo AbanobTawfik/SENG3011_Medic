@@ -12,7 +12,7 @@ using NodaTime.Text;
 
 namespace MedicApi.Services
 {
-    class ArticleRetriever
+    public class ArticleRetriever
     {
         static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
 

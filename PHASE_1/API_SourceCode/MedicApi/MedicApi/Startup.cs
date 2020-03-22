@@ -53,6 +53,7 @@ namespace MedicApi
             var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, keywordsMapper, locationMapper, conjunctions);
             var x = new APILogger();
             services.AddSingleton<APILogger>();
+            services.AddSingleton<ArticleRetriever>();
             services.AddSingleton(diseaseMapper);
             services.AddSingleton(syndromeMapper);
             services.AddSingleton(scraper);
