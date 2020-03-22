@@ -138,8 +138,8 @@ namespace MedicApi.Services
                 // extract the diseases from the sentence
                 // Console.WriteLine(sentence);
                 AnalyseSentenceForKeyWords(sentence, _diseaseMapper, diseasesToAddToReport, false);
-                AnalyseSentenceForKeyWords(sentence, _symptomMapper, syndromesToAddToReport, false);
-                AnalyseSentenceForKeyWords(sentence, _syndromeMapper, symptomsToConvertToSyndromes, true);
+                AnalyseSentenceForKeyWords(sentence, _syndromeMapper, syndromesToAddToReport, false);
+                AnalyseSentenceForKeyWords(sentence, _symptomMapper, symptomsToConvertToSyndromes, true);
                 // add all symptoms
 
             }
@@ -166,7 +166,7 @@ namespace MedicApi.Services
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase))
+                    if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWordToAdd);
                     }
@@ -176,7 +176,7 @@ namespace MedicApi.Services
             {
                 foreach (var keyWord in keyWordList)
                 {
-                    if ((Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + " ") || Regex.IsMatch(sentence.ToLower(), " " + keyWord.ToLower() + @"\.")) && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
+                    if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
                     {
                         list.Add(keyWord);
                     }
