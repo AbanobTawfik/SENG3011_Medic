@@ -23,12 +23,12 @@ namespace MedicApi.Services
 
         protected string rssUrl = "https://tools.cdc.gov/api/v2/resources/media/285676.rss";
 
-        private DiseaseMapper  _diseaseMapper;
-        private SyndromeMapper _syndromeMapper;
-        private SymptomMapper  _symptomMapper;
-        private KeyWordsMapper _keywordsMapper;
-        private LocationMapper _locationMapper;
-        private List<string>   _conjunctions;
+        protected DiseaseMapper  _diseaseMapper;
+        protected SyndromeMapper _syndromeMapper;
+        protected SymptomMapper  _symptomMapper;
+        protected KeyWordsMapper _keywordsMapper;
+        protected LocationMapper _locationMapper;
+        protected List<string>   _conjunctions;
 
         public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper,
                        SymptomMapper symptomMapper, KeyWordsMapper keywordsMapper,
