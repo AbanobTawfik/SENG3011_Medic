@@ -49,7 +49,7 @@ namespace MedicApi
                 symptomMapper,
                 syndromeMapper
             });
-            var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, conjunctions, keywordsMapper);
+            var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, keywordsMapper, conjunctions);
             services.AddSingleton(diseaseMapper);
             services.AddSingleton(syndromeMapper);
             services.AddSingleton(scraper);

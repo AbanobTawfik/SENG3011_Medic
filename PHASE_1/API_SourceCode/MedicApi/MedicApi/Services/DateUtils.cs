@@ -44,8 +44,8 @@ namespace MedicApi.Services
                 int s2 = (s == "xx" ? 59 : int.Parse(s));
 
                 return new Tuple<DateTime, DateTime>(
-                    new DateTime(y1, M1, d1, H1, m1, s1),
-                    new DateTime(y2, M2, d2, H2, m2, s2)
+                    CreateDateTimeGMT(y1, M1, d1, H1, m1, s1),
+                    CreateDateTimeGMT(y2, M2, d2, H2, m2, s2)
                 );
             }
             else if (matchRange.Success)
@@ -77,12 +77,19 @@ namespace MedicApi.Services
                 int s2 = (s2s == "xx" ? 59 : int.Parse(s2s));
 
                 return new Tuple<DateTime, DateTime>(
-                    new DateTime(y1, M1, d1, H1, m1, s1),
-                    new DateTime(y2, M2, d2, H2, m2, s2)
+                    CreateDateTimeGMT(y1, M1, d1, H1, m1, s1),
+                    CreateDateTimeGMT(y2, M2, d2, H2, m2, s2)
                 );
             }
 
             return null;
+        }
+
+        public static DateTime CreateDateTimeGMT(int y, int M, int d,
+                                                 int H, int m, int s)
+        {
+            var date = new DateTimeOffset(y, M, d, H, m, s, new TimeSpan(0, 0, 0));
+            return date.UtcDateTime;
         }
 
         public static int DaysInMonth(int month, int year)

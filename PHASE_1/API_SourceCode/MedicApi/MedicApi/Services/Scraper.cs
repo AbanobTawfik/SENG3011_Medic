@@ -11,23 +11,50 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
+using MongoDB.Bson;
+using MongoDB.Driver;
+
 namespace MedicApi.Services
 {
     public class Scraper
     {
-        private DiseaseMapper _diseaseMapper;
-        private SyndromeMapper _syndromeMapper;
-        private SymptomMapper _symptomMapper;
-        private KeyWordsMapper _keywordsMapper;
-        private List<string> _conjunctions;
+        static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
+        static readonly bool storeArticles = false; // debugging
 
-        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper, SymptomMapper symptomMapper, List<string> conjunctions, KeyWordsMapper keywordsMapper)
+        private DiseaseMapper  _diseaseMapper;
+        private SyndromeMapper _syndromeMapper;
+        private SymptomMapper  _symptomMapper;
+        private KeyWordsMapper _keywordsMapper;
+        private List<string>   _conjunctions;
+
+        public Scraper(DiseaseMapper diseaseMapper, SyndromeMapper syndromeMapper,
+                       SymptomMapper symptomMapper, KeyWordsMapper keywordsMapper,
+                       List<string> conjunctions)
         {
-            this._diseaseMapper = diseaseMapper;
+            this._diseaseMapper  = diseaseMapper;
             this._syndromeMapper = syndromeMapper;
-            this._symptomMapper = symptomMapper;
-            this._conjunctions = conjunctions;
+            this._symptomMapper  = symptomMapper;
             this._keywordsMapper = keywordsMapper;
+            this._conjunctions   = conjunctions;
+        }
+
+        public async void ScrapeAndStoreOutbreaksFromRSS(string url)
+        {
+            try
+            {
+                var db = client.GetDatabase("articles");
+                var collections = db.GetCollection<StoredArticle>("articles");
+                List<StoredArticle> articles = ScrapeOutbreaksRSS(url);
+
+                if (storeArticles)
+                {
+                    await collections.InsertManyAsync(articles);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write("EXCEPTION:\n" + e.Message);
+            }
         }
 
         /*
@@ -55,6 +82,7 @@ namespace MedicApi.Services
                 }
                 else
                 {
+                    Console.WriteLine(item.Links[0].Uri);
                     var locationPageUrl = new Uri(Regex.Replace(sourceUrl.ToString(), @"/index.html*$", "/map.html"));
                     ret.Add(ScrapeCDCOutbreak(item, contentHtml));
                 }
@@ -100,7 +128,7 @@ namespace MedicApi.Services
                 if (HasConjunction(sentence, diseasesToAddToReport))
                 {
                     reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
-                    ResetLists(diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes);
+                    ResetLists(out diseasesToAddToReport, out syndromesToAddToReport, out symptomsToConvertToSyndromes);
                 }
                 // if we get a date range phrase, extract date
                 if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
@@ -108,6 +136,7 @@ namespace MedicApi.Services
                     dateToAddToReport = GetDateRangeFromText(sentence);
                 }
                 // extract the diseases from the sentence
+                // Console.WriteLine(sentence);
                 AnalyseSentenceForKeyWords(sentence, _diseaseMapper, diseasesToAddToReport, false);
                 AnalyseSentenceForKeyWords(sentence, _symptomMapper, syndromesToAddToReport, false);
                 AnalyseSentenceForKeyWords(sentence, _syndromeMapper, symptomsToConvertToSyndromes, true);
@@ -167,7 +196,9 @@ namespace MedicApi.Services
             return "";
         }
 
-        public void ResetLists(List<string> diseasesToAddToReport, List<string> syndromesToAddToReport, List<string> symptomsToConvertToSyndromes)
+        public void ResetLists(out List<string> diseasesToAddToReport,
+                               out List<string> syndromesToAddToReport,
+                               out List<string> symptomsToConvertToSyndromes)
         {
             diseasesToAddToReport = new List<string>();
             syndromesToAddToReport = new List<string>();
@@ -177,6 +208,12 @@ namespace MedicApi.Services
         public void AddSyndromesFromSymptoms(List<string> syndromes, List<string> symptoms)
         {
             var syndromesToAdd = _symptomMapper.HighestRank(symptoms);
+            /*Console.WriteLine("Symptoms in Article:");
+            foreach (var symptom in symptoms)
+            {
+                Console.WriteLine(symptom);
+            }*/
+
             foreach (var syndrome in syndromesToAdd)
             {
                 if (!syndromes.Contains(syndrome))
@@ -225,7 +262,7 @@ namespace MedicApi.Services
                 syndromes        = syndromesToAddToReport,
                 event_date_start = dateRange.Item1,
                 event_date_end   = dateRange.Item2,
-                event_date_str   = dateToAddToReport,
+                event_date_str   = dateStr,
                 locations        = locationsToAdd,
             };
         }

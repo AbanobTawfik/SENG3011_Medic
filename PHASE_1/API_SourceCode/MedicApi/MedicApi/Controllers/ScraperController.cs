@@ -34,8 +34,9 @@ namespace MedicApi.Controllers
         [Route("TestRSS")]
         public ActionResult TestRSS()
         {
-            var x = _scraperService.ScrapeOutbreaksRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
-            return Ok(x);
+            _scraperService.ScrapeAndStoreOutbreaksFromRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
+
+            return Ok("done");
         }
     }
 }
