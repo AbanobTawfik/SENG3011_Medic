@@ -4,11 +4,11 @@ using System.Text;
 
 namespace MedicApi.Models
 {
-    public class ApiError
+    public class ApiGetArticlesError
     {
         public Dictionary<string, string> errors;
 
-        public ApiError()
+        public ApiGetArticlesError()
         {
             errors = new Dictionary<string, string>();
         }
