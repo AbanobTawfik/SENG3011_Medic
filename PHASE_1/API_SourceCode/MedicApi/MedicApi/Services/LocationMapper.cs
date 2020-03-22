@@ -18,7 +18,6 @@ namespace MedicApi.Services
         public LocationMapper(string baseDir)
         {
             LoadLocationMap(baseDir);
-            var x = GetGeoNameID("Sydney");
         }
 
         /*
@@ -146,13 +145,13 @@ namespace MedicApi.Services
         private void LoadMapCities(Dictionary<string, int> map, Dictionary<string, List<string>> alt,
             string citiesPath, string country = null)
         {
-            StreamReader reader = null;
+            StreamReader reader;
             // Binary search to the beginning of the specified country's cities
             if (country != null)
             {
                 var length = new FileInfo(citiesPath).Length;
                 var stream = File.OpenRead(citiesPath);
-                long lo = 0, hi = length, mid = 0;
+                long lo = 0, hi = length, mid;
                 while (lo < hi)
                 {
                     mid = (lo + hi) / 2;
