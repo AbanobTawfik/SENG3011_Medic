@@ -166,7 +166,8 @@ namespace MedicApi.Services
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase))
+                    if ((!Regex.IsMatch(sentence.ToLower(), "the following groups of people")) && 
+                        (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase)))
                     {
                         list.Add(keyWordToAdd);
                     }
