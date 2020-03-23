@@ -7,8 +7,6 @@ using System.Globalization;
 using MedicApi.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NodaTime;
-using NodaTime.Text;
 
 namespace MedicApi.Services
 {
