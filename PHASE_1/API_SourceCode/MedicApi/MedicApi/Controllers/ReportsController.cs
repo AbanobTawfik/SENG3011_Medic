@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using MedicApi.Models;
 using MedicApi.Services;
 using MedicApi.Swashbuckle;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerUI;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.Annotations;
 //using Swashbuckle.AspNetCore.Examples;
 
 namespace MedicApi.Controllers
@@ -18,10 +13,23 @@ namespace MedicApi.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
+        protected APILogger _logger;
+        private ArticleRetriever _db;
+
+        public ReportsController(APILogger logger, ArticleRetriever db)
+        {
+            this._logger = logger;
+            this._db = db;
+        }
         /// <summary>
         ///     Retrieves a list of articles from CDC website that match the given criteria.
         /// </summary>
         /// <remarks>API Usage Information:<br/>
+        /// 
+        /// This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
+        /// Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. <br/>
+        /// The resulting list of articles is then returned to the user in an 200 response. <br/>
+        /// If any of the query parameters are invalid or any of the dates are missing, a 400 Bad Request response will be returned alongside an error message to inform the user of the issue.<br/>
         /// API Returns list of articles with nested info in a JSON format.<br/>
         /// This API will return data to be used by EPIWatch Frontend.<br/>
         /// Only start time and end time is Mandatory.<br/>
@@ -52,7 +60,7 @@ namespace MedicApi.Controllers
         ///                }
         ///             ]
         ///          }
-        ///       ],
+        ///       ], 
         ///       "headline":"Headline 1",
         ///       "main_text":"This is the main text for article 1.",
         ///       "date_of_publication":"2019-01-02 xx:xx:xx"
@@ -63,18 +71,18 @@ namespace MedicApi.Controllers
         /// </remarks>
         /// 
         /// <param name="start_date">
-        ///     Starting time of the period of interest.
+        ///     REQUIRED Starting date & time of the report event dates.
         ///     <example>“yyyy-MM-ddTHH:mm:ss”</example>
         /// </param>
         /// 
         /// <param name="end_date">
-        ///     Ending time of the period of interest.
+        ///     REQUIRED Ending date & time of the report event dates.
         ///     “yyyy-MM-ddTHH:mm:ss”
         /// </param>
         /// 
         /// <param name="timezone">
         ///     The time zone associated with the given start and end dates in CAPS.
-        ///     Example: “AEST”
+        ///     Default: “UTC”
         /// </param>
         /// 
         /// <param name="key_terms">
@@ -99,11 +107,11 @@ namespace MedicApi.Controllers
         /// <response code="400">Invalid Input Parameters</response>
         /// <response code="500">Internal Server Error. Try Again Later</response>
         /// <response code="404">Not Found</response>
-        
+
         [Route("GetArticles")]
         [SwaggerExampleValue("start_date", "2015-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
-        [SwaggerExampleValue("timezone", "AEST")]
+        [SwaggerExampleValue("timezone", "UTC")]
         [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
@@ -117,20 +125,29 @@ namespace MedicApi.Controllers
                                         [FromQuery]string max,
                                         [FromQuery]string offset)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
             DateTime accessed_time = DateTime.Now;
 
-            var service = new ArticleRetriever();
-            var errors = service.CheckRawInput(start_date, end_date, timezone,
+            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, max, offset);
+
+            var errors = _db.CheckRawInput(start_date, end_date, timezone,
                                                key_terms, location, max, offset);
             if (errors.NumErrors() > 0)
             {
+                stopWatch.Stop();
+                var TimeTakenForError = stopWatch.Elapsed.ToString();
+                this._logger.LogErrors(errors, TimeTakenForError);
                 return BadRequest(errors);
             }
 
-            List<Article> articles = service.Retrieve(start_date, end_date,
+            List<Article> articles = _db.Retrieve(start_date, end_date,
                                                       timezone, key_terms, location,
                                                       max, offset);
             var res = new ApiGetArticlesResponse(accessed_time, articles);
+            stopWatch.Stop();
+            var TimeTakenForSuccess = stopWatch.Elapsed.ToString();
+            this._logger.LogSuccess(articles.ToArray(), TimeTakenForSuccess);
             return Ok(res);
         }
     }

@@ -51,6 +51,9 @@ namespace MedicApi
             });
             var locationMapper = new LocationMapper(AppContext.BaseDirectory);
             var scraper = new Scraper(diseaseMapper, syndromeMapper, symptomMapper, keywordsMapper, locationMapper, conjunctions);
+            var x = new APILogger();
+            services.AddSingleton<APILogger>();
+            services.AddSingleton<ArticleRetriever>();
             services.AddSingleton(diseaseMapper);
             services.AddSingleton(syndromeMapper);
             services.AddSingleton(scraper);
@@ -60,7 +63,7 @@ namespace MedicApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Medics CDC Articles API",
-                    Description = "<div align=\"justify\">This API is developed for a new system that automates the extraction of disease outbreak data from the US Department of Health’s Centers for Disease Control and Prevention (CDC) website. <br/> Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. The resulting list of articles is then returned to the user in an 200 response. <br/> If any of the query parameters are invalid or any of the dates are missing, a 400 Bad Request response will be returned alongside an error message to inform the user of the issue.<br/>The API can be accessed at https://seng3011medics-staging.azurewebsites.net/api/reports/TestApi with the various input parameters per definitions below.</div>",
+                    Description = "<div align=\"justify\">This API is developed for a new system that automates the extraction of disease outbreak data from the US Department of Health’s Centers for Disease Control and Prevention (CDC) website. <br/>The API can be accessed at https://seng3011medics-staging.azurewebsites.net/api/reports/TestApi with the various input parameters per definitions below.</div>",
                     Version = "0.01"
                 });
                 c.OperationFilter<AddExampleValues>();
