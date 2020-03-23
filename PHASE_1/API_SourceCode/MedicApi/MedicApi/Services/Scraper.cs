@@ -512,6 +512,7 @@ namespace MedicApi.Services
         {
             return item.Links[0].Uri.Query != "?m=285676&c=403352"; // skip coronavirus page
         }
+
     }
 }
 

@@ -4247,7 +4247,6 @@ Olomouc	Czech Republic	Olomoucký	3069011
 Nový Jičín	Czech Republic	Moravskoslezský	3069305
 Neratovice	Czech Republic	Central Bohemia	3069844
 Náchod	Czech Republic	Královéhradecký	3070122
-Most	Czech Republic	Ústecký	3070291
 Modřany	Czech Republic	Praha	3070420
 Mladá Boleslav	Czech Republic	Central Bohemia	3070544
 Mělník	Czech Republic	Central Bohemia	3070862
@@ -4300,7 +4299,6 @@ Bílina Kyselka	Czech Republic	Ústecký	3079346
 Bílina	Czech Republic	Ústecký	3079348
 Beroun	Czech Republic	Central Bohemia	3079467
 Benešov	Czech Republic	Central Bohemia	3079508
-Černý Most	Czech Republic	Praha	6269470
 Zwickau	Germany	Saxony	2803560
 Zweibrücken	Germany	Rheinland-Pfalz	2803620
 Zulpich	Germany	North Rhine-Westphalia	2803723
@@ -7507,7 +7505,6 @@ Marple	United Kingdom	England	2642999
 Marlow	United Kingdom	England	2643003
 Market Harborough	United Kingdom	England	2643027
 Margate	United Kingdom	England	2643044
-March	United Kingdom	England	2643071
 Mansfield Woodhouse	United Kingdom	England	2643096
 Mansfield	United Kingdom	England	2643097
 Mangotsfield	United Kingdom	England	2643116
@@ -12076,7 +12073,6 @@ Portmore	Jamaica	Saint Catherine	3488981
 Old Harbour	Jamaica	Saint Catherine	3489227
 New Kingston	Jamaica	Saint Andrew	3489297
 Montego Bay	Jamaica	Saint James	3489460
-May Pen	Jamaica	Clarendon	3489523
 Mandeville	Jamaica	Manchester	3489577
 Linstead	Jamaica	Saint Catherine	3489760
 Kingston	Jamaica	Kingston	3489854
@@ -15075,7 +15071,6 @@ Bloemendaal	Netherlands	North Holland	2758804
 Bladel	Netherlands	North Brabant	2758878
 Beverwijk	Netherlands	North Holland	2758998
 Beuningen	Netherlands	Gelderland	2759016
-Best	Netherlands	North Brabant	2759040
 Bergschenhoek	Netherlands	South Holland	2759113
 Bergeijk	Netherlands	North Brabant	2759132
 Bergen op Zoom	Netherlands	North Brabant	2759145
@@ -15113,7 +15108,6 @@ Sandnes	Norway	Rogaland	3140321
 Sandefjord	Norway	Vestfold	3140390
 Porsgrunn	Norway	Telemark	3142657
 Oslo	Norway	Oslo	3143244
-Moss	Norway	Østfold	3145375
 Molde	Norway	Møre og Romsdal	3145580
 Mo i Rana	Norway	Nordland	3145614
 Lillehammer	Norway	Oppland	3147474
