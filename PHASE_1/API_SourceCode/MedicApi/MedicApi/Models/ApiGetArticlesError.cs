@@ -6,10 +6,12 @@ namespace MedicApi.Models
 {
     public class ApiGetArticlesError
     {
-        public Dictionary<string, string> errors;
+        public ApiResponseMetadata meta { get; set; }
+        public Dictionary<string, string> errors { get; set; }
 
-        public ApiGetArticlesError()
+        public ApiGetArticlesError(DateTime accessed_time)
         {
+            meta = new ApiResponseMetadata(accessed_time);
             errors = new Dictionary<string, string>();
         }
 

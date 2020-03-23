@@ -21,6 +21,7 @@ namespace MedicApi.Controllers
             this._logger = logger;
             this._db = db;
         }
+
         /// <summary>
         ///     Retrieves a list of articles from CDC website that match the given criteria.
         /// </summary>
@@ -125,25 +126,28 @@ namespace MedicApi.Controllers
                                         [FromQuery]string max,
                                         [FromQuery]string offset)
         {
+            DateTime accessed_time = DateTime.Now;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            DateTime accessed_time = DateTime.Now;
 
             this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, max, offset);
 
-            var errors = _db.CheckRawInput(start_date, end_date, timezone,
-                                               key_terms, location, max, offset);
-            if (errors.NumErrors() > 0)
+            // check for errors
+            var err = new ApiGetArticlesError(accessed_time);
+            _db.CheckRawInput(err, start_date, end_date, timezone,
+                              key_terms, location, max, offset);
+            if (err.NumErrors() > 0)
             {
                 stopWatch.Stop();
                 var TimeTakenForError = stopWatch.Elapsed.ToString();
-                this._logger.LogErrors(errors, TimeTakenForError);
-                return BadRequest(errors);
+                this._logger.LogErrors(err, TimeTakenForError);
+                return BadRequest(err);
             }
 
+            // retrieve articles
             List<Article> articles = _db.Retrieve(start_date, end_date,
-                                                      timezone, key_terms, location,
-                                                      max, offset);
+                                                  timezone, key_terms, location,
+                                                  max, offset);
             var res = new ApiGetArticlesResponse(accessed_time, articles);
             stopWatch.Stop();
             var TimeTakenForSuccess = stopWatch.Elapsed.ToString();
