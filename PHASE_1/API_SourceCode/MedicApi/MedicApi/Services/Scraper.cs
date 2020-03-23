@@ -278,7 +278,8 @@ namespace MedicApi.Services
         {
             try
             {
-                locationUrl = new Uri("https://www.cdc.gov/listeria/outbreaks/bean-sprouts-11-14/map.html");
+                // test no map
+                // locationUrl = new Uri("https://www.cdc.gov/listeria/outbreaks/bean-sprouts-11-14/map.html");
                 var request = WebRequest.Create(locationUrl) as HttpWebRequest;
                 request.Method = "HEAD";
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -349,12 +350,7 @@ namespace MedicApi.Services
                 var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
                 if (!locationString.ToLower().Equals("total"))
                 {
-                    var place = new StoredPlace()
-                    {
-                        country = locationString,
-                        location = locationString
-                    };
-                    locations.Add(place);
+                    locations.AddRange(_locationMapper.ExtractLocations(locationString));
                 }
             }
             return locations;
@@ -371,9 +367,21 @@ namespace MedicApi.Services
             return locations;
         }
 
-        public void AnalayseTextForLocations(string mainText, List<StoredPlace> locations)
+        public void AnalayseTextForLocations(string sentence, List<StoredPlace> locations)
         {
+            foreach(var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
+            {
+                var locationCheck = match.ToString();
+                locations.AddRange(_locationMapper.ExtractLocations(locationCheck));
+            }
 
+            //foreach (var keyWord in keyWordList)
+            //{
+            //    if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
+            //    {
+            //        list.Add(keyWord);
+            //    }
+            //}
         }
 
         public string GetMainText(HtmlDocument webPageHtml)
