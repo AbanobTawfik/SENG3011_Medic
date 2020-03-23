@@ -4,7 +4,92 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.String,System.String)" -->
+        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Finds articles containing disease reports that match the given criteria.
+            </summary>
+            API Usage Information:<br/>
+            
+            This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
+            Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. <br/>
+            The resulting list of articles is then returned to the user in an 200 response. <br/>
+            If any of the query parameters are invalid or any of the dates are missing, a 400 Bad Request response will be returned alongside an error message to inform the user of the issue.<br/>
+            API Returns list of articles with nested info in a JSON format.<br/>
+            This API will return data to be used by EPIWatch Frontend.<br/>
+            Only start time and end time is Mandatory.<br/>
+            All other fields for query is optional and determines what is returned.<br/>
+            <heading>How it Works!</heading>
+            Example Query:<br/>
+            <remarks>
+            Sample request:
+            
+                GET /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23:59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+            
+            Sample response:
+            
+                [
+                    {
+                        "url":"url1",
+                        "reports":[
+                            {
+                                "diseases":[
+                                    "ebola haemorrhagic fever"
+                                ],
+                                "syndromes":[
+                                    "Haemorrhagic fever"
+                                ],
+                                "event_date":"2019-01-01 00:00:00",
+                                "locations":[
+                                {
+                                    "country":"Uganda",
+                                    "location":"Kampala"
+                                }
+                                ]
+                            }
+                        ], 
+                        "headline":"Headline 1",
+                        "main_text":"This is the main text for article 1.",
+                        "date_of_publication":"2019-01-02 xx:xx:xx"
+                    }
+                ]
+            
+            </remarks>
+            
+            <param name="start_date">
+                The earliest date that a report can be recorded on.
+                <example>Format: “yyyy-MM-ddTHH:mm:ss”</example>
+            </param>
+            
+            <param name="end_date">
+                The latest date that a report can be recorded on.
+                Format: “yyyy-MM-ddTHH:mm:ss”
+            </param>
+            
+            <param name="timezone">
+                The timezone associated with the given start and end dates in CAPS.
+                Default: “UTC”
+            </param>
+            
+            <param name="key_terms">
+                Key terms a report can contain.
+            </param>
+            
+            <param name="location">
+                The location that a report can refer to.
+            </param>
+            
+            <param name="max">
+                A limit on the number of articles returned (maximum: 50).
+            </param>
+            
+            <param name="offset">
+                The number of entries to skip in the list of returned articles.
+            </param>
+            
+            <response code="200">Successful query</response>
+            <response code="400">Invalid input parameters</response>
+            <response code="500">Internal server error</response>
+        </member>
         <member name="T:MedicApi.Swashbuckle.SwaggerExampleValue">
             <summary>
             A custom attribute for setting default parameter values in Swagger.
