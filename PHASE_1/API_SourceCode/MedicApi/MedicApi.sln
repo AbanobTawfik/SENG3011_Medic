@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicApi", "MedicApi\MedicApi.csproj", "{ADE025AB-65B9-4B94-9FD9-4D9DC23F663D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicApi", "MedicApi\MedicApi.csproj", "{ADE025AB-65B9-4B94-9FD9-4D9DC23F663D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicApiTests", "MedicApiTests\MedicApiTests.csproj", "{FCEE15F3-45A1-46B0-8943-84B0ABB93731}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ADE025AB-65B9-4B94-9FD9-4D9DC23F663D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADE025AB-65B9-4B94-9FD9-4D9DC23F663D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADE025AB-65B9-4B94-9FD9-4D9DC23F663D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCEE15F3-45A1-46B0-8943-84B0ABB93731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCEE15F3-45A1-46B0-8943-84B0ABB93731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCEE15F3-45A1-46B0-8943-84B0ABB93731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCEE15F3-45A1-46B0-8943-84B0ABB93731}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
