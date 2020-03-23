@@ -106,7 +106,7 @@ namespace MedicApi.Services
         protected virtual StoredArticle ScrapeArticle(SyndicationItem item, HtmlDocument webPageHtml)
         {
             var sourceUrl = item.Links[0].Uri.ToString();
-            var articleMainText = GetMainText(webPageHtml);
+            var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
             var locations = GetLocations(locationUrl, articleMainText);
@@ -178,7 +178,7 @@ namespace MedicApi.Services
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if (((!Regex.IsMatch(sentence.ToLower(), "the following groups of people") || (!Regex.IsMatch(sentence.ToLower(), "tested negative")))) &&
+                    if (((!Regex.IsMatch(sentence.ToLower(), "the following groups of people") && (!Regex.IsMatch(sentence.ToLower(), "tested negative")) && (!Regex.IsMatch(sentence.ToLower(), "the disease primarily affects")))) &&
                         (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase)))
                     {
                         list.Add(keyWordToAdd);
@@ -322,7 +322,7 @@ namespace MedicApi.Services
                 var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[contains(@class, 'table')]")
                                                 .Nodes().Where(c => c.Name == "tbody").FirstOrDefault().ChildNodes
                                                 .Where(c => c.Name == "tr");
-                var locationText = SentencizeMainText(GetMainText(locationWebHtml));
+                var locationText = SentencizeMainText(GetMainText(locationWebHtml, locationUrl.ToString()));
                 if (locationTable == null)
                 {
                     return GetLocationsFromMapNoTable(locationText);
@@ -337,7 +337,7 @@ namespace MedicApi.Services
                 var locations = new List<StoredPlace>();
                 var locationWebClient = new HtmlWeb();
                 var locationWebHtml = locationWebClient.Load(locationUrl);
-                var locationText = SentencizeMainText(GetMainText(locationWebHtml));
+                var locationText = SentencizeMainText(GetMainText(locationWebHtml, locationUrl.ToString()));
                 return GetLocationsFromMapNoTable(locationText);
             }
         }
@@ -347,10 +347,11 @@ namespace MedicApi.Services
             var locations = new List<StoredPlace>();
             foreach (var location in locationTable)
             {
-                var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
-                if (!locationString.ToLower().Equals("total"))
+                //var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
+                var locationString = location.ChildNodes;
+                foreach (var attribute in locationString)
                 {
-                    locations.AddRange(_locationMapper.ExtractLocations(locationString));
+                    locations.AddRange(_locationMapper.ExtractLocations(attribute.InnerText));
                 }
             }
             return locations;
@@ -369,7 +370,7 @@ namespace MedicApi.Services
 
         public void AnalayseTextForLocations(string sentence, List<StoredPlace> locations)
         {
-            foreach(var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
+            foreach (var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
             {
                 var locationCheck = match.ToString();
                 locations.AddRange(_locationMapper.ExtractLocations(locationCheck));
@@ -384,7 +385,41 @@ namespace MedicApi.Services
             //}
         }
 
-        public string GetMainText(HtmlDocument webPageHtml)
+        public string GetMainText(HtmlDocument webPageHtml, string sourceUrl)
+        {
+            try
+            {
+                // test no map
+                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/signs-symptoms.html"));
+
+                var request = WebRequest.Create(symptomsAndSyndromesUrl) as HttpWebRequest;
+                request.Method = "HEAD";
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    int statusCode = (int)response.StatusCode;
+                    if (statusCode == 404)
+                    {
+                        return OnlyExtractMainText(webPageHtml);
+                    }
+                    else
+                    {
+                        var mainText1 = OnlyExtractMainText(webPageHtml);
+                        var symptomsAndSyndromesClient = new HtmlWeb();
+                        var symptomsAndSyndromesWebHtml = symptomsAndSyndromesClient.Load(symptomsAndSyndromesUrl);
+                        var symptomsAndSyndromes = OnlyExtractMainText(symptomsAndSyndromesWebHtml);
+                        return mainText1 + "\n" + symptomsAndSyndromes;
+                    }
+                }
+            }
+            catch
+            {
+                return OnlyExtractMainText(webPageHtml);
+            }
+        }
+
+
+
+        public string OnlyExtractMainText(HtmlDocument webPageHtml)
         {
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
             var articleMainText = "";
@@ -396,6 +431,20 @@ namespace MedicApi.Services
                     Regex rgx = new Regex(pattern);
                     var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
                     articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+                }
+            }
+            else
+            {
+                mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'col-md-12']");
+                if (mainTextSegment != null)
+                {
+                    foreach (var textSegment in mainTextSegment)
+                    {
+                        string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
+                        Regex rgx = new Regex(pattern);
+                        var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
+                        articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+                    }
                 }
             }
             return articleMainText;
