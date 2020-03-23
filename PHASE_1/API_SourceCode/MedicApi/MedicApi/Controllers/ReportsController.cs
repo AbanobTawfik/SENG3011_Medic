@@ -55,7 +55,7 @@ namespace MedicApi.Controllers
         ///                }
         ///             ]
         ///          }
-        ///       ],
+        ///       ], 
         ///       "headline":"Headline 1",
         ///       "main_text":"This is the main text for article 1.",
         ///       "date_of_publication":"2019-01-02 xx:xx:xx"
@@ -66,12 +66,12 @@ namespace MedicApi.Controllers
         /// </remarks>
         /// 
         /// <param name="start_date">
-        ///     Starting time of the period of interest.
+        ///     REQUIRED Starting time of the period of interest.
         ///     <example>“yyyy-MM-ddTHH:mm:ss”</example>
         /// </param>
         /// 
         /// <param name="end_date">
-        ///     Ending time of the period of interest.
+        ///     REQUIRED Ending time of the period of interest.
         ///     “yyyy-MM-ddTHH:mm:ss”
         /// </param>
         /// 
@@ -102,11 +102,11 @@ namespace MedicApi.Controllers
         /// <response code="400">Invalid Input Parameters</response>
         /// <response code="500">Internal Server Error. Try Again Later</response>
         /// <response code="404">Not Found</response>
-        
+
         [Route("GetArticles")]
         [SwaggerExampleValue("start_date", "2015-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
-        [SwaggerExampleValue("timezone", "AEST")]
+        [SwaggerExampleValue("timezone", "UTC")]
         [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
