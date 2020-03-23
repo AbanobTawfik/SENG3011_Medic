@@ -1,0 +1,5 @@
+#!/bin/sh
+
+start_date=2014-01-01T00:00:00
+date_end=2014-12-30T23:59:59
+location=Italy

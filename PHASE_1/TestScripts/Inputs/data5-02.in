@@ -1,0 +1,6 @@
+#!/bin/sh
+# max is greater than the number of articles satisfying the criteria
+
+start_date=2015-01-01T00:00:00
+date_end=2015-01-31T23:59:59
+max=11

@@ -1,0 +1,5 @@
+#!/bin/sh
+# requested date range is later than all events (in that year)
+
+start_date=2010-09-20T00:00:00
+end_date=2010-09-28T23:59:59

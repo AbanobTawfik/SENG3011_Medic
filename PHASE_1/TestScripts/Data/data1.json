@@ -1,0 +1,143 @@
+[
+    {
+        "url": "url1",
+        "date_of_publication_start": "2010-03-05T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-03-05T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-03-05 12:00:00",
+        "headline": "Headline of url1",
+        "main_text": "This is the main text for url1.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-03-01T00:00:00.000+00:00",
+                "event_date_end": "2010-03-04T23:59:59.000+00:00",
+                "event_date_str": "2010-03-01 xx:xx:xx to 2010-03-04 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url2",
+        "date_of_publication_start": "2010-04-05T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-04-05T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-04-05 12:00:00",
+        "headline": "Headline of url2",
+        "main_text": "This is the main text for url2.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-03-20T00:00:00.000+00:00",
+                "event_date_end": "2010-04-03T23:59:59.000+00:00",
+                "event_date_str": "2010-03-20 xx:xx:xx to 2010-04-03 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url3",
+        "date_of_publication_start": "2010-04-06T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-04-06T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-04-06 12:00:00",
+        "headline": "Headline of url3",
+        "main_text": "This is the main text for url3.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-04-02T00:00:00.000+00:00",
+                "event_date_end": "2010-04-05T23:59:59.000+00:00",
+                "event_date_str": "2010-04-02 xx:xx:xx to 2010-04-05 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url4",
+        "date_of_publication_start": "2010-05-01T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-05-01T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-05-01 12:00:00",
+        "headline": "Headline of url4",
+        "main_text": "This is the main text for url4.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-04-22T00:00:00.000+00:00",
+                "event_date_end": "2010-04-27T23:59:59.000+00:00",
+                "event_date_str": "2010-04-22 xx:xx:xx to 2010-04-27 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url5",
+        "date_of_publication_start": "2010-08-03T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-08-03T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-08-03 12:00:00",
+        "headline": "Headline of url5",
+        "main_text": "This is the main text for url5.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-06-01T00:00:00.000+00:00",
+                "event_date_end": "2010-07-31T23:59:59.000+00:00",
+                "event_date_str": "2010-06-xx xx:xx:xx to 2010-07-xx xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url6",
+        "date_of_publication_start": "2010-10-04T12:00:00.000+00:00",
+        "date_of_publication_end": "2010-10-04T12:00:00.000+00:00",
+        "date_of_publication_str": "2010-10-04 12:00:00",
+        "headline": "Headline of url6",
+        "main_text": "This is the main text for url6.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-08-03T00:00:00.000+00:00",
+                "event_date_end": "2010-08-13T23:59:59.000+00:00",
+                "event_date_str": "2010-08-03 xx:xx:xx to 2010-08-13 xx:xx:xx",
+                "locations": []
+            },
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2010-09-07T00:00:00.000+00:00",
+                "event_date_end": "2010-09-19T23:59:59.000+00:00",
+                "event_date_str": "2010-09-07 xx:xx:xx to 2010-09-19 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url7",
+        "date_of_publication_start": "2013-01-23T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-01-23T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-01-23 12:00:00",
+        "headline": "Headline of url7",
+        "main_text": "This is the main text for url7.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2011-01-01T00:00:00.000+00:00",
+                "event_date_end": "2012-12-31T23:59:59.000+00:00",
+                "event_date_str": "2011-xx-xx xx:xx:xx to 2012-xx-xx xx:xx:xx",
+                "locations": []
+            }
+        ]
+    }
+]

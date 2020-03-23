@@ -53,6 +53,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestScripts\Data\" />
+  </ItemGroup>
+
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <ItemGroup>
       <DocFile Include="bin\*\*\*.xml" />

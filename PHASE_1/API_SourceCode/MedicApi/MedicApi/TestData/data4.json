@@ -1,0 +1,257 @@
+[
+    {
+        "url": "url16",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url16",
+        "main_text": "This is the main text for url16.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Italy",
+                        "location": "Rome",
+                        "geonames_id": "12345",
+                        "location_names": [
+                            "Italy",
+                            "Rome"
+                        ]
+                    },
+                    {
+                        "country": "Iran",
+                        "location": "Tehran",
+                        "geonames_id": "23456",
+                        "location_names": [
+                            "Iran",
+                            "Tehran"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url17",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url17",
+        "main_text": "This is the main text for url17.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan, Hubei Province",
+                        "geonames_id": "1791247",
+                        "location_names": [
+                            "China",
+                            "Wuhan",
+                            "Hubei",
+                            "Hubei Province"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url18",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url18",
+        "main_text": "This is the main text for url18.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Australia",
+                        "location": "Sydney, New South Wales",
+                        "geonames_id": "34567",
+                        "location_names": [
+                            "Australia",
+                            "Parramatta",
+                            "New South Wales",
+                            "NSW"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url19",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url19",
+        "main_text": "This is the main text for url19.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Australia",
+                        "location": "Adelaide, South Australia",
+                        "geonames_id": "45678",
+                        "location_names": [
+                            "Australia",
+                            "Adelaide",
+                            "South Australia"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url20",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url20",
+        "main_text": "This is the main text for url20.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Australia",
+                        "location": "Eastwood, New South Wales",
+                        "geonames_id": "56789",
+                        "location_names": [
+                            "Australia",
+                            "Eastwood",
+                            "New South Wales",
+                            "NSW"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url21",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url21",
+        "main_text": "This is the main text for url21.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "United States",
+                        "location": "Austin, Texas",
+                        "geonames_id": "54321",
+                        "location_names": [
+                            "United States",
+                            "USA",
+                            "US",
+                            "Austin",
+                            "Texas"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url22",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url22",
+        "main_text": "This is the main text for url22.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "United States",
+                        "location": "San Francisco, California",
+                        "geonames_id": "65432",
+                        "location_names": [
+                            "United States",
+                            "USA",
+                            "US",
+                            "San Francisco",
+                            "California"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "url": "url23",
+        "date_of_publication_start": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2014-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2014-12-31 12:00:00",
+        "headline": "Headline of url23",
+        "main_text": "This is the main text for url23.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2014-01-01T00:00:00.000+00:00",
+                "event_date_end": "2014-12-30T23:59:59.999+00:00",
+                "event_date_str": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Canada",
+                        "location": "Sydney, Nova Scotia",
+                        "geonames_id": "76543",
+                        "location_names": [
+                            "Canada",
+                            "Sydney",
+                            "Nova Scotia"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

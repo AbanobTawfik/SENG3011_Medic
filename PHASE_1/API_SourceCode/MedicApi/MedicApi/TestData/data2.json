@@ -1,0 +1,40 @@
+[
+    {
+        "url": "url8",
+        "date_of_publication_start": "2013-01-20T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-01-20T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-01-20 12:00:00",
+        "headline": "Headline of url8",
+        "main_text": "This is the main text for url8.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2013-01-10T00:00:00.000+00:00",
+                "event_date_end": "2013-01-16T23:59:59.000+00:00",
+                "event_date_str": "2013-01-10 xx:xx:xx to 2013-01-16 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url9",
+        "date_of_publication_start": "2013-01-30T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-01-30T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-01-30 12:00:00",
+        "headline": "Headline of url9",
+        "main_text": "This is the main text for url9.",
+        "keywords": [],
+        "reports": [
+            {
+                "diseases": [],
+                "syndromes": [],
+                "event_date_start": "2013-01-20T00:00:00.000+00:00",
+                "event_date_end": "2013-01-20T07:59:59.000+00:00",
+                "event_date_str": "2013-01-20 00:00:00 to 2013-01-20 07:59:59",
+                "locations": []
+            }
+        ]
+    }
+]

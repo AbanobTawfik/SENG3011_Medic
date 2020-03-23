@@ -1,0 +1,5 @@
+#!/bin/sh
+# requested date range overlaps with beginning of event date range
+
+start_date=2010-03-15T00:00:00
+end_date=2010-03-25T00:00:00

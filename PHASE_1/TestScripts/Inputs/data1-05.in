@@ -1,0 +1,5 @@
+#!/bin/sh
+# requested date range completely envelops event date range
+
+start_date=2010-04-20T00:00:00
+end_date=2010-04-29T00:00:00

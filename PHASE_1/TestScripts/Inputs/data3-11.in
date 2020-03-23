@@ -1,0 +1,6 @@
+#!/bin/sh
+# test that empty search terms are ignored
+
+start_date=2013-02-01T00:00:00
+end_date=2013-12-31T23:59:59
+key_terms="  zika,,,   ,,,salmonella,   "

@@ -1,0 +1,6 @@
+#!/bin/sh
+# missing an event due to timezone
+
+start_date=2013-01-20T00:00:00
+end_date=2013-01-20T07:59:59
+timezone="pacific standard time"

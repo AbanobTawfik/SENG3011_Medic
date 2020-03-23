@@ -1,0 +1,5 @@
+#!/bin/sh
+# an event where only the year and month are known
+
+start_date=2010-06-25T00:00:00
+end_date=2010-07-05T00:00:00

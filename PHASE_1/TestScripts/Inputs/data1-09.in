@@ -1,0 +1,5 @@
+#!/bin/sh
+# getting multiple articles 2
+
+start_date=2010-04-03T00:00:00
+end_date=2010-06-05T00:00:00

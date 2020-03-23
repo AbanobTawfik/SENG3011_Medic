@@ -1,0 +1,8 @@
+#!/bin/sh
+# many invalid parameters
+
+start_date=2016
+end_date=2017-02-28T24:00:00
+timezone=Invalid Standard Time
+max=-1
+offset=-99

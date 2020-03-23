@@ -1,0 +1,6 @@
+#!/bin/sh
+# check that max is capped at 50, no matter what the user enters
+
+start_date=2015-01-01T00:00:00
+date_end=2015-12-30T23:59:59
+max=60

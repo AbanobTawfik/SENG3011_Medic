@@ -1,0 +1,5 @@
+#!/bin/sh
+# an article with multiple reports
+
+start_date=2010-08-10T00:00:00
+end_date=2010-08-20T00:00:00

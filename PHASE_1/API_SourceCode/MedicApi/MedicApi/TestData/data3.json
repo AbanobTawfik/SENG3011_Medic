@@ -1,0 +1,124 @@
+[
+    {
+        "url": "url10",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url10",
+        "main_text": "This is the main text for url10. There has been an outbreak of Zika virus. A lot of people are suffering a high fever. A rash is another symptom of the Zika virus. On a completely unrelated note, there is also an outbreak of listeriosis.",
+        "keywords": ["fever", "virus", "outbreak", "zika", "rash", "listeriosis"],
+        "reports": [
+            {
+                "diseases": ["zika"],
+                "syndromes": ["Acute fever and rash"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            },
+            {
+                "diseases": ["listeriosis"],
+                "syndromes": ["Encephalitis"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url11",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url11",
+        "main_text": "This is the main text for url11. There has been an outbreak of salmonella from people sharing raw chicken with each other. Salmonella is a bacterial disease. I bet you didn't know that.",
+        "keywords": ["salmonella", "bacteria", "outbreak"],
+        "reports": [
+            {
+                "diseases": ["salmonella"],
+                "syndromes": ["Acute gastroenteritis"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url12",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url12",
+        "main_text": "This is the main text for url12. Did you know that Ebola is a viral haemorrhagic fever? There is an outbreak of Ebola in the Democratic Republic of the Congo.",
+        "keywords": ["ebola", "ebola haemorrhagic fever", "outbreak", "virus", "fever"],
+        "reports": [
+            {
+                "diseases": ["ebola haemorrhagic fever"],
+                "syndromes": ["Haemorrhagic fever"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url13",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url13",
+        "main_text": "This is the main text for url13. This is an opinion piece. This coronavirus outbreak is terrible.",
+        "keywords": ["coronavirus", "covid-19", "virus", "outbreak"],
+        "reports": [
+            {
+                "diseases": ["COVID-19"],
+                "syndromes": ["Acute respiratory syndrome"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url14",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url14",
+        "main_text": "This is the main text for url14. Thousands of people in Italy have been infected with the coronavirus. WHO officially declares a pandemic. This article doesn't contain the word that starts with out and ends with break.",
+        "keywords": ["coronavirus", "covid-19", "virus", "infection", "pandemic"],
+        "reports": [
+            {
+                "diseases": ["COVID-19"],
+                "syndromes": ["Acute respiratory syndrome"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    },
+    {
+        "url": "url15",
+        "date_of_publication_start": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_end": "2013-12-31T12:00:00.000+00:00",
+        "date_of_publication_str": "2013-12-31 12:00:00",
+        "headline": "Headline of url15",
+        "main_text": "This is the main text for url15. Anthrax is a serious infectious disease caused by gram-positive, rod-shaped bacteria known as Bacillus anthracis, says CDC. Wow, that's really interesting. The king of Antarctica has ordered a lockdown following a severe outbreak of anthrax. All residents have been ordered to stay in their igloos except when performing essential tasks such as gathering fish.",
+        "keywords": ["anthrax", "bacteria", "infectious"],
+        "reports": [
+            {
+                "diseases": ["anthrax inhalation"],
+                "syndromes": ["Acute respiratory syndrome"],
+                "event_date_start": "2013-02-01T00:00:00.000+00:00",
+                "event_date_end": "2013-12-30T23:59:59.999+00:00",
+                "event_date_str": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                "locations": []
+            }
+        ]
+    }
+]

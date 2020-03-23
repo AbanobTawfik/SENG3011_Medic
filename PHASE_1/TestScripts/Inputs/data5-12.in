@@ -1,0 +1,7 @@
+#!/bin/sh
+# testing pagination 4
+
+start_date=2015-01-01T00:00:00
+date_end=2015-01-31T23:59:59
+max=3
+offset=9

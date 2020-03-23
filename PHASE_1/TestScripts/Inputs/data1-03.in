@@ -1,0 +1,5 @@
+#!/bin/sh
+# requested date range is between events
+
+start_date=2010-04-06T00:00:00
+end_date=2010-04-21T23:59:59

@@ -1,0 +1,4 @@
+#!/bin/sh
+# valid end date provided, no start date
+
+end_date=2016-12-31T23:59:59

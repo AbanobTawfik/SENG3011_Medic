@@ -1,0 +1,6 @@
+#!/bin/sh
+# specifying a +01:00 timezone and case insensitivity
+
+start_date=2013-01-17T00:00:00
+end_date=2013-01-19T23:59:59
+timezone=cet

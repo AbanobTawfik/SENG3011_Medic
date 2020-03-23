@@ -1,0 +1,4 @@
+#!/bin/sh
+# valid start date provided, no end date
+
+start_date=2016-01-01T00:00:00
