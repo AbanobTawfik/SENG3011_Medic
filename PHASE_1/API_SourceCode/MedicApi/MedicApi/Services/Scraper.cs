@@ -88,12 +88,13 @@ namespace MedicApi.Services
             var ret = new List<StoredArticle>();
             var webClient = new HtmlWeb();
             var jsonClient = new WebClient();
-            foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
+            foreach (var item in feed.Items) // take the first 3 articles (for now)
             {
                 if (!ValidArticle(item)) continue;
                 var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
+                if (!Regex.Match(sourceUrl.ToString(), "/outbreaks/").Success) { continue; }
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
 
                 Console.WriteLine(item.Links[0].Uri);
@@ -108,7 +109,7 @@ namespace MedicApi.Services
             var sourceUrl = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
-            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
+            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/map.html"));
             var locations = GetLocations(locationUrl, articleMainText);
             var reports = GenerateReportsFromMainText(sentences, locations);
             var keywords = GetKeywordsFromMainText(sentences);
@@ -440,7 +441,7 @@ namespace MedicApi.Services
             try
             {
                 // test no map
-                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/signs-symptoms.html"));
+                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/signs-symptoms.html"));
 
                 var request = WebRequest.Create(symptomsAndSyndromesUrl) as HttpWebRequest;
                 request.Method = "HEAD";
@@ -457,7 +458,11 @@ namespace MedicApi.Services
                         var symptomsAndSyndromesClient = new HtmlWeb();
                         var symptomsAndSyndromesWebHtml = symptomsAndSyndromesClient.Load(symptomsAndSyndromesUrl);
                         var symptomsAndSyndromes = OnlyExtractMainText(symptomsAndSyndromesWebHtml);
-                        return mainText1 + "\n" + symptomsAndSyndromes;
+                        if (mainText1.Equals(symptomsAndSyndromes))
+                        {
+                            symptomsAndSyndromes = "\n";
+                        }
+                        return mainText1 + "\n" + symptomsAndSyndromes + "\n";
                     }
                 }
             }
