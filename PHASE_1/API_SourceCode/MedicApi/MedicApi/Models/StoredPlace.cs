@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace MedicApi.Models
@@ -8,6 +9,8 @@ namespace MedicApi.Models
     {
         public string country { get; set; }
         public string location { get; set; }
+        public int geonames_id { get; set; }
+        public string[] location_names { get; set; }
 
         public Place ToPlace()
         {
@@ -15,6 +18,7 @@ namespace MedicApi.Models
             {
                 country = country,
                 location = location,
+                geonames_id = geonames_id,
             };
         }
     }

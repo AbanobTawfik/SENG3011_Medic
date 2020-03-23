@@ -1,29 +1,11 @@
-﻿using System;
+﻿using MedicApi.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace MedicApi.Services
 {
-    public class Location
-    {
-        public string Name { get; set; }
-        public int GeoID { get; set; }
-
-        public Location(string name, int geoID)
-        {
-            Name = name;
-            GeoID = geoID;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var other = obj as Location;
-            if (other == null) return false;
-            return (this.Name == other.Name && this.GeoID == other.GeoID);
-        }
-    }
-
     public class LocationMapper
     {
         // File paths for location geoname data
@@ -33,6 +15,7 @@ namespace MedicApi.Services
 
         private Dictionary<string, int> map; // Map from location to geoname id
         private Dictionary<string, List<string>> alt; // Map from location to alternate locations
+        private Dictionary<string, string[]> related;
 
         public LocationMapper(string baseDir)
         {
@@ -45,7 +28,7 @@ namespace MedicApi.Services
          * Set the geoID flag to produce a list of GeoName IDs instead.
          * Access GeoName data using https://www.geonames.org/<GeoNameID>
          */
-        public List<Location> ExtractLocations(string location)
+        public List<StoredPlace> ExtractLocations(string location)
         {
             var parts = location.Split(',').Select(p => p.Trim());
             // Try basic lookup of the specified location
@@ -54,22 +37,23 @@ namespace MedicApi.Services
             {   // Succeed if no alternate locations with the same name
                 // and there is a perfect match
                 if (alt[full].Count() == 1 || parts.Count() == 1)
-                    return new List<Location> { new Location(alt[full][0].Replace(",", ", "), map[full]) };
+                    return new List<StoredPlace> { CreatePlace(alt[full][0]) };
             }
             // Enumerate through strings formed by consecutive words
-            var ids = new List<Location>();
-            var words = full.Split(new char[] { ' ', ',' });
+            var delimiters = new char[] { ' ', ',', '.', ':', '\n', '\t' };
+            var ids = new List<StoredPlace>();
+            var words = full.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < words.Length; i++) {
                 var test = "";
                 for (int j = i; j < words.Length; j++) {
                     test += (test == "" ? "" : " ") + words[j];
                     if (map.ContainsKey(test))
                     {   // 'test' is a potential location
-                        Location best = null;
+                        StoredPlace best = null;
                         var bestScore = 0;
                         // Find the best match out of the potential locations
                         foreach (var alternative in alt[test]) {
-                            var altWords = alternative.Split(new char[] { ' ', ',' });
+                            var altWords = alternative.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                             int k, m = 0, score = 0;
                             for (k = i; k < words.Length; k++) {
                                 for (; m < altWords.Length && words[k] != altWords[m]; m++) ;
@@ -80,7 +64,7 @@ namespace MedicApi.Services
                             }
                             if (score > bestScore)
                             {
-                                best = new Location(alternative.Replace(",", ", "), map[alternative]);
+                                best = CreatePlace(alternative);
                                 bestScore = score;
                                 j = k - 1;
                             }
@@ -98,6 +82,7 @@ namespace MedicApi.Services
         {
             map = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             alt = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            related = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
             try
             {
                 // Map from country code to country name (eg 'AU' to 'Australia')
@@ -113,6 +98,7 @@ namespace MedicApi.Services
                         var country = fields[4];
                         // isoMap[ISO] = country
                         isoMap[fields[0]] = country;
+                        related[country] = new string[] { fields[0], fields[1] };
                         // map[country] = geonameid
                         map[country] = Int32.Parse(fields[16]);
                         if (!alt.ContainsKey(country))
@@ -212,6 +198,18 @@ namespace MedicApi.Services
                 map[full] = geoId;
             }
             reader.Close();
+        }
+
+        private StoredPlace CreatePlace(string full)
+        {
+            var parts = full.Split(",");
+            return new StoredPlace()
+            {
+                country = parts.Last(),
+                location = String.Join(", ", parts.Take(parts.Length - (parts.Length > 1 ? 1 : 0))),
+                geonames_id = map[full],
+                location_names = parts.Union(related[parts.Last()]).ToArray()
+            };
         }
     }
 }
