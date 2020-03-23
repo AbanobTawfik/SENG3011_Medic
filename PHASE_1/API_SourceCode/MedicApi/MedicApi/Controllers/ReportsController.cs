@@ -25,6 +25,11 @@ namespace MedicApi.Controllers
         ///     Retrieves a list of articles from CDC website that match the given criteria.
         /// </summary>
         /// <remarks>API Usage Information:<br/>
+        /// 
+        /// This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
+        /// Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. <br/>
+        /// The resulting list of articles is then returned to the user in an 200 response. <br/>
+        /// If any of the query parameters are invalid or any of the dates are missing, a 400 Bad Request response will be returned alongside an error message to inform the user of the issue.<br/>
         /// API Returns list of articles with nested info in a JSON format.<br/>
         /// This API will return data to be used by EPIWatch Frontend.<br/>
         /// Only start time and end time is Mandatory.<br/>
@@ -66,18 +71,18 @@ namespace MedicApi.Controllers
         /// </remarks>
         /// 
         /// <param name="start_date">
-        ///     REQUIRED Starting time of the period of interest.
+        ///     REQUIRED Starting date & time of the report event dates.
         ///     <example>“yyyy-MM-ddTHH:mm:ss”</example>
         /// </param>
         /// 
         /// <param name="end_date">
-        ///     REQUIRED Ending time of the period of interest.
+        ///     REQUIRED Ending date & time of the report event dates.
         ///     “yyyy-MM-ddTHH:mm:ss”
         /// </param>
         /// 
         /// <param name="timezone">
         ///     The time zone associated with the given start and end dates in CAPS.
-        ///     Example: “AEST”
+        ///     Default: “UTC”
         /// </param>
         /// 
         /// <param name="key_terms">
