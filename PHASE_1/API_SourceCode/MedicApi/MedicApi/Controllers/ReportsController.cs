@@ -84,15 +84,14 @@ namespace MedicApi.Controllers
         /// 
         /// <param name="timezone">
         ///     The timezone associated with the given start and end dates in CAPS.
-        ///     Default: “UTC”
         /// </param>
         /// 
         /// <param name="key_terms">
-        ///     Key terms a report can contain.
+        ///     Key terms to search for, in a comma-separated string.
         /// </param>
         /// 
         /// <param name="location">
-        ///     The location that a report can refer to.
+        ///     The location a report can refer to.
         /// </param>
         /// 
         /// <param name="max">

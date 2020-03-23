@@ -12,9 +12,9 @@ namespace MedicApi.Swashbuckle
         {
             if (context.ApiDescription.RelativePath == "api/Reports/GetArticles")
             {
-                operation.Parameters.First(p => p.Name == "start_date").Required = true;
-                operation.Parameters.First(p => p.Name == "end_date").Required = true;
-                operation.Parameters.First(p => p.Name == "timezone").Schema.Default = new OpenApiString("UTC");
+                operation.Parameters[0].Required = true;
+                operation.Parameters[1].Required = true;
+                operation.Parameters[2].Schema.Default = new OpenApiString("UTC");
             }
         }
     }

@@ -69,6 +69,7 @@ namespace MedicApi
                 });
                 c.OperationFilter<AddExampleValues>();
                 c.OperationFilter<AddReportsFilter>();
+                c.SchemaFilter<AddSchemaFilter>();
 
                 var filePath = Path.Combine(AppContext.BaseDirectory, "MedicApi.xml");
                 c.IncludeXmlComments(filePath);
