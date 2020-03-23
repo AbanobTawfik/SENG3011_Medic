@@ -1,0 +1,52 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url18",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Sydney, New South Wales",
+                            "geonames_id": 34567
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url18",
+            "main_text": "This is the main text for url18.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url23",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Canada",
+                            "location": "Sydney, Nova Scotia",
+                            "geonames_id": 76543
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url23",
+            "main_text": "This is the main text for url23.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        }
+    ]
+}

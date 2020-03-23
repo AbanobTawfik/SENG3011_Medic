@@ -1,0 +1,13 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "errors": {
+        "end_date": "invalid value '2015-02-29T00:00:00'"
+    }
+}

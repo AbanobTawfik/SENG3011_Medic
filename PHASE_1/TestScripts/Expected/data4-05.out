@@ -1,0 +1,37 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url16",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Italy",
+                            "location": "Rome",
+                            "geonames_id": 12345
+                        },
+                        {
+                            "country": "Iran",
+                            "location": "Tehran",
+                            "geonames_id": 23456
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url16",
+            "main_text": "This is the main text for url16.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        }
+    ]
+}

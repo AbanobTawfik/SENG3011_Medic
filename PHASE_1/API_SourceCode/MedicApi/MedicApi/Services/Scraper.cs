@@ -88,12 +88,13 @@ namespace MedicApi.Services
             var ret = new List<StoredArticle>();
             var webClient = new HtmlWeb();
             var jsonClient = new WebClient();
-            foreach (var item in feed.Items.Take(3)) // take the first 3 articles (for now)
+            foreach (var item in feed.Items) // take the first 3 articles (for now)
             {
                 if (!ValidArticle(item)) continue;
                 var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
+                if (!Regex.Match(sourceUrl.ToString(), "/outbreaks/").Success) { continue; }
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
 
                 Console.WriteLine(item.Links[0].Uri);
@@ -106,9 +107,9 @@ namespace MedicApi.Services
         protected virtual StoredArticle ScrapeArticle(SyndicationItem item, HtmlDocument webPageHtml)
         {
             var sourceUrl = item.Links[0].Uri.ToString();
-            var articleMainText = GetMainText(webPageHtml);
+            var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
-            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
+            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/map.html"));
             var locations = GetLocations(locationUrl, articleMainText);
             var reports = GenerateReportsFromMainText(sentences, locations);
             var keywords = GetKeywordsFromMainText(sentences);
@@ -143,7 +144,8 @@ namespace MedicApi.Services
                     ResetLists(out diseasesToAddToReport, out syndromesToAddToReport, out symptomsToConvertToSyndromes);
                 }
                 // if we get a date range phrase, extract date
-                if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
+                var dateRangeMatcher = @"((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4}),*\s* to\s*,* ((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4})";
+                if (Regex.IsMatch(sentence, dateRangeMatcher))
                 {
                     dateToAddToReport = GetDateRangeFromText(sentence);
                 }
@@ -155,7 +157,11 @@ namespace MedicApi.Services
                 // add all symptoms
 
             }
-            // add the report
+            // if no patterened date range, manually get dates
+            if (dateToAddToReport == "")
+            {
+                dateToAddToReport = ManuallyExtractDateFromAllSentences(ArticleSentences);
+            }
             reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
             return reportList;
         }
@@ -178,7 +184,7 @@ namespace MedicApi.Services
                 foreach (var keyWord in keyWordList)
                 {
                     var keyWordToAdd = mapper.GetCommonKeyName(keyWord);
-                    if (((!Regex.IsMatch(sentence.ToLower(), "the following groups of people") || (!Regex.IsMatch(sentence.ToLower(), "tested negative")))) &&
+                    if (((!Regex.IsMatch(sentence.ToLower(), "the following groups of people") && (!Regex.IsMatch(sentence.ToLower(), "tested negative")) && (!Regex.IsMatch(sentence.ToLower(), "the disease primarily affects")))) &&
                         (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWordToAdd, StringComparer.OrdinalIgnoreCase)))
                     {
                         list.Add(keyWordToAdd);
@@ -199,14 +205,59 @@ namespace MedicApi.Services
 
         public string GetDateRangeFromText(string sentence)
         {
-            var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
+            var dateRangeMatcher = @"((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4}),*\s* to\s*,* ((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4})";
+            var dates = Regex.Match(sentence, dateRangeMatcher);
             if (dates.Success)
             {
                 var start = dates.Groups[1];
-                var end = dates.Groups[2];
+                var end = dates.Groups[14];
                 return start + " - " + end;
             }
             return "";
+        }
+
+        public string ManuallyExtractDateFromAllSentences(List<string> articleSentences)
+        {
+            var start = "";
+            var end = "";
+            foreach (var sentence in articleSentences)
+            {
+                var dateMatcher = @"\s*(\d{1,2})?,*\s*(\d{1,2})?,*(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s*(\d{1,2})*,*\s+(\d{4})";
+                var dateMatch = Regex.Match(sentence, dateMatcher);
+                if (dateMatch.Success)
+                {
+                    try
+                    {
+                        var date = DateTime.Parse(dateMatch.Groups[0].Value);
+                        if (start == "" || end == "")
+                        {
+                            start = dateMatch.Groups[0].Value;
+                            end = dateMatch.Groups[0].Value;
+                        }
+                        else if (DateTime.Compare(DateTime.Parse(start), date) > 0)
+                        {
+                            start = dateMatch.Groups[0].Value;
+                        }
+                        else if (DateTime.Compare(DateTime.Parse(end), date) < 0)
+                        {
+                            end = dateMatch.Groups[0].Value;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e + "date could not be extracted");
+                        continue;
+                    }
+                }
+            }
+            if (start == "" || end == "")
+            {
+                return "Date range could not be extracted.\n";
+            }
+            else
+            {
+                return start + " - " + end;
+            }
         }
 
         public void ResetLists(out List<string> diseasesToAddToReport,
@@ -322,7 +373,7 @@ namespace MedicApi.Services
                 var locationTable = locationWebHtml.DocumentNode.SelectNodes("//*[contains(@class, 'table')]")
                                                 .Nodes().Where(c => c.Name == "tbody").FirstOrDefault().ChildNodes
                                                 .Where(c => c.Name == "tr");
-                var locationText = SentencizeMainText(GetMainText(locationWebHtml));
+                var locationText = SentencizeMainText(GetMainText(locationWebHtml, locationUrl.ToString()));
                 if (locationTable == null)
                 {
                     return GetLocationsFromMapNoTable(locationText);
@@ -337,7 +388,7 @@ namespace MedicApi.Services
                 var locations = new List<StoredPlace>();
                 var locationWebClient = new HtmlWeb();
                 var locationWebHtml = locationWebClient.Load(locationUrl);
-                var locationText = SentencizeMainText(GetMainText(locationWebHtml));
+                var locationText = SentencizeMainText(GetMainText(locationWebHtml, locationUrl.ToString()));
                 return GetLocationsFromMapNoTable(locationText);
             }
         }
@@ -347,10 +398,11 @@ namespace MedicApi.Services
             var locations = new List<StoredPlace>();
             foreach (var location in locationTable)
             {
-                var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
-                if (!locationString.ToLower().Equals("total"))
+                //var locationString = location.ChildNodes.Where(c => c.Name == "td").FirstOrDefault().InnerText;
+                var locationString = location.ChildNodes;
+                foreach (var attribute in locationString)
                 {
-                    locations.AddRange(_locationMapper.ExtractLocations(locationString));
+                    locations.AddRange(_locationMapper.ExtractLocations(attribute.InnerText));
                 }
             }
             return locations;
@@ -369,7 +421,7 @@ namespace MedicApi.Services
 
         public void AnalayseTextForLocations(string sentence, List<StoredPlace> locations)
         {
-            foreach(var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
+            foreach (var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
             {
                 var locationCheck = match.ToString();
                 locations.AddRange(_locationMapper.ExtractLocations(locationCheck));
@@ -384,7 +436,43 @@ namespace MedicApi.Services
             //}
         }
 
-        public string GetMainText(HtmlDocument webPageHtml)
+        public string GetMainText(HtmlDocument webPageHtml, string sourceUrl)
+        {
+            try
+            {
+                // test no map
+                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/signs-symptoms.html"));
+
+                var request = WebRequest.Create(symptomsAndSyndromesUrl) as HttpWebRequest;
+                request.Method = "HEAD";
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    int statusCode = (int)response.StatusCode;
+                    if (statusCode == 404)
+                    {
+                        return OnlyExtractMainText(webPageHtml);
+                    }
+                    else
+                    {
+                        var mainText1 = OnlyExtractMainText(webPageHtml);
+                        var symptomsAndSyndromesClient = new HtmlWeb();
+                        var symptomsAndSyndromesWebHtml = symptomsAndSyndromesClient.Load(symptomsAndSyndromesUrl);
+                        var symptomsAndSyndromes = OnlyExtractMainText(symptomsAndSyndromesWebHtml);
+                        if (mainText1.Equals(symptomsAndSyndromes))
+                        {
+                            symptomsAndSyndromes = "\n";
+                        }
+                        return mainText1 + "\n" + symptomsAndSyndromes + "\n";
+                    }
+                }
+            }
+            catch
+            {
+                return OnlyExtractMainText(webPageHtml);
+            }
+        }
+
+        public string OnlyExtractMainText(HtmlDocument webPageHtml)
         {
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
             var articleMainText = "";
@@ -396,6 +484,20 @@ namespace MedicApi.Services
                     Regex rgx = new Regex(pattern);
                     var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
                     articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+                }
+            }
+            else
+            {
+                mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'col-md-12']");
+                if (mainTextSegment != null)
+                {
+                    foreach (var textSegment in mainTextSegment)
+                    {
+                        string pattern = @"([^\w]*external icon[^\w]*)+|[|\\^&\r\n]+";
+                        Regex rgx = new Regex(pattern);
+                        var uncleanText = Regex.Replace(HttpUtility.HtmlDecode(textSegment.InnerText), @"\.(?=\S)", ". ");
+                        articleMainText += rgx.Replace(uncleanText, " ") + "\n\n";
+                    }
                 }
             }
             return articleMainText;
@@ -420,30 +522,3 @@ namespace MedicApi.Services
     }
 }
 
-//public List<String> ScrapeData(string url)
-//{
-//    var webClient = new HtmlWeb();
-//    var webPageHtml = webClient.Load(url);
-
-//    var outbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'feed-item-title']");
-
-//    List<String> ret = new List<String>();
-
-//    foreach (var outbreak in outbreaks)
-//    {
-//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-//        var linkToArticle = outbreak.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-//        ret.Add(linkToArticle);
-//    }
-
-//    var internationalOutbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'bullet-list feed-item-list']").Nodes().Where(n => n.HasChildNodes);
-
-//    foreach(var outbreak in internationalOutbreaks)
-//    {
-//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-//        var linkToArticle = outbreak.FirstChild.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-//        ret.Add(linkToArticle);
-//    }
-
-//    return ret;
-//}

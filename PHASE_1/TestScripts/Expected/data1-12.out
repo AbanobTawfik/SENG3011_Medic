@@ -1,0 +1,26 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url7",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2011-xx-xx xx:xx:xx to 2012-xx-xx xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url7",
+            "main_text": "This is the main text for url7.",
+            "date_of_publication": "2013-01-23 12:00:00"
+        }
+    ]
+}

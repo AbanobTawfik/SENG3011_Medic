@@ -77,7 +77,7 @@ namespace MedicApi.Services
                             r.locations.Any(l =>
                                 l.country.ToLower().Contains(location) ||
                                 l.location.ToLower().Contains(location) ||
-                                l.location_names.Any( n =>
+                                l.location_names.Any(n =>
                                     n.ToLower().Contains(location)
                                 )
                             )
@@ -85,7 +85,7 @@ namespace MedicApi.Services
                     )
 
                     &&
-
+                        
                     // key term match
                     (
                         key_terms.Count == 0 ||

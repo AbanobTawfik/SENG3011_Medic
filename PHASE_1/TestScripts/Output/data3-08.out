@@ -1,0 +1,48 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url11",
+            "reports": [
+                {
+                    "diseases": [
+                        "salmonella"
+                    ],
+                    "syndromes": [
+                        "Acute gastroenteritis"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url11",
+            "main_text": "This is the main text for url11. There has been an outbreak of salmonella from people sharing raw chicken with each other. Salmonella is a bacterial disease. I bet you didn't know that.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        },
+        {
+            "url": "url15",
+            "reports": [
+                {
+                    "diseases": [
+                        "anthrax inhalation"
+                    ],
+                    "syndromes": [
+                        "Acute respiratory syndrome"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url15",
+            "main_text": "This is the main text for url15. Anthrax is a serious infectious disease caused by gram-positive, rod-shaped bacteria known as Bacillus anthracis, says CDC. Wow, that's really interesting. The king of Antarctica has ordered a lockdown following a severe outbreak of anthrax. All residents have been ordered to stay in their igloos except when performing essential tasks such as gathering fish.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        }
+    ]
+}

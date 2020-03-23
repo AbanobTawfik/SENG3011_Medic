@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url21",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "United States",
+                            "location": "Austin, Texas",
+                            "geonames_id": 54321
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url21",
+            "main_text": "This is the main text for url21.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        }
+    ]
+}
