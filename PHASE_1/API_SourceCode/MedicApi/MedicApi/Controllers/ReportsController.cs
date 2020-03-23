@@ -40,34 +40,42 @@ namespace MedicApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     GET /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23:59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+        ///     GET /GetArticles?start_date=2016-01-01T00:00:00&amp;end_date=2021-01-01T00:00:00&amp;key_terms=Listeria&amp;location=Arizona
         /// 
         /// Sample response:
         /// 
         ///     [
-        ///         {
-        ///             "url":"url1",
-        ///             "reports":[
-        ///                 {
-        ///                     "diseases":[
-        ///                         "ebola haemorrhagic fever"
-        ///                     ],
-        ///                     "syndromes":[
-        ///                         "Haemorrhagic fever"
-        ///                     ],
-        ///                     "event_date":"2019-01-01 00:00:00",
-        ///                     "locations":[
-        ///                     {
-        ///                         "country":"Uganda",
-        ///                         "location":"Kampala"
-        ///                     }
-        ///                     ]
-        ///                 }
-        ///             ], 
-        ///             "headline":"Headline 1",
-        ///             "main_text":"This is the main text for article 1.",
-        ///             "date_of_publication":"2019-01-02 xx:xx:xx"
-        ///         }
+        ///       {
+        ///         "url":"https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html",
+        ///         "reports":[
+        ///           {
+        ///             "diseases":[
+        ///               "listeriosis"
+        ///             ],
+        ///             "syndromes":[
+        ///               "Encephalitis"
+        ///             ],
+        ///               "event_date": "2016-11-23 xx:xx:xx to 2019-12-13 xx:xx:xx",
+        ///             "locations": [
+        ///               {
+        ///                 "country": "United States",
+        ///                 "location": "Arizona",
+        ///                 "geonames_id": 5551752
+        ///               },
+        ///               ...
+        ///               {
+        ///                 "country": "United States",
+        ///                 "location": "Virginia",
+        ///                 "geonames_id": 6254928
+        ///               }
+        ///             ]
+        ///           }
+        ///         ], 
+        ///         "headline":"Enoki Mushrooms - Listeria Infections",
+        ///         "main_text":"36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states.
+        ///                      Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
+        ///         "date_of_publication":"2020-03-01 17:40:00"
+        ///       }
         ///     ]
         /// 
         /// </remarks>
@@ -109,8 +117,8 @@ namespace MedicApi.Controllers
         [SwaggerExampleValue("start_date", "2016-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2021-01-01T00:00:00")]
         [SwaggerExampleValue("timezone", "UTC")]
-        [SwaggerExampleValue("key_terms", "Anthrax,Ebola,Coronavirus")]
-        [SwaggerExampleValue("location", "Sydney")]
+        [SwaggerExampleValue("key_terms", "Listeria")]
+        [SwaggerExampleValue("location", "Arizona")]
         [SwaggerExampleValue("offset", "0")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(ApiGetArticlesError), 400)]
