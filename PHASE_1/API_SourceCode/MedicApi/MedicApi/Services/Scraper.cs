@@ -105,8 +105,7 @@ namespace MedicApi.Services
 
         protected virtual StoredArticle ScrapeArticle(SyndicationItem item, HtmlDocument webPageHtml)
         {
-            var sourceUrl = "https://www.cdc.gov/listeria/outbreaks/soft-cheese-03-17/index.html";
-            //var sourceUrl = item.Links[0].Uri.ToString();
+            var sourceUrl = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
@@ -144,7 +143,8 @@ namespace MedicApi.Services
                     ResetLists(out diseasesToAddToReport, out syndromesToAddToReport, out symptomsToConvertToSyndromes);
                 }
                 // if we get a date range phrase, extract date
-                if (Regex.IsMatch(sentence, @"Illnesses started on dates ranging from .* to .*\."))
+                var dateRangeMatcher = @"((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4}),*\s* to\s*,* ((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4})";
+                if (Regex.IsMatch(sentence, dateRangeMatcher))
                 {
                     dateToAddToReport = GetDateRangeFromText(sentence);
                 }
@@ -156,7 +156,11 @@ namespace MedicApi.Services
                 // add all symptoms
 
             }
-            // add the report
+            // if no patterened date range, manually get dates
+            if (dateToAddToReport == "")
+            {
+                dateToAddToReport = ManuallyExtractDateFromAllSentences(ArticleSentences);
+            }
             reportList.Add(CreateStoredReport(dateToAddToReport, diseasesToAddToReport, syndromesToAddToReport, symptomsToConvertToSyndromes, locationsToAdd));
             return reportList;
         }
@@ -200,14 +204,59 @@ namespace MedicApi.Services
 
         public string GetDateRangeFromText(string sentence)
         {
-            var dates = Regex.Match(sentence, @"Illnesses started on dates ranging from (.*) to (.*)\.");
+            var dateRangeMatcher = @"((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4}),*\s* to\s*,* ((Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},*\s+\d{4})";
+            var dates = Regex.Match(sentence, dateRangeMatcher);
             if (dates.Success)
             {
                 var start = dates.Groups[1];
-                var end = dates.Groups[2];
+                var end = dates.Groups[14];
                 return start + " - " + end;
             }
             return "";
+        }
+
+        public string ManuallyExtractDateFromAllSentences(List<string> articleSentences)
+        {
+            var start = "";
+            var end = "";
+            foreach (var sentence in articleSentences)
+            {
+                var dateMatcher = @"\s*(\d{1,2})?,*\s*(\d{1,2})?,*(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s*(\d{1,2})*,*\s+(\d{4})";
+                var dateMatch = Regex.Match(sentence, dateMatcher);
+                if (dateMatch.Success)
+                {
+                    try
+                    {
+                        var date = DateTime.Parse(dateMatch.Groups[0].Value);
+                        if (start == "" || end == "")
+                        {
+                            start = date.ToString();
+                            end = date.ToString();
+                        }
+                        else if (DateTime.Compare(DateTime.Parse(start), date) > 0)
+                        {
+                            start = date.ToString();
+                        }
+                        else if (DateTime.Compare(DateTime.Parse(end), date) < 0)
+                        {
+                            end = date.ToString();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e + "date could not be extracted");
+                        continue;
+                    }
+                }
+            }
+            if (start == "" || end == "")
+            {
+                return "Date range could not be extracted.\n";
+            }
+            else
+            {
+                return start + " - " + end;
+            }
         }
 
         public void ResetLists(out List<string> diseasesToAddToReport,
@@ -418,8 +467,6 @@ namespace MedicApi.Services
             }
         }
 
-
-
         public string OnlyExtractMainText(HtmlDocument webPageHtml)
         {
             var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
@@ -470,30 +517,3 @@ namespace MedicApi.Services
     }
 }
 
-//public List<String> ScrapeData(string url)
-//{
-//    var webClient = new HtmlWeb();
-//    var webPageHtml = webClient.Load(url);
-
-//    var outbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'feed-item-title']");
-
-//    List<String> ret = new List<String>();
-
-//    foreach (var outbreak in outbreaks)
-//    {
-//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-//        var linkToArticle = outbreak.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-//        ret.Add(linkToArticle);
-//    }
-
-//    var internationalOutbreaks = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'bullet-list feed-item-list']").Nodes().Where(n => n.HasChildNodes);
-
-//    foreach(var outbreak in internationalOutbreaks)
-//    {
-//        var outbreakName = HttpUtility.HtmlDecode(outbreak.InnerText);
-//        var linkToArticle = outbreak.FirstChild.Attributes.Where(attribute => attribute.Name == "href").FirstOrDefault().DeEntitizeValue;
-//        ret.Add(linkToArticle);
-//    }
-
-//    return ret;
-//}
