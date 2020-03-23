@@ -1,5 +1,0 @@
-#!/bin/sh
-# invalid date 2
-
-start_date=hello world
-end_date=2016-05-15T00:00:00

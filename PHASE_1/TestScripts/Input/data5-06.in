@@ -1,0 +1,6 @@
+#!/bin/sh
+# offset is 5 when there are 10 matching articles
+
+start_date=2015-01-01T00:00:00
+end_date=2015-01-31T23:59:59
+offset=5

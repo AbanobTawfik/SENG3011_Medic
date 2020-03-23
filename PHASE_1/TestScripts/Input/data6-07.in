@@ -1,0 +1,5 @@
+#!/bin/sh
+# invalid date 3
+
+start_date="2016-05-10 00:00:00"
+end_date=2016-05-15t00:00:00

@@ -1,0 +1,54 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url29",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url29",
+            "main_text": "This is the main text for url29.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url30",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url30",
+            "main_text": "This is the main text for url30.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url31",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url31",
+            "main_text": "This is the main text for url31.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# searching for a location that doesn't exist
+
+start_date=2014-01-01T00:00:00
+end_date=2014-12-30T23:59:59
+location="Old North Scotland"

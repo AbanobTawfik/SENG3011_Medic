@@ -1,5 +1,10 @@
 #!/bin/sh
 
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+RESET_COLOR="\033[0m"
+
 BLANK="(blank)"
 
 ################################################################################
@@ -8,6 +13,7 @@ main()
 {
     script_dir="$(dirname "$(readlink -f $0)")"
     input_dir="$script_dir/Input/"
+    output_dir="$script_dir/Output/"
     expected_dir="$script_dir/Expected/"
 
     mkdir -p "$output_dir"
@@ -18,10 +24,24 @@ main()
         source $input_file
         set_query_string
 
-        output_filename="$expected_dir/$(basename "$input_file" .in).out"
-        curl -G "http://localhost:5000/api/Test/GetArticles?$query" -H "accept: */*" | 
+        test_name="$(basename "$input_file" .in)"
+        output_filename="$output_dir/$(basename "$input_file" .in).out"
+        expected_filename="$expected_dir/$(basename "$input_file" .in).out"
+
+        echo "Test $test_name"
+        head -2 "$input_file" | tail -1
+
+        curl -s -G "http://localhost:5000/api/Test/GetArticles?$query" -H "accept: */*" | 
             python3 -m json.tool |
             sed -e 's/"accessed_time": ".*"/"accessed_time": "REMOVED"/' > "$output_filename"
+        
+        if diff "$output_filename" "$expected_filename" > /dev/null
+        then
+            printf "${GREEN}Test passed${RESET_COLOR}\n"
+        else
+            printf "${RED}Test failed${RESET_COLOR}\n"
+        fi
+        echo
     done
 }
 

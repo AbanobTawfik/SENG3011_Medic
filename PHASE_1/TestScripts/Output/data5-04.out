@@ -1,0 +1,712 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url23",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url23",
+            "main_text": "This is the main text for url23.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url24",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url24",
+            "main_text": "This is the main text for url24.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url25",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url25",
+            "main_text": "This is the main text for url25.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url26",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url26",
+            "main_text": "This is the main text for url26.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url27",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url27",
+            "main_text": "This is the main text for url27.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url28",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url28",
+            "main_text": "This is the main text for url28.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url29",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url29",
+            "main_text": "This is the main text for url29.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url30",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url30",
+            "main_text": "This is the main text for url30.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url31",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url31",
+            "main_text": "This is the main text for url31.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url32",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-01-01 xx:xx:xx to 2015-01-31 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url32",
+            "main_text": "This is the main text for url32.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url33",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url33",
+            "main_text": "This is the main text for url33.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url34",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url34",
+            "main_text": "This is the main text for url34.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url35",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url35",
+            "main_text": "This is the main text for url35.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url36",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url36",
+            "main_text": "This is the main text for url36.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url37",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url37",
+            "main_text": "This is the main text for url37.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url38",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url38",
+            "main_text": "This is the main text for url38.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url39",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url39",
+            "main_text": "This is the main text for url39.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url40",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url40",
+            "main_text": "This is the main text for url40.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url41",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url41",
+            "main_text": "This is the main text for url41.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url42",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url42",
+            "main_text": "This is the main text for url42.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url43",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url43",
+            "main_text": "This is the main text for url43.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url44",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url44",
+            "main_text": "This is the main text for url44.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url45",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url45",
+            "main_text": "This is the main text for url45.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url46",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url46",
+            "main_text": "This is the main text for url46.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url47",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url47",
+            "main_text": "This is the main text for url47.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url48",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url48",
+            "main_text": "This is the main text for url48.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url49",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url49",
+            "main_text": "This is the main text for url49.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url50",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url50",
+            "main_text": "This is the main text for url50.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url51",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url51",
+            "main_text": "This is the main text for url51.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url52",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url52",
+            "main_text": "This is the main text for url52.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url53",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url53",
+            "main_text": "This is the main text for url53.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url54",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url54",
+            "main_text": "This is the main text for url54.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url55",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url55",
+            "main_text": "This is the main text for url55.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url56",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url56",
+            "main_text": "This is the main text for url56.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url57",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url57",
+            "main_text": "This is the main text for url57.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url58",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url58",
+            "main_text": "This is the main text for url58.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url59",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url59",
+            "main_text": "This is the main text for url59.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url60",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url60",
+            "main_text": "This is the main text for url60.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url61",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url61",
+            "main_text": "This is the main text for url61.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url62",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url62",
+            "main_text": "This is the main text for url62.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url63",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url63",
+            "main_text": "This is the main text for url63.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url64",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url64",
+            "main_text": "This is the main text for url64.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url65",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url65",
+            "main_text": "This is the main text for url65.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url66",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url66",
+            "main_text": "This is the main text for url66.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url67",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url67",
+            "main_text": "This is the main text for url67.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url68",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url68",
+            "main_text": "This is the main text for url68.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url69",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url69",
+            "main_text": "This is the main text for url69.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url70",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url70",
+            "main_text": "This is the main text for url70.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url71",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url71",
+            "main_text": "This is the main text for url71.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        },
+        {
+            "url": "url72",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2015-02-01 xx:xx:xx to 2015-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url72",
+            "main_text": "This is the main text for url72.",
+            "date_of_publication": "2015-12-31 12:00:00"
+        }
+    ]
+}
