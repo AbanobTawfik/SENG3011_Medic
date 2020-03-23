@@ -1,0 +1,68 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url1",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-03-01 xx:xx:xx to 2010-03-04 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url1",
+            "main_text": "This is the main text for url1.",
+            "date_of_publication": "2010-03-05 12:00:00"
+        },
+        {
+            "url": "url2",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-03-20 xx:xx:xx to 2010-04-03 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url2",
+            "main_text": "This is the main text for url2.",
+            "date_of_publication": "2010-04-05 12:00:00"
+        },
+        {
+            "url": "url3",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-04-02 xx:xx:xx to 2010-04-05 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url3",
+            "main_text": "This is the main text for url3.",
+            "date_of_publication": "2010-04-06 12:00:00"
+        },
+        {
+            "url": "url4",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-04-22 xx:xx:xx to 2010-04-27 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url4",
+            "main_text": "This is the main text for url4.",
+            "date_of_publication": "2010-05-01 12:00:00"
+        }
+    ]
+}

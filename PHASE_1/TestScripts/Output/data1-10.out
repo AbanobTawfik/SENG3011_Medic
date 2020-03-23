@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url6",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-08-03 xx:xx:xx to 2010-08-13 xx:xx:xx",
+                    "locations": []
+                },
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2010-09-07 xx:xx:xx to 2010-09-19 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url6",
+            "main_text": "This is the main text for url6.",
+            "date_of_publication": "2010-10-04 12:00:00"
+        }
+    ]
+}

@@ -1,0 +1,72 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url18",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Sydney, New South Wales",
+                            "geonames_id": 34567
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url18",
+            "main_text": "This is the main text for url18.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url19",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Adelaide, South Australia",
+                            "geonames_id": 45678
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url19",
+            "main_text": "This is the main text for url19.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url20",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Eastwood, New South Wales",
+                            "geonames_id": 56789
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url20",
+            "main_text": "This is the main text for url20.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        }
+    ]
+}

@@ -1,0 +1,94 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url10",
+            "reports": [
+                {
+                    "diseases": [
+                        "zika"
+                    ],
+                    "syndromes": [
+                        "Acute fever and rash"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                },
+                {
+                    "diseases": [
+                        "listeriosis"
+                    ],
+                    "syndromes": [
+                        "Encephalitis"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url10",
+            "main_text": "This is the main text for url10. There has been an outbreak of Zika virus. A lot of people are suffering a high fever. A rash is another symptom of the Zika virus. On a completely unrelated note, there is also an outbreak of listeriosis.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        },
+        {
+            "url": "url11",
+            "reports": [
+                {
+                    "diseases": [
+                        "salmonella"
+                    ],
+                    "syndromes": [
+                        "Acute gastroenteritis"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url11",
+            "main_text": "This is the main text for url11. There has been an outbreak of salmonella from people sharing raw chicken with each other. Salmonella is a bacterial disease. I bet you didn't know that.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        },
+        {
+            "url": "url12",
+            "reports": [
+                {
+                    "diseases": [
+                        "ebola haemorrhagic fever"
+                    ],
+                    "syndromes": [
+                        "Haemorrhagic fever"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url12",
+            "main_text": "This is the main text for url12. Did you know that Ebola is a viral haemorrhagic fever? There is an outbreak of Ebola in the Democratic Republic of the Congo.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        },
+        {
+            "url": "url13",
+            "reports": [
+                {
+                    "diseases": [
+                        "COVID-19"
+                    ],
+                    "syndromes": [
+                        "Acute respiratory syndrome"
+                    ],
+                    "event_date": "2013-02-01 xx:xx:xx to 2013-12-30 xx:xx:xx",
+                    "locations": []
+                }
+            ],
+            "headline": "Headline of url13",
+            "main_text": "This is the main text for url13. This is an opinion piece. This coronavirus outbreak is terrible.",
+            "date_of_publication": "2013-12-31 12:00:00"
+        }
+    ]
+}

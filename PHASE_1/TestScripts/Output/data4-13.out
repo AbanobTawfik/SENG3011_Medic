@@ -1,0 +1,177 @@
+{
+    "meta": {
+        "team_name": "Medics",
+        "accessed_time": "REMOVED",
+        "data_source": {
+            "name": "CDC",
+            "url": "https://www.cdc.gov/outbreaks/"
+        }
+    },
+    "articles": [
+        {
+            "url": "url16",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Italy",
+                            "location": "Rome",
+                            "geonames_id": 12345
+                        },
+                        {
+                            "country": "Iran",
+                            "location": "Tehran",
+                            "geonames_id": 23456
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url16",
+            "main_text": "This is the main text for url16.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url17",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "China",
+                            "location": "Wuhan, Hubei Province",
+                            "geonames_id": 1791247
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url17",
+            "main_text": "This is the main text for url17.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url18",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Sydney, New South Wales",
+                            "geonames_id": 34567
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url18",
+            "main_text": "This is the main text for url18.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url19",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Adelaide, South Australia",
+                            "geonames_id": 45678
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url19",
+            "main_text": "This is the main text for url19.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url20",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Australia",
+                            "location": "Eastwood, New South Wales",
+                            "geonames_id": 56789
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url20",
+            "main_text": "This is the main text for url20.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url21",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "United States",
+                            "location": "Austin, Texas",
+                            "geonames_id": 54321
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url21",
+            "main_text": "This is the main text for url21.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url22",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "United States",
+                            "location": "San Francisco, California",
+                            "geonames_id": 65432
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url22",
+            "main_text": "This is the main text for url22.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        },
+        {
+            "url": "url23",
+            "reports": [
+                {
+                    "diseases": [],
+                    "syndromes": [],
+                    "event_date": "2014-01-01 xx:xx:xx to 2014-12-30 xx:xx:xx",
+                    "locations": [
+                        {
+                            "country": "Canada",
+                            "location": "Sydney, Nova Scotia",
+                            "geonames_id": 76543
+                        }
+                    ]
+                }
+            ],
+            "headline": "Headline of url23",
+            "main_text": "This is the main text for url23.",
+            "date_of_publication": "2014-12-31 12:00:00"
+        }
+    ]
+}
