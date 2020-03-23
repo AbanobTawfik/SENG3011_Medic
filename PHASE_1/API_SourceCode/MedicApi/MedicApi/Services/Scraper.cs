@@ -230,16 +230,16 @@ namespace MedicApi.Services
                         var date = DateTime.Parse(dateMatch.Groups[0].Value);
                         if (start == "" || end == "")
                         {
-                            start = date.ToString();
-                            end = date.ToString();
+                            start = dateMatch.Groups[0].Value;
+                            end = dateMatch.Groups[0].Value;
                         }
                         else if (DateTime.Compare(DateTime.Parse(start), date) > 0)
                         {
-                            start = date.ToString();
+                            start = dateMatch.Groups[0].Value;
                         }
                         else if (DateTime.Compare(DateTime.Parse(end), date) < 0)
                         {
-                            end = date.ToString();
+                            end = dateMatch.Groups[0].Value;
                         }
                     }
                     catch (Exception e)
