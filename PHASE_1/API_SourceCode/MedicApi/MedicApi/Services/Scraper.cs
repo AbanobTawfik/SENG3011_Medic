@@ -111,6 +111,7 @@ namespace MedicApi.Services
             var sentences = SentencizeMainText(articleMainText);
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"([^/]+)/?$", "map.html"));
             var locations = GetLocations(locationUrl, articleMainText);
+            locations = locations.Distinct().ToList();
             var reports = GenerateReportsFromMainText(sentences, locations);
             var keywords = GetKeywordsFromMainText(sentences);
 
@@ -421,19 +422,11 @@ namespace MedicApi.Services
 
         public void AnalayseTextForLocations(string sentence, List<StoredPlace> locations)
         {
-            foreach (var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)+)"))
+            foreach (var match in Regex.Matches(sentence, @"([A-Z][\w-]*(\s+[A-Z][\w-]*)*)"))
             {
                 var locationCheck = match.ToString();
                 locations.AddRange(_locationMapper.ExtractLocations(locationCheck));
             }
-
-            //foreach (var keyWord in keyWordList)
-            //{
-            //    if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
-            //    {
-            //        list.Add(keyWord);
-            //    }
-            //}
         }
 
         public string GetMainText(HtmlDocument webPageHtml, string sourceUrl)
