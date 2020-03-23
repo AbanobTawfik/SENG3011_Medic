@@ -109,7 +109,7 @@ namespace MedicApi.Services
             var sourceUrl = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
-            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/map.html"));
+            var locationUrl = new Uri(Regex.Replace(sourceUrl, @"([^/]+)/?$", "map.html"));
             var locations = GetLocations(locationUrl, articleMainText);
             var reports = GenerateReportsFromMainText(sentences, locations);
             var keywords = GetKeywordsFromMainText(sentences);
@@ -441,7 +441,7 @@ namespace MedicApi.Services
             try
             {
                 // test no map
-                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"/.*$", "/signs-symptoms.html"));
+                var symptomsAndSyndromesUrl = new Uri(Regex.Replace(sourceUrl, @"([^/]+)/?$", "signs-symptoms.html"));
 
                 var request = WebRequest.Create(symptomsAndSyndromesUrl) as HttpWebRequest;
                 request.Method = "HEAD";
@@ -474,7 +474,7 @@ namespace MedicApi.Services
 
         public string OnlyExtractMainText(HtmlDocument webPageHtml)
         {
-            var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'card-body bg-white']");
+            var mainTextSegment = webPageHtml.DocumentNode.SelectNodes("//*[@class = 'syndicate']");
             var articleMainText = "";
             if (mainTextSegment != null)
             {
