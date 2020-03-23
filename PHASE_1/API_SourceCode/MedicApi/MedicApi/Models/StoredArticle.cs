@@ -10,6 +10,11 @@ namespace MedicApi.Models
     public class StoredArticle
     {
         private string _id;
+        public string url
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
         public DateTime date_of_publication_start { get; set; }
         public DateTime date_of_publication_end { get; set; }
         public string date_of_publication_str { get; set; }
@@ -36,12 +41,6 @@ namespace MedicApi.Models
                 "', headline: '" + headline +
                 "', main_text: '" + main_text +
                 "', date_of_publication_str: '" + date_of_publication_str + "'}]";
-        }
-
-        public string url
-        {
-            get { return _id; }
-            set { _id = value; }
         }
     }
 }

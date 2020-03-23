@@ -7,14 +7,20 @@ using System.Globalization;
 using MedicApi.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NodaTime;
-using NodaTime.Text;
 
 namespace MedicApi.Services
 {
     public class ArticleRetriever
     {
-        static readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
+        private bool testing = false;
+        private readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
+
+        /**********************************************************************/
+
+        public void SetTesting(bool setting)
+        {
+            this.testing = setting;
+        }
 
         /**********************************************************************/
 
@@ -46,16 +52,20 @@ namespace MedicApi.Services
                                         int max, int offset)
         {
             try
-            { 
-                var db = client.GetDatabase("dev-reports");
+            {
+                string dbName = this.testing ? "test-articles" : "articles";
 
-                var collections = db.GetCollection<StoredArticle>("reports");
+                var db = client.GetDatabase(dbName);
+
+                var collections = db.GetCollection<StoredArticle>("articles");
 
                 var articles = collections.Find(a =>
                     // date match
                     (
-                        a.date_of_publication_start <= end &&
-                        start <= a.date_of_publication_end
+                        a.reports.Any(r =>
+                            r.event_date_start <= end &&
+                            start <= r.event_date_end
+                        )
                     )
                     
                     &&
@@ -66,7 +76,10 @@ namespace MedicApi.Services
                         a.reports.Any(r =>
                             r.locations.Any(l =>
                                 l.country.ToLower().Contains(location) ||
-                                l.location.ToLower().Contains(location)
+                                l.location.ToLower().Contains(location) ||
+                                l.location_names.Any( n =>
+                                    n.ToLower().Contains(location)
+                                )
                             )
                         )
                     )
@@ -89,7 +102,7 @@ namespace MedicApi.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("EXCEPTION:\n" + e);
+                Console.WriteLine("Exception:\n" + e.Message);
                 return null;
             }
         }
@@ -97,6 +110,14 @@ namespace MedicApi.Services
         /**********************************************************************/
         /* Carries out type conversion, default value handling, normalisation */
         /* and reduces arguments to their maximum allowed values.             */
+        /*                                                                    */
+        /* start_date is converted to DateTime                                */
+        /* end_date is converted to DateTime                                  */
+        /* key_terms is split into a list of strings using a comma as the     */
+        /*   delimiter, and each string is trimmed and converted to lowercase */
+        /* location is converted to lowercase                                 */
+        /* max is converted to an integer                                     */
+        /* offset is converted to an integer                                  */
 
         private void ParseRawInput(string start_date,
                                    string end_date, string timezone,
@@ -148,7 +169,7 @@ namespace MedicApi.Services
         {
             if (timezone == "")
             {
-                timezone = "AEST";
+                timezone = "UTC";
             }
 
             return TimezoneUtils.ToTimeSpan(timezone);
@@ -156,16 +177,15 @@ namespace MedicApi.Services
 
         /**********************************************************************/
         /* Checks the raw parameters passed to the API. Arguments can be null */
-        /* indicating that no value was specified for the parameter.  Returns */
-        /* all errors encountered.                                            */
+        /* indicating that no value was specified for the parameter. Collects */
+        /* all errors in the given ApiGetArticlesError object.                */
 
-        public ApiGetArticlesError CheckRawInput(string start_date,
-                                      string end_date, string timezone,
-                                      string key_terms, string location,
-                                      string max, string offset)
+        public void CheckRawInput(ApiGetArticlesError e,
+                                  string start_date,
+                                  string end_date, string timezone,
+                                  string key_terms, string location,
+                                  string max, string offset)
         {
-            ApiGetArticlesError e = new ApiGetArticlesError();
-
             // clean the parameters
             CleanRawInput(start_date, end_date, timezone, key_terms, location,
                           max, offset, out start_date, out end_date, out timezone,
@@ -176,8 +196,6 @@ namespace MedicApi.Services
             CheckTimezone(e, timezone);
 
             CheckMaxAndOffset(e, max, offset);
-
-            return e;
         }
 
         /**********************************************************************/
@@ -276,14 +294,14 @@ namespace MedicApi.Services
         /**********************************************************************/
         /* Trims strings and replaces null strings with the empty string.     */
 
-        private static void CleanRawInput(string start_date,
-                                          string end_date, string timezone,
-                                          string key_terms, string location,
-                                          string max, string offset,
-                                          out string start_date_c,
-                                          out string end_date_c, out string timezone_c,
-                                          out string key_terms_c, out string location_c,
-                                          out string max_c, out string offset_c)
+        private void CleanRawInput(string start_date,
+                                   string end_date, string timezone,
+                                   string key_terms, string location,
+                                   string max, string offset,
+                                   out string start_date_c,
+                                   out string end_date_c, out string timezone_c,
+                                   out string key_terms_c, out string location_c,
+                                   out string max_c, out string offset_c)
         {
             start_date_c = CleanString(start_date);
             end_date_c = CleanString(end_date);
@@ -301,7 +319,7 @@ namespace MedicApi.Services
             offset_c = CleanString(offset);
         }
 
-        private static string CleanString(string s)
+        private string CleanString(string s)
         {
             if (s == null)
             {

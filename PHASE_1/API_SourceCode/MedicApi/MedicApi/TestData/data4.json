@@ -18,7 +18,7 @@
                     {
                         "country": "Italy",
                         "location": "Rome",
-                        "geonames_id": "12345",
+                        "geonames_id": 12345,
                         "location_names": [
                             "Italy",
                             "Rome"
@@ -27,7 +27,7 @@
                     {
                         "country": "Iran",
                         "location": "Tehran",
-                        "geonames_id": "23456",
+                        "geonames_id": 23456,
                         "location_names": [
                             "Iran",
                             "Tehran"
@@ -56,7 +56,7 @@
                     {
                         "country": "China",
                         "location": "Wuhan, Hubei Province",
-                        "geonames_id": "1791247",
+                        "geonames_id": 1791247,
                         "location_names": [
                             "China",
                             "Wuhan",
@@ -87,7 +87,7 @@
                     {
                         "country": "Australia",
                         "location": "Sydney, New South Wales",
-                        "geonames_id": "34567",
+                        "geonames_id": 34567,
                         "location_names": [
                             "Australia",
                             "Parramatta",
@@ -118,7 +118,7 @@
                     {
                         "country": "Australia",
                         "location": "Adelaide, South Australia",
-                        "geonames_id": "45678",
+                        "geonames_id": 45678,
                         "location_names": [
                             "Australia",
                             "Adelaide",
@@ -148,7 +148,7 @@
                     {
                         "country": "Australia",
                         "location": "Eastwood, New South Wales",
-                        "geonames_id": "56789",
+                        "geonames_id": 56789,
                         "location_names": [
                             "Australia",
                             "Eastwood",
@@ -179,7 +179,7 @@
                     {
                         "country": "United States",
                         "location": "Austin, Texas",
-                        "geonames_id": "54321",
+                        "geonames_id": 54321,
                         "location_names": [
                             "United States",
                             "USA",
@@ -211,7 +211,7 @@
                     {
                         "country": "United States",
                         "location": "San Francisco, California",
-                        "geonames_id": "65432",
+                        "geonames_id": 65432,
                         "location_names": [
                             "United States",
                             "USA",
@@ -243,7 +243,7 @@
                     {
                         "country": "Canada",
                         "location": "Sydney, Nova Scotia",
-                        "geonames_id": "76543",
+                        "geonames_id": 76543,
                         "location_names": [
                             "Canada",
                             "Sydney",
