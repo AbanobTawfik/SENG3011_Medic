@@ -59,7 +59,8 @@ namespace MedicApi.Controllers
         ///                     "locations":[
         ///                     {
         ///                         "country":"Uganda",
-        ///                         "location":"Kampala"
+        ///                         "location":"Kampala",
+        ///                         "geonames_id":"232422"
         ///                     }
         ///                     ]
         ///                 }
@@ -109,8 +110,8 @@ namespace MedicApi.Controllers
         [SwaggerExampleValue("start_date", "2016-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2021-01-01T00:00:00")]
         [SwaggerExampleValue("timezone", "UTC")]
-        [SwaggerExampleValue("key_terms", "Anthrax,Ebola,Coronavirus")]
-        [SwaggerExampleValue("location", "Sydney")]
+        [SwaggerExampleValue("key_terms", "Listeria")]
+        [SwaggerExampleValue("location", "Arizona")]
         [SwaggerExampleValue("offset", "0")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(ApiGetArticlesError), 400)]
