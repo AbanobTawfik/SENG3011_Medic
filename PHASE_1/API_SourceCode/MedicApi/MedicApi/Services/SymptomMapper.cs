@@ -150,7 +150,6 @@ namespace MedicApi.Services
         public List<string> HighestRank(List<string> symptoms)
         {
             var ret = new List<string>();
-            var currentSymptom = "NOTHING";
             var map = new Dictionary<string, int>();
             foreach (var key in base.GetKeys())
             {
@@ -167,7 +166,7 @@ namespace MedicApi.Services
             var max = map.Aggregate((l, r) => l.Value > r.Value ? l : r).Value;
             ret = map.Keys.Where(c => map[c] == max).ToList();
             // find all the maximums in map
-            return currentSymptom == "NOTHING" ? new List<string>() : ret;
+            return ret;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MedicApi.Services
         public LocationMapper(string baseDir)
         {
             LoadLocationMap(baseDir);
-            // var x = ExtractLocations("In Sydney, Wollongong, Arizona and New Zealand");
+            // var x = ExtractLocations("In Sydney, Wollongong and Los Angeles");
         }
 
         /*
@@ -100,10 +100,11 @@ namespace MedicApi.Services
                         isoMap[fields[0]] = country;
                         related[country] = new string[] { fields[0], fields[1] };
                         // map[country] = geonameid
-                        map[country] = Int32.Parse(fields[16]);
+                        if (!map.ContainsKey(country))
+                            map[country] = Int32.Parse(fields[16]);
                         if (!alt.ContainsKey(country))
                             alt[country] = new List<string>();
-                        alt[country].Add(fields[4]);
+                        alt[country].Add(country);
                     }
                 }
                 reader.Close();
@@ -132,9 +133,9 @@ namespace MedicApi.Services
                 var line = reader.ReadLine();
                 var fields = line.Split('\t');
                 var iso = fields[0].Substring(0, 2);
-                if (iso != countryCode) continue;
+                if (countryCode != null && iso != countryCode) continue;
 
-                var state = fields[1];
+                var state = (fields[1] != "") ? fields[1] : fields[2];
                 var geoId = Int32.Parse(fields[3]);
                 if (!map.ContainsKey(state))
                     map[state] = geoId;
@@ -142,7 +143,10 @@ namespace MedicApi.Services
                 var full = state + "," + isoMap[iso];
                 if (!alt.ContainsKey(state))
                     alt[state] = new List<string>();
-                alt[state].Add(full);
+                if (countryCode == null)
+                    alt[state].Add(full);
+                else
+                    alt[state].Insert(0, full);
                 map[full] = geoId;
             }
             reader.Close();
