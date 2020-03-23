@@ -105,7 +105,8 @@ namespace MedicApi.Services
 
         protected virtual StoredArticle ScrapeArticle(SyndicationItem item, HtmlDocument webPageHtml)
         {
-            var sourceUrl = item.Links[0].Uri.ToString();
+            var sourceUrl = "https://www.cdc.gov/listeria/outbreaks/soft-cheese-03-17/index.html";
+            //var sourceUrl = item.Links[0].Uri.ToString();
             var articleMainText = GetMainText(webPageHtml, sourceUrl);
             var sentences = SentencizeMainText(articleMainText);
             var locationUrl = new Uri(Regex.Replace(sourceUrl, @"/index.html*$", "/map.html"));
