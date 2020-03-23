@@ -88,13 +88,16 @@ namespace MedicApi.Services
             var ret = new List<StoredArticle>();
             var webClient = new HtmlWeb();
             var jsonClient = new WebClient();
+            var x = 0;
             foreach (var item in feed.Items) // take the first 3 articles (for now)
             {
+                x++;
                 if (!ValidArticle(item)) continue;
                 var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
-                if (!Regex.Match(sourceUrl.ToString(), "/outbreaks/").Success) { continue; }
+                if (Regex.Match(sourceUrl.ToString(), "/basic_information/").Success) { continue; }
+                if (Regex.Match(sourceUrl.ToString(), "/exposure/").Success) { continue; }
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
 
                 Console.WriteLine(item.Links[0].Uri);
@@ -510,7 +513,7 @@ namespace MedicApi.Services
 
         protected virtual bool ValidArticle(SyndicationItem item)
         {
-            return item.Links[0].Uri.Query != "?m=285676&c=403352"; // skip coronavirus page
+            return item.Links[0].Uri.Query != "?m=285676&c=403352" && item.Links[0].Uri.Query != "?m=285676&c=347605";
         }
 
     }
