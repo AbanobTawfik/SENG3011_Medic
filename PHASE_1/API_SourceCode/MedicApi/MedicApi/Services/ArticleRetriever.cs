@@ -75,10 +75,10 @@ namespace MedicApi.Services
                         location == "" ||
                         a.reports.Any(r =>
                             r.locations.Any(l =>
-                                l.country.ToLower().Contains(location) ||
-                                l.location.ToLower().Contains(location) ||
+                                l.country.ToLower() == location ||
+                                l.location.ToLower() == location ||
                                 l.location_names.Any(n =>
-                                    n.ToLower().Contains(location)
+                                    n.ToLower() == location
                                 )
                             )
                         )
