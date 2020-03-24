@@ -1,0 +1,288 @@
+Test data1-01
+# requested date range is earlier than all events (in that year)
+[32mTest passed[0m
+
+Test data1-02
+# requested date range is later than all events (in that year)
+[32mTest passed[0m
+
+Test data1-03
+# requested date range is between events
+[32mTest passed[0m
+
+Test data1-04
+# requested date range is completely within event date range
+[32mTest passed[0m
+
+Test data1-05
+# requested date range completely envelops event date range
+[32mTest passed[0m
+
+Test data1-06
+# requested date range overlaps with beginning of event date range
+[32mTest passed[0m
+
+Test data1-07
+# requested date range overlaps with end of event date range
+[32mTest passed[0m
+
+Test data1-08
+# getting multiple articles 1
+[32mTest passed[0m
+
+Test data1-09
+# getting multiple articles 2
+[32mTest passed[0m
+
+Test data1-10
+# an article with multiple reports
+[32mTest passed[0m
+
+Test data1-11
+# an event where only the year and month are known
+[32mTest passed[0m
+
+Test data1-12
+# an event where only the year is known
+[32mTest passed[0m
+
+Test data2-01
+# no timezone specified - defaults to UTC
+[32mTest passed[0m
+
+Test data2-02
+# specifying UTC
+[32mTest passed[0m
+
+Test data2-03
+# specifying another ±00:00 timezone
+[32mTest passed[0m
+
+Test data2-04
+# specifying a −01:00 timezone and case insensitivity
+[32mTest passed[0m
+
+Test data2-05
+# specifying a +01:00 timezone and case insensitivity
+[32mTest passed[0m
+
+Test data2-06
+# missing an event due to timezone
+[32mTest passed[0m
+
+Test data2-07
+# empty timezones are ignored
+[32mTest passed[0m
+
+Test data3-01
+# no key terms provided
+[32mTest passed[0m
+
+Test data3-02
+# searching for a general key term 1
+[32mTest passed[0m
+
+Test data3-03
+# searching for a general key term 2
+[32mTest passed[0m
+
+Test data3-04
+# searching for a specific key term 1
+[32mTest passed[0m
+
+Test data3-05
+# searching for a specific key term 2
+[32mTest passed[0m
+
+Test data3-06
+# searching for multiple key terms 1
+[32mTest passed[0m
+
+Test data3-07
+# searching for multiple key terms 2
+[32mTest passed[0m
+
+Test data3-08
+# searching for multiple key terms 3
+[32mTest passed[0m
+
+Test data3-09
+# searching for multiple key terms 4
+[32mTest passed[0m
+
+Test data3-10
+# searching for multiple key terms 5
+[32mTest passed[0m
+
+Test data3-11
+# test that empty search terms are ignored
+[32mTest passed[0m
+
+Test data3-12
+# case insensitivity and space trimming
+[32mTest passed[0m
+
+Test data4-01
+# searching for a location that doesn't exist
+[32mTest passed[0m
+
+Test data4-02
+# searching for a location with no associated reports
+[32mTest passed[0m
+
+Test data4-03
+# searching for a country with one associated report 1
+[32mTest passed[0m
+
+Test data4-04
+# searching for a city with one associated report 1
+[32mTest passed[0m
+
+Test data4-05
+# searching for a city with one associated report 2
+[32mTest passed[0m
+
+Test data4-06
+# searching for a province
+[32mTest passed[0m
+
+Test data4-07
+# searching for a location name that occurs in more than one location
+[32mTest passed[0m
+
+Test data4-08
+# searching for an australian state
+[32mTest passed[0m
+
+Test data4-09
+# searching for australia
+[32mTest passed[0m
+
+Test data4-10
+# searching for a us state
+[32mTest passed[0m
+
+Test data4-11
+# searching for the us
+[32mTest passed[0m
+
+Test data4-12
+# searching for a country with one associated report 2
+[32mTest passed[0m
+
+Test data4-13
+# empty locations are ignored
+[32mTest passed[0m
+
+Test data5-01
+# max is 1
+[32mTest passed[0m
+
+Test data5-02
+# max is greater than the number of articles satisfying the criteria
+[32mTest passed[0m
+
+Test data5-03
+# check default value of max is 25
+[32mTest passed[0m
+
+Test data5-04
+# check that max is capped at 50, no matter what the user enters
+[32mTest passed[0m
+
+Test data5-05
+# offset is 0 when there are 10 matching articles
+[32mTest passed[0m
+
+Test data5-06
+# offset is 5 when there are 10 matching articles
+[32mTest passed[0m
+
+Test data5-07
+# offset is 9 when there are 10 matching articles
+[32mTest passed[0m
+
+Test data5-08
+# offset is 10 when there are 10 matching articles
+[32mTest passed[0m
+
+Test data5-09
+# testing pagination 1
+[32mTest passed[0m
+
+Test data5-10
+# testing pagination 2
+[32mTest passed[0m
+
+Test data5-11
+# testing pagination 3
+[32mTest passed[0m
+
+Test data5-12
+# testing pagination 4
+[32mTest passed[0m
+
+Test data5-13
+# testing pagination 5
+[32mTest passed[0m
+
+Test data6-01
+# no start and end date provided
+[32mTest passed[0m
+
+Test data6-02
+# valid start date provided, no end date
+[32mTest passed[0m
+
+Test data6-03
+# valid end date provided, no start date
+[32mTest passed[0m
+
+Test data6-04
+# valid dates provided, but end date is before start date
+[32mTest passed[0m
+
+Test data6-05
+# invalid date 1
+[32mTest passed[0m
+
+Test data6-06
+# invalid date 2
+[32mTest passed[0m
+
+Test data6-07
+# invalid date 3
+[32mTest passed[0m
+
+Test data6-08
+# invalid date 4
+[32mTest passed[0m
+
+Test data6-09
+# ambiguous timezone abbreviation
+[32mTest passed[0m
+
+Test data6-10
+# unknown timezone
+[32mTest passed[0m
+
+Test data6-11
+# invalid limit 1
+[32mTest passed[0m
+
+Test data6-12
+# invalid limit 2
+[32mTest passed[0m
+
+Test data6-13
+# invalid offset 1
+[32mTest passed[0m
+
+Test data6-14
+# invalid offset 2
+[32mTest passed[0m
+
+Test data6-15
+# many invalid parameters
+[32mTest passed[0m
+
