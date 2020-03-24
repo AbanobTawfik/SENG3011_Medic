@@ -15,6 +15,8 @@ namespace MedicApi.Swashbuckle
                 operation.Parameters[0].Required = true;
                 operation.Parameters[1].Required = true;
                 operation.Parameters[2].Schema.Default = new OpenApiString("UTC");
+                operation.Parameters[5].Schema.Type = "integer";
+                operation.Parameters[6].Schema.Type = "integer";
             }
         }
     }

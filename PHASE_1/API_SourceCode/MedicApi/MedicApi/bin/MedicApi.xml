@@ -4,10 +4,11 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Finds articles containing disease reports that match the given criteria.
             </summary>
+            <remarks>
             API Usage Information:<br/>
             
             This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
@@ -20,7 +21,7 @@
             All other fields for query is optional and determines what is returned.<br/>
             <heading>How it Works!</heading>
             Example Query:<br/>
-            <remarks>
+            
             Sample request:
             
                 GET /GetArticles?start_date=2016-01-01T00:00:00&amp;end_date=2021-01-01T00:00:00&amp;key_terms=Listeria&amp;location=Arizona

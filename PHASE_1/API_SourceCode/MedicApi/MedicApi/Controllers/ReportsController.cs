@@ -25,6 +25,7 @@ namespace MedicApi.Controllers
         /// <summary>
         /// Finds articles containing disease reports that match the given criteria.
         /// </summary>
+        /// <remarks>
         /// API Usage Information:<br/>
         /// 
         /// This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
@@ -37,7 +38,7 @@ namespace MedicApi.Controllers
         /// All other fields for query is optional and determines what is returned.<br/>
         /// <heading>How it Works!</heading>
         /// Example Query:<br/>
-        /// <remarks>
+        /// 
         /// Sample request:
         /// 
         ///     GET /GetArticles?start_date=2016-01-01T00:00:00&amp;end_date=2021-01-01T00:00:00&amp;key_terms=Listeria&amp;location=Arizona
@@ -116,10 +117,8 @@ namespace MedicApi.Controllers
         [Route("GetArticles")]
         [SwaggerExampleValue("start_date", "2016-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2021-01-01T00:00:00")]
-        [SwaggerExampleValue("timezone", "UTC")]
         [SwaggerExampleValue("key_terms", "Listeria")]
         [SwaggerExampleValue("location", "Arizona")]
-        [SwaggerExampleValue("offset", "0")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(ApiGetArticlesError), 400)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -130,21 +129,19 @@ namespace MedicApi.Controllers
                                         [FromQuery]string timezone,
                                         [FromQuery]string key_terms,
                                         [FromQuery]string location,
-                                        [FromQuery]int max = 25,
-                                        [FromQuery]int offset = 0)
+                                        [FromQuery]string max = "25",
+                                        [FromQuery]string offset = "0")
         {
             DateTime accessed_time = DateTime.Now;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var maxStr = max.ToString(); var offStr = offset.ToString();
-
-            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, maxStr, offStr);
+            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, max, offset);
 
             // check for errors
             var err = new ApiGetArticlesError(accessed_time);
             _db.CheckRawInput(err, start_date, end_date, timezone,
-                              key_terms, location, maxStr, offStr);
+                              key_terms, location, max, offset);
             if (err.NumErrors() > 0)
             {
                 stopWatch.Stop();
@@ -156,7 +153,7 @@ namespace MedicApi.Controllers
             // retrieve articles
             List<Article> articles = _db.Retrieve(start_date, end_date,
                                                   timezone, key_terms, location,
-                                                  maxStr, offStr);
+                                                  max, offset);
             var res = new ApiGetArticlesResponse(accessed_time, articles);
             stopWatch.Stop();
             var TimeTakenForSuccess = stopWatch.Elapsed.ToString();
