@@ -44,13 +44,13 @@ namespace MedicApi.Controllers
         ///       },
         ///       "articles": [
         ///         {
-        ///           "url":"https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html",
-        ///           "reports":[
+        ///           "url": "https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html",
+        ///           "reports": [
         ///             {
-        ///               "diseases":[
+        ///               "diseases": [
         ///                 "listeriosis"
         ///               ],
-        ///               "syndromes":[
+        ///               "syndromes": [
         ///                 "Encephalitis"
         ///               ],
         ///               "event_date": "2016-11-23 xx:xx:xx to 2019-12-13 xx:xx:xx",
@@ -69,12 +69,14 @@ namespace MedicApi.Controllers
         ///               ]
         ///             }
         ///           ],
-        ///           "headline":"Enoki Mushrooms - Listeria Infections",
-        ///           "main_text":"36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. ... Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
-        ///           "date_of_publication":"2020-03-01 17:40:00"
+        ///           "headline": "Enoki Mushrooms - Listeria Infections",
+        ///           "main_text": "36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. ... Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
+        ///           "date_of_publication": "2020-03-01 17:40:00"
         ///         }
         ///       ]
         ///     }
+        /// 
+        /// Hi Kevin
         /// 
         /// </remarks>
         /// 
