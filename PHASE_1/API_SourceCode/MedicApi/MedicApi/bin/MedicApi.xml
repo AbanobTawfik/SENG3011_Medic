@@ -59,6 +59,18 @@
                   ]
                 }
             
+            <b>Output Description</b>
+            <p>Most of the fields are self-explanatory. Some are explained below:</p>
+            <big>
+                <ul>
+                    <li><p><b>reports</b> - a list of report objects, each containing data about a case of a disease or syndrome mentioned in the article.</p></li>
+                    <li><p><b>diseases</b> - a list of diseases associated with the report, each coming from <a href="https://api.myjson.com/bins/smaf4" target="_blank">this list</a>.</p></li>
+                    <li><p><b>syndromes</b> - a list of syndromes associated with the report, each coming from <a href="https://api.myjson.com/bins/dk0tc" target="_blank">this list</a>.</p></li>
+                    <li><p><b>event_date</b> - the day or range of days over which people were reported to have contracted the reported disease/syndrome.</p></li>
+                    <li><p><b>locations</b> - a list of locations where people were reported to have contracted the disease/syndrome.</p></li>
+                </ul>
+            </big>
+            
             </remarks>
             
             <param name="start_date">
