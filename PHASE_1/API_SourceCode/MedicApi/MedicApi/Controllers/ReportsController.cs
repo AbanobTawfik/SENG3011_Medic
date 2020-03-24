@@ -76,8 +76,6 @@ namespace MedicApi.Controllers
         ///       ]
         ///     }
         /// 
-        /// Hi Kevin
-        /// 
         /// </remarks>
         /// 
         /// <param name="start_date">
