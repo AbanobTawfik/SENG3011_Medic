@@ -21,5 +21,33 @@ namespace MedicApi.Models
                 geonames_id = geonames_id,
             };
         }
+
+        public override bool Equals(object o)
+        {
+            var item = o as StoredPlace;
+            if (item == null)
+            {
+                return false;
+            }
+            return item.country == this.country && item.geonames_id == this.geonames_id 
+                    && item.location == this.location;
+        }
+
+        public override int GetHashCode()
+        {
+            // Note: *not* StringComparer; EqualityComparer<T>
+            // copes with null; StringComparer doesn't.
+            var comparer = EqualityComparer<string>.Default;
+
+            // Unchecked to allow overflow, which is fine
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 31 + comparer.GetHashCode(country);
+                hash = hash * 31 + comparer.GetHashCode(geonames_id.ToString());
+                hash = hash * 31 + comparer.GetHashCode(location);
+                return hash;
+            }
+        }
     }
 }

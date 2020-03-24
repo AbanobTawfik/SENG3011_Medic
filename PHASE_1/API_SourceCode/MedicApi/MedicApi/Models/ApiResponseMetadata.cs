@@ -6,8 +6,8 @@ namespace MedicApi.Models
     {
         public class DataSource
         {
-            public readonly string name = "CDC";
-            public readonly string url = "https://www.cdc.gov/outbreaks/";
+            public string name { get; set; } = "CDC";
+            public string url { get; set; } = "https://www.cdc.gov/outbreaks/";
         }
 
         public ApiResponseMetadata(DateTime accessed_time)

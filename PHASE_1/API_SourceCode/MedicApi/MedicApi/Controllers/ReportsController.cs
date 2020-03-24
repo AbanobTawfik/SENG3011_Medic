@@ -4,8 +4,8 @@ using System.Diagnostics;
 using MedicApi.Models;
 using MedicApi.Services;
 using MedicApi.Swashbuckle;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Swashbuckle.AspNetCore.Examples;
 
 namespace MedicApi.Controllers
 {
@@ -23,9 +23,9 @@ namespace MedicApi.Controllers
         }
 
         /// <summary>
-        ///     Retrieves a list of articles from CDC website that match the given criteria.
+        /// Finds articles containing disease reports that match the given criteria.
         /// </summary>
-        /// <remarks>API Usage Information:<br/>
+        /// API Usage Information:<br/>
         /// 
         /// This endpoint will act as a search engine for querying outbreaks on the CDC site. <br/>
         /// Query parameters will be extracted from the request and used to filter through the database and retrieve articles that match the query. <br/>
@@ -37,105 +37,114 @@ namespace MedicApi.Controllers
         /// All other fields for query is optional and determines what is returned.<br/>
         /// <heading>How it Works!</heading>
         /// Example Query:<br/>
+        /// <remarks>
         /// Sample request:
         /// 
-        /// /GetArticles?start_date=2017-01-01T00:00:00&amp;end_date=2017-12-31T23: 59:59&amp;key_terms=Ebola&amp;location=Democratic%20Republic%20of%20the%20Congo
+        ///     GET /GetArticles?start_date=2016-01-01T00:00:00&amp;end_date=2021-01-01T00:00:00&amp;key_terms=Listeria&amp;location=Arizona
         /// 
-        /// Return:
-        /// [
-        ///    {
-        ///       "url":"url1",
-        ///       "reports":[
-        ///          {
+        /// Sample response:
+        /// 
+        ///     [
+        ///       {
+        ///         "url":"https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html",
+        ///         "reports":[
+        ///           {
         ///             "diseases":[
-        ///                "ebola haemorrhagic fever"
+        ///               "listeriosis"
         ///             ],
         ///             "syndromes":[
-        ///                "Haemorrhagic fever"
+        ///               "Encephalitis"
         ///             ],
-        ///             "event_date":"2019-01-01 00:00:00",
-        ///             "locations":[
-        ///                {
-        ///                   "country":"Uganda",
-        ///                   "location":"Kampala"
-        ///                }
+        ///               "event_date": "2016-11-23 xx:xx:xx to 2019-12-13 xx:xx:xx",
+        ///             "locations": [
+        ///               {
+        ///                 "country": "United States",
+        ///                 "location": "Arizona",
+        ///                 "geonames_id": 5551752
+        ///               },
+        ///               ...
+        ///               {
+        ///                 "country": "United States",
+        ///                 "location": "Virginia",
+        ///                 "geonames_id": 6254928
+        ///               }
         ///             ]
-        ///          }
-        ///       ], 
-        ///       "headline":"Headline 1",
-        ///       "main_text":"This is the main text for article 1.",
-        ///       "date_of_publication":"2019-01-02 xx:xx:xx"
-        ///    }
-        /// ]
-        /// 
+        ///           }
+        ///         ], 
+        ///         "headline":"Enoki Mushrooms - Listeria Infections",
+        ///         "main_text":"36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states.
+        ///                      Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
+        ///         "date_of_publication":"2020-03-01 17:40:00"
+        ///       }
+        ///     ]
         /// 
         /// </remarks>
         /// 
         /// <param name="start_date">
-        ///     REQUIRED Starting date & time of the report event dates.
-        ///     <example>“yyyy-MM-ddTHH:mm:ss”</example>
+        ///     The earliest date that a report can be recorded on.
+        ///     <example>Format: “yyyy-MM-ddTHH:mm:ss”</example>
         /// </param>
         /// 
         /// <param name="end_date">
-        ///     REQUIRED Ending date & time of the report event dates.
-        ///     “yyyy-MM-ddTHH:mm:ss”
+        ///     The latest date that a report can be recorded on.
+        ///     Format: “yyyy-MM-ddTHH:mm:ss”
         /// </param>
         /// 
         /// <param name="timezone">
-        ///     The time zone associated with the given start and end dates in CAPS.
-        ///     Default: “UTC”
+        ///     The timezone associated with the given start and end dates in CAPS.
         /// </param>
         /// 
         /// <param name="key_terms">
-        ///     Keywords for Search.
-        ///     Example: “Anthrax,Ebola”
+        ///     Key terms to search for, in a comma-separated string.
         /// </param>
         /// 
         /// <param name="location">
-        ///     The name of a location.
-        ///     Example: “Sydney”
+        ///     The location a report can refer to.
         /// </param>
         /// 
         /// <param name="max">
-        ///     Max number of reports to search. (default: 25, maximum: 50)
+        ///     A limit on the number of articles returned (maximum: 50).
         /// </param>
         /// 
         /// <param name="offset">
-        ///     The number of the first report returned. (default: 0)
+        ///     The number of entries to skip in the list of returned articles.
         /// </param>
         /// 
-        /// <response code="200">Successful Query with Response</response>
-        /// <response code="400">Invalid Input Parameters</response>
-        /// <response code="500">Internal Server Error. Try Again Later</response>
-        /// <response code="404">Not Found</response>
-
+        /// <response code="200">Successful query</response>
+        /// <response code="400">Invalid input parameters</response>
+        /// <response code="500">Internal server error</response>
         [Route("GetArticles")]
-        [SwaggerExampleValue("start_date", "2015-01-01T00:00:00")]
-        [SwaggerExampleValue("end_date", "2020-01-01T00:00:00")]
+        [SwaggerExampleValue("start_date", "2016-01-01T00:00:00")]
+        [SwaggerExampleValue("end_date", "2021-01-01T00:00:00")]
         [SwaggerExampleValue("timezone", "UTC")]
-        [SwaggerExampleValue("key_terms", "anthrax,ebola,coronavirus")]
+        [SwaggerExampleValue("key_terms", "Listeria")]
+        [SwaggerExampleValue("location", "Arizona")]
+        [SwaggerExampleValue("offset", "0")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
-        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ApiGetArticlesError), 400)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces("application/json")]
         [HttpGet]
         public ActionResult GetArticles([FromQuery]string start_date,
                                         [FromQuery]string end_date,
                                         [FromQuery]string timezone,
                                         [FromQuery]string key_terms,
                                         [FromQuery]string location,
-                                        [FromQuery]string max,
-                                        [FromQuery]string offset)
+                                        [FromQuery]int max = 25,
+                                        [FromQuery]int offset = 0)
         {
             DateTime accessed_time = DateTime.Now;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, max, offset);
+            var maxStr = max.ToString(); var offStr = offset.ToString();
+
+            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, maxStr, offStr);
 
             // check for errors
             var err = new ApiGetArticlesError(accessed_time);
             _db.CheckRawInput(err, start_date, end_date, timezone,
-                              key_terms, location, max, offset);
+                              key_terms, location, maxStr, offStr);
             if (err.NumErrors() > 0)
             {
                 stopWatch.Stop();
@@ -147,7 +156,7 @@ namespace MedicApi.Controllers
             // retrieve articles
             List<Article> articles = _db.Retrieve(start_date, end_date,
                                                   timezone, key_terms, location,
-                                                  max, offset);
+                                                  maxStr, offStr);
             var res = new ApiGetArticlesResponse(accessed_time, articles);
             stopWatch.Stop();
             var TimeTakenForSuccess = stopWatch.Elapsed.ToString();
