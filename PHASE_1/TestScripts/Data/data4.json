@@ -90,7 +90,7 @@
                         "geonames_id": "34567",
                         "location_names": [
                             "Australia",
-                            "Parramatta",
+                            "Sydney",
                             "New South Wales",
                             "NSW"
                         ]
@@ -147,11 +147,11 @@
                 "locations": [
                     {
                         "country": "Australia",
-                        "location": "Eastwood, New South Wales",
+                        "location": "Newcastle, New South Wales",
                         "geonames_id": "56789",
                         "location_names": [
                             "Australia",
-                            "Eastwood",
+                            "Newcastle",
                             "New South Wales",
                             "NSW"
                         ]
