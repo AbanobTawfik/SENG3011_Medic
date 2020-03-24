@@ -85,13 +85,14 @@ namespace MedicApi.Controllers
         /// </param>
         /// 
         /// <param name="timezone">
-        ///     <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations">this list</a>.</p>
+        ///     <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations" target="_blank">this list</a>.</p>
         ///     <p><b>Example:</b> Central Standard Time</p>
         ///     <p><b>Example:</b> AEDT</p>
         /// </param>
         /// 
         /// <param name="key_terms">
         ///     <p align="justify">List of key terms to search for in a comma-separated string. All articles returned will match at least one of the given terms. Leave blank to retrieve all articles matching other specified criteria.</p>
+        ///     <p><b>Example:</b> E. Coli</p>
         ///     <p><b>Example:</b> Listeria,Salmonella</p>
         ///     <p><b>Example:</b> Virus,Outbreak</p>
         /// </param>
@@ -117,9 +118,9 @@ namespace MedicApi.Controllers
         [Route("GetArticles")]
         [SwaggerExampleValue("start_date", "2016-01-01T00:00:00")]
         [SwaggerExampleValue("end_date", "2021-01-01T00:00:00")]
-        [SwaggerExampleValue("timezone", "UTC")]
         [SwaggerExampleValue("key_terms", "Listeria")]
         [SwaggerExampleValue("location", "Arizona")]
+        [SwaggerExampleValue("max", "25")]
         [SwaggerExampleValue("offset", "0")]
         [ProducesResponseType(typeof(ApiGetArticlesResponse), 200)]
         [ProducesResponseType(typeof(ApiGetArticlesError), 400)]
@@ -131,21 +132,19 @@ namespace MedicApi.Controllers
                                         [FromQuery]string timezone,
                                         [FromQuery]string key_terms,
                                         [FromQuery]string location,
-                                        [FromQuery]int max = 25,
-                                        [FromQuery]int offset = 0)
+                                        [FromQuery]string max,
+                                        [FromQuery]string offset)
         {
             DateTime accessed_time = DateTime.Now;
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var maxStr = max.ToString(); var offStr = offset.ToString();
-
-            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, maxStr, offStr);
+            this._logger.LogReceive(start_date, end_date, timezone, key_terms, location, max, offset);
 
             // check for errors
             var err = new ApiGetArticlesError(accessed_time);
             _db.CheckRawInput(err, start_date, end_date, timezone,
-                              key_terms, location, maxStr, offStr);
+                              key_terms, location, max, offset);
             if (err.NumErrors() > 0)
             {
                 stopWatch.Stop();
@@ -157,7 +156,7 @@ namespace MedicApi.Controllers
             // retrieve articles
             List<Article> articles = _db.Retrieve(start_date, end_date,
                                                   timezone, key_terms, location,
-                                                  maxStr, offStr);
+                                                  max, offset);
             var res = new ApiGetArticlesResponse(accessed_time, articles);
             stopWatch.Stop();
             var TimeTakenForSuccess = stopWatch.Elapsed.ToString();

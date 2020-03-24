@@ -4,7 +4,7 @@
         <name>MedicApi</name>
     </assembly>
     <members>
-        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+        <member name="M:MedicApi.Controllers.ReportsController.GetArticles(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Finds articles containing disease reports that match the given criteria.
             </summary>
@@ -68,13 +68,14 @@
             </param>
             
             <param name="timezone">
-                <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations">this list</a>.</p>
+                <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations" target="_blank">this list</a>.</p>
                 <p><b>Example:</b> Central Standard Time</p>
                 <p><b>Example:</b> AEDT</p>
             </param>
             
             <param name="key_terms">
                 <p align="justify">List of key terms to search for in a comma-separated string. All articles returned will match at least one of the given terms. Leave blank to retrieve all articles matching other specified criteria.</p>
+                <p><b>Example:</b> E. Coli</p>
                 <p><b>Example:</b> Listeria,Salmonella</p>
                 <p><b>Example:</b> Virus,Outbreak</p>
             </param>
