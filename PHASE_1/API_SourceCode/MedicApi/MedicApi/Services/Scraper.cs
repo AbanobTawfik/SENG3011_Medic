@@ -48,7 +48,9 @@ namespace MedicApi.Services
             {
                 var db = client.GetDatabase("articles");
                 var collections = db.GetCollection<StoredArticle>("articles");
-                List<StoredArticle> articles = ScrapeRSS(url);
+                var articles = new NewsroomScraper(_diseaseMapper, _syndromeMapper,
+                    _symptomMapper, _keywordsMapper, _locationMapper, _conjunctions).ScrapeRSS();
+                articles.AddRange(ScrapeRSS());
 
                 if (storeArticles)
                 {
@@ -79,9 +81,9 @@ namespace MedicApi.Services
          * Returns a list of Articles from a given RSS feed url.
          * Currently returns a string for debugging.
          */
-        public List<StoredArticle> ScrapeRSS(string url)
+        public List<StoredArticle> ScrapeRSS()
         {
-            var reader = XmlReader.Create(url);
+            var reader = XmlReader.Create(rssUrl);
             var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
@@ -96,12 +98,15 @@ namespace MedicApi.Services
                 var articleId = HttpUtility.ParseQueryString(item.Links[0].Uri.Query).Get("c");
                 var articleJson = jsonClient.DownloadString("https://tools.cdc.gov/api/v2/resources/media/" + articleId + "?fields=contentUrl,dateModified,datePublished,sourceUrl");
                 var sourceUrl = item.Links[0].Uri = new Uri(Regex.Match(articleJson, @"\""sourceUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
+                item.LastUpdatedTime = DateParser.ParseISOStr(Regex.Match(articleJson, @"\""dateModified""\s*:\s*""([^""]*)""").Groups[1].Value);
                 if (Regex.Match(sourceUrl.ToString(), "/basic_information/").Success) { continue; }
                 if (Regex.Match(sourceUrl.ToString(), "/exposure/").Success) { continue; }
                 var contentHtml = webClient.Load(Regex.Match(articleJson, @"\""contentUrl""\s*:\s*""([^""]*)""").Groups[1].Value);
 
                 Console.WriteLine(item.Links[0].Uri);
-                ret.Add(ScrapeArticle(item, contentHtml));
+                var article = ScrapeArticle(item, contentHtml);
+                if (article != null)
+                    ret.Add(article);
             }
             jsonClient.Dispose();
             return ret;
@@ -122,7 +127,7 @@ namespace MedicApi.Services
             {
                 url = sourceUrl,
                 date_of_publication_start = item.PublishDate.UtcDateTime,
-                date_of_publication_end = item.PublishDate.UtcDateTime,
+                date_of_publication_end = item.LastUpdatedTime.UtcDateTime,
                 date_of_publication_str = item.PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 headline = item.Title.Text,
                 main_text = articleMainText,
@@ -180,7 +185,7 @@ namespace MedicApi.Services
             return keywords;
         }
 
-        private void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool storeOriginal)
+        protected void AnalyseSentenceForKeyWords(string sentence, Mapper mapper, List<string> list, bool storeOriginal)
         {
             var keyWordList = mapper.AllReferences();
             if (!storeOriginal)
