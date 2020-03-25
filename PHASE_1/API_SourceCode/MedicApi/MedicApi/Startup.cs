@@ -64,7 +64,7 @@ namespace MedicApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Medics CDC Articles API",
-                    Description = "<div align=\"justify\">This API is developed for a new system that automates the extraction of disease outbreak data from the US Department of Health’s Centers for Disease Control and Prevention (CDC) website.<br/>Access this API at seng3011medics.azurewebsites.net/api/reports/GetArticles with the various input parameters per definitions below.</div>",
+                    Description = "<div align=\"justify\">This API is developed for a new system that automates the extraction of disease outbreak data from the US Department of Health’s Centers for Disease Control and Prevention (CDC) website.<br/>Access this API at <b>seng3011medics.azurewebsites.net/api/reports/GetArticles</b> with the various input parameters per definitions below.</div>",
                     Version = "v1"
                 });
                 c.OperationFilter<AddExampleValues>();
@@ -90,12 +90,15 @@ namespace MedicApi
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core API");
+                c.InjectStylesheet("/swagger-ui/custom.css");
             });
         }
     }

@@ -17,6 +17,7 @@
     <None Remove="Resources\admin1CodesASCII.txt" />
     <None Remove="Resources\countryInfo.txt" />
     <None Remove="Resources\style.css" />
+    <None Remove="Resources\swagger-custom.css" />
     <None Remove="Resources\world-cities.txt" />
   </ItemGroup>
 

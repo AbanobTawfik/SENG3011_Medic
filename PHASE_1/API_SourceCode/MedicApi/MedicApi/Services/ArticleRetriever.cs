@@ -94,6 +94,7 @@ namespace MedicApi.Services
                         )
                     )
                 )
+                .SortBy(a => a.date_of_publication_start)
                 .Skip(offset)
                 .Limit(max)
                 .ToList();

@@ -27,6 +27,10 @@ namespace MedicApi.Controllers
         /// </summary>
         /// 
         /// <remarks>
+        /// The resulting articles will be returned in ascending order of their publication date.
+        /// 
+        /// <b>Example Request/Response</b>
+        /// 
         /// Sample request:
         /// 
         ///     GET /GetArticles?start_date=2016-01-01T00%3A00%3A00&amp;end_date=2021-01-01T00%3A00%3A00&amp;key_terms=Listeria&amp;location=Arizona
@@ -70,23 +74,29 @@ namespace MedicApi.Controllers
         ///             }
         ///           ],
         ///           "headline": "Enoki Mushrooms - Listeria Infections",
-        ///           "main_text": "36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. ... Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
+        ///           "main_text": "36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...",
         ///           "date_of_publication": "2020-03-01 17:40:00"
         ///         }
         ///       ]
         ///     }
         /// 
-        /// <b>Output Description</b>
-        /// <p>Most of the fields are self-explanatory. Some are explained below:</p>
-        /// <big>
-        ///     <ul>
-        ///         <li><p><b>reports</b> - a list of report objects, each containing data about a case of a disease or syndrome mentioned in the article.</p></li>
-        ///         <li><p><b>diseases</b> - a list of diseases associated with the report, each coming from <a href="https://api.myjson.com/bins/smaf4" target="_blank">this list</a>.</p></li>
-        ///         <li><p><b>syndromes</b> - a list of syndromes associated with the report, each coming from <a href="https://api.myjson.com/bins/dk0tc" target="_blank">this list</a>.</p></li>
-        ///         <li><p><b>event_date</b> - the day or range of days over which people were reported to have contracted the reported disease/syndrome.</p></li>
-        ///         <li><p><b>locations</b> - a list of locations where people were reported to have contracted the disease/syndrome.</p></li>
-        ///     </ul>
-        /// </big>
+        /// <br/>
+        /// <b>Description of Output Fields</b>
+        /// <ul align="justify">
+        ///     <li><p><b>url</b> - the URL of the article.</p></li>
+        ///     <li>
+        ///         <p><b>reports</b> - a list of report objects, each containing information about a <i>case</i> of a disease or syndrome mentioned in the article. Report objects contain these fields:</p>
+        ///         <ul>
+        ///             <li><p><b>diseases</b> - a list of possible diseases associated with the case. All of the diseases come from <a href="https://api.myjson.com/bins/smaf4" target="_blank" style="text-decoration: none;" >this list</a>.</p></li>
+        ///             <li><p><b>syndromes</b> - a list of syndromes associated with the case. All of the syndromes come from <a href="https://api.myjson.com/bins/dk0tc" target="_blank" style="text-decoration: none;" >this list</a>.</p></li>
+        ///             <li><p><b>event_date</b> - the date or range of dates over which the case occurred, formatted as either "yyyy-MM-dd HH:mm:ss" if the case occurred over a specific year/month/day/time or "yyyy-MM-dd HH:mm:ss to yyyy-MM-dd HH:mm:ss" if the case occurred over a range of dates, with unknown date components replaced with "xx". If nothing is known about the date, this will be an empty string.</p></li>
+        ///             <li><p><b>locations</b> - a list of location objects containing information about all locations mentioned in the article referring to the case. Location objects contain fields for the <b>country</b>, the <b>location</b> within the country (e.g., a city, state and/or province), and the GeoNames ID of the location (<b>geonames_id</b>).</p></li>
+        ///         </ul>
+        ///     </li>
+        ///     <li><p><b>headline</b> - the headline of the article.</p></li>
+        ///     <li><p><b>main_text</b> - the main body of the article text.</p></li>
+        ///     <li><p><b>date_of_publication</b> - the date the article was published, formatted as "yyyy-MM-dd HH:mm:ss".</p></li>
+        /// </ul>
         /// 
         /// </remarks>
         /// 
@@ -106,7 +116,7 @@ namespace MedicApi.Controllers
         /// </param>
         /// 
         /// <param name="timezone">
-        ///     <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations" target="_blank">this list</a>.</p>
+        ///     <p align="justify">The timezone associated with the given start and end date. Must be an unambiguous timezone abbreviation or timezone name from <a href="https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations" target="_blank" style="text-decoration: none;">this list</a>.</p>
         ///     <p align="justify"><b>Explanation:</b> Suppose <i>start_time</i> is 2020-03-23T00:00:00, <i>end_time</i> is 2020-03-23T23:59:59, and <i>timezone</i> is AEDT. The API will search for all events that occurred while it was March 23 2020 in the AEDT timezone.</p>
         ///     <p><b>Example:</b> Central Standard Time</p>
         ///     <p><b>Example:</b> AEDT</p>
