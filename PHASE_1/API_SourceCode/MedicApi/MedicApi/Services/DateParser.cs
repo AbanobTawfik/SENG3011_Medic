@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -65,6 +66,11 @@ namespace MedicApi.Services
                 case "December":  return 12;
                 default:          return  0;
             }
+        }
+
+        public static DateTimeOffset ParseISOStr(string s)
+        {
+            return DateTimeOffset.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFFK", CultureInfo.InvariantCulture);
         }
     }
 }
