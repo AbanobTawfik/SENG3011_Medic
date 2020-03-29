@@ -9,6 +9,7 @@ namespace MedicApi.Services
     {
         public DiseaseMapper(List<string> keys) : base(keys)
         {
+            base.AddReference("unknown disease", "unknown diseases");
             base.AddReference("anthrax cutaneous", "cutaneous anthrax");
             base.AddReference("anthrax gastrointestinous", "gastrointestinal anthrax");
             base.AddReference("anthrax inhalation", "inhalation anthrax");

@@ -206,7 +206,7 @@ namespace MedicApi.Services
                 {
                     if (Regex.IsMatch(sentence.ToLower(), @"\b" + keyWord.ToLower() + @"\b") && !list.Contains(keyWord, StringComparer.OrdinalIgnoreCase))
                     {
-                        list.Add(keyWord);
+                        list.Add(keyWord.ToLower());
                     }
                 }
             }
