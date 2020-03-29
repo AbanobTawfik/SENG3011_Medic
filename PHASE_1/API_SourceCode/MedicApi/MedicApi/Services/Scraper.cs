@@ -323,6 +323,10 @@ namespace MedicApi.Services
             var dateRange = DateUtils.DateStrToDateRange(dateStr);
 
             AddSyndromesFromSymptoms(syndromesToAddToReport, symptomsToConvertToSyndromes);
+            if(diseasesToAddToReport.Count == 0)
+            {
+                diseasesToAddToReport.Add("Other");
+            }
             return new StoredReport
             {
                 diseases = diseasesToAddToReport,
