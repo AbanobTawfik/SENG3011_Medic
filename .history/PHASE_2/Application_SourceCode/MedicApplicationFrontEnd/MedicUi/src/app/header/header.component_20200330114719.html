@@ -1,0 +1,20 @@
+<nav class="navbar navbar-dark bg-dark">
+
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle"
+	  aria-label="Toggle navigation" (click)="toggleMenu()" [attr.aria-expanded]="isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+	<a class="navbar-brand" href="#">Medics</a>
+
+	<div class="collapse navbar-collapse" id="navbarToggle" [class.show]="isCollapsed">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<!-- <li class="nav-item" *ngFor="let category of categories">
+				<a class="nav-link" href="#">{{category.name}}</a>
+            </li> -->
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Statistics</a></li>
+		</ul>
+	</div>
+
+</nav>
