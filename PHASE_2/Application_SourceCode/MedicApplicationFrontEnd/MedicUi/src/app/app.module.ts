@@ -7,6 +7,8 @@ import { NavBarComponent } from "./Components/nav/nav-bar.component";
 import { HomeComponent } from "./Pages/home/home.component";
 import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
+import { MapComponent } from "./Components/map/map.component";
+import { AgmCoreModule } from "@agm/core";
 
 @NgModule({
   declarations: [
@@ -14,9 +16,16 @@ import { SummaryComponent } from "./Pages/summary/summary.component";
     NavBarComponent,
     HomeComponent,
     SearchComponent,
-    SummaryComponent
+    SummaryComponent,
+    MapComponent
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q"
+    })
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
