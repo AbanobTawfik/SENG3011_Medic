@@ -9,6 +9,8 @@ import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
+import { environment } from "../environments/environment";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,9 +23,10 @@ import { AgmCoreModule } from "@agm/core";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
+      apiKey: environment.GoogleApiKey,
     }),
   ],
   providers: [],

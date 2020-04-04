@@ -1,112 +1,111 @@
-
-import * as moment from 'moment';
-import * as fetch from 'node-fetch';
+import * as moment from "moment";
+import * as fetch from "node-fetch";
 
 abstract class ArticleApi {
-    url: string;
-    endpoint: string;
+  url: string;
+  endpoint: string;
 
-    constructor(url: string, endpoint: string) {
-        this.url = url;
-        this.endpoint = endpoint;
-    }
+  constructor(url: string, endpoint: string) {
+    this.url = url;
+    this.endpoint = endpoint;
+  }
 
-    ////////////////////////////////////////////////////////////////////
-    /**
-     * 
-     * @param start_date - start date in local time
-     * @param end_date   - end date in local time
-     * @param key_terms  - list of key terms
-     * @param location   - location
-     */
-    async fetchArticles(startDate: Date,
-                        endDate: Date,
-                        keyTerms: string[] = [],
-                        location: string = "")
-    {
-        if (!location) location = "";
+  ////////////////////////////////////////////////////////////////////
+  /**
+   *
+   * @param start_date - start date in local time
+   * @param end_date   - end date in local time
+   * @param key_terms  - list of key terms
+   * @param location   - location
+   */
+  async fetchArticles(
+    startDate: Date,
+    endDate: Date,
+    keyTerms: string[] = [],
+    location: string = ""
+  ) {
+    if (!location) location = "";
 
-        let method = this.makeMethod();
+    let method = this.makeMethod();
 
-        let query = this.makeQueryString(startDate, endDate, keyTerms,
-                                         location);
+    let query = this.makeQueryString(startDate, endDate, keyTerms, location);
 
-        console.log(query);
-        
-        let body = this.makeBody(startDate, endDate, keyTerms, location);
+    console.log(query);
 
-        console.log(body);
+    let body = this.makeBody(startDate, endDate, keyTerms, location);
 
-        let headers = this.makeHeaders();
+    console.log(body);
 
-        let request = `${this.url}${this.endpoint}${query}`;
+    let headers = this.makeHeaders();
 
-        let response = await fetch(
-            request,
-            {
-                method: method,
-                ...body,
-                headers: {
-                    'Accept': 'application/json',
-                    ...headers,
-                },
-            },
-        );
-        
-        let responseJson = await response.json();
-        return this.processResponse(responseJson);
-    }
+    let request = `${this.url}${this.endpoint}${query}`;
 
-    ////////////////////////////////////////////////////////////////////
-    // Building a Request
-    // Override to replace default
+    let response = await fetch(request, {
+      method: method,
+      ...body,
+      headers: {
+        Accept: "application/json",
+        ...headers,
+      },
+    });
 
-    public makeMethod(): string {
-        return 'GET';
-    }
+    let responseJson = await response.json();
+    return this.processResponse(responseJson);
+  }
 
-    public abstract makeQueryString(startDate: Date,
-                                    endDate: Date,
-                                    keyTerms: string[],
-                                    location: string): string;
-    
-    public makeBody(startDate: Date,
-                    endDate: Date,
-                    keyTerms: string[],
-                    location: string): object
-    {
-        return {};
-    }
+  ////////////////////////////////////////////////////////////////////
+  // Building a Request
+  // Override to replace default
 
-    public makeHeaders(): object {
-        return {};
-    }
-    
-    ////////////////////////////////////////////////////////////////////
-    // Parameter Values
+  public makeMethod(): string {
+    return "GET";
+  }
 
-    public startDateValue(date: Date): string {
-        return moment(date).format('YYYY-MM-DDTHH:mm:ss');
-    }
+  public abstract makeQueryString(
+    startDate: Date,
+    endDate: Date,
+    keyTerms: string[],
+    location: string
+  ): string;
 
-    public endDateValue(date: Date): string {
-        return moment(date).format('YYYY-MM-DDTHH:mm:ss');
-    }
+  public makeBody(
+    startDate: Date,
+    endDate: Date,
+    keyTerms: string[],
+    location: string
+  ): object {
+    return {};
+  }
 
-    public keyTermsValue(keyTerms: string[]): string {
-        return keyTerms.join(',');
-    }
+  public makeHeaders(): object {
+    return {};
+  }
 
-    public locationValue(location: string): string {
-        return location;
-    }
+  ////////////////////////////////////////////////////////////////////
+  // Parameter Values
 
-    ////////////////////////////////////////////////////////////////////
-    // Post-Processing
+  public startDateValue(date: Date): string {
+    return moment(date).format("YYYY-MM-DDTHH:mm:ss");
+  }
 
-    public abstract processResponse(responseJson);
+  public endDateValue(date: Date): string {
+    return moment(date).format("YYYY-MM-DDTHH:mm:ss");
+  }
 
-    ////////////////////////////////////////////////////////////////////
+  public keyTermsValue(keyTerms: string[]): string {
+    return keyTerms.join(",");
+  }
+
+  public locationValue(location: string): string {
+    return location;
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  // Post-Processing
+
+  public abstract processResponse(responseJson);
+
+  ////////////////////////////////////////////////////////////////////
 }
 
 export default ArticleApi;
