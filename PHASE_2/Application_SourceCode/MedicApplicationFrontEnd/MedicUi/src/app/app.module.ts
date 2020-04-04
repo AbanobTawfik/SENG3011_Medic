@@ -9,8 +9,11 @@ import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { FormsModule } from '@angular/forms';
 import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
+
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: environment.GoogleApiKey,
     }),

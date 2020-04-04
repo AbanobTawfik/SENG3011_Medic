@@ -1,1 +1,50 @@
-<p>search works!</p>
+
+
+<form>
+    <div class="form-group" style="padding:50px;">
+      <h2>Fill Out Form Below to Search through Outbreaks Database</h2><br>
+      <label>Start Date Required</label>
+      <small style="color:red" class="form-text text-muted">Required</small>
+      <div style="width: 300px;" class="input-group date" id="datetimepicker1" data-target-input="nearest">
+        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" required/>
+        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+    </div>
+      <br><br>
+      <label>End Date Required</label>
+      <small style="color:red" class="form-text text-muted">Required</small>
+      <div style="width: 300px;" class="input-group date" id="datetimepicker3" data-target-input="nearest">
+        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" required/>
+        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
+      <br>
+      <label>Timezone</label>
+      <small class="form-text text-muted">The timezone associated with the given start and end date. <br>Must be an unambiguous timezone abbreviation or timezone name from this list. <br>Example: AEDT</small>
+      <input style="width: 300px;" type="text" class="form-control" placeholder="Timezone">
+      <br>
+      <label>Key Terms</label>
+      <small class="form-text text-muted">The list of key terms to search for in a comma-separated string. All articles returned will match at least one of the given terms. <br> Leave blank to retrieve all articles matching other specified criteria. <br> Example: Listeria,Salmonella</small>
+      <input style="width: 300px;" type="text" class="form-control" placeholder="Key Terms">
+      <br>
+      <label>Location</label>
+      <small class="form-text text-muted">The name of the location to search for. <br> All articles returned will contain a report that references either the specified location or a sub-location within the specified location. <br> Leave blank to retrieve articles matching other specified criteria. <br> Example: United States</small>
+      <input style="width: 300px;" type="text" class="form-control" placeholder="Location">
+      <br>
+      <button type="button" class="btn btn-success">Submit</button>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker3').datetimepicker({
+                format: 'LT'
+            });
+        });
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'LT'
+            });
+        });
+    </script>
+  </form>
