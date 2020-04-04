@@ -17,16 +17,16 @@ import { AgmCoreModule } from "@agm/core";
     HomeComponent,
     SearchComponent,
     SummaryComponent,
-    MapComponent
+    MapComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q"
-    })
+      apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

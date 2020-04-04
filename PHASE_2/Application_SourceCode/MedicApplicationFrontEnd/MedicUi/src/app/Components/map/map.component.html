@@ -4,11 +4,13 @@
     [latitude]="marker.lat"
     [longitude]="marker.lng"
     [opacity]="marker.alpha"
-    [markerDraggable]="true"
-    (markerClick)="selectMarker($event)"
+    (markerClick)="openWindow(marker.id)"
   >
+    <agm-info-window
+      [isOpen]="isInfoWindowOpen(marker.id)"
+      [latitude]="marker.lat"
+      [longitude]="marker.lng"
+      >InfoWindow #{{ marker.id }}</agm-info-window
+    >
   </agm-marker>
 </agm-map>
-<p *ngIf="selectedMarker">
-  Lat: {{ selectedMarker.lat }} Lng: {{ selectedMarker.lng }}
-</p>
