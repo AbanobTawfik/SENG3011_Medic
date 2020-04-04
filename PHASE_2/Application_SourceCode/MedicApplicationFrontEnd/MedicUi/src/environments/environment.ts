@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  GoogleApiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
+  MedicEndPoint: "https://localhost:5003/api/Reports/GetArticles",
 };
 
 /*

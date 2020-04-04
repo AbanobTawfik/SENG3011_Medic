@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ArticleRetrieverService } from "../../../Services/article-retriever.service";
 declare var google;
 @Component({
   selector: "app-map",
@@ -9,7 +10,10 @@ export class MapComponent implements OnInit {
   lat = 43.879078;
   lng = -103.4615581;
   currentMarker;
-  ngOnInit() {}
+  constructor(private articleRetriever: ArticleRetrieverService) {}
+  ngOnInit() {
+    this.articleRetriever.getOwnArticles();
+  }
   //infowindow = new google.maps.InfoWindow();
   markers = [
     // These are all just random coordinates from https://www.random.org/geographic-coordinates/

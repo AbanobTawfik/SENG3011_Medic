@@ -11,6 +11,9 @@ import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 import { FormsModule } from '@angular/forms';
+import { environment } from "../environments/environment";
+import { HttpClientModule } from "@angular/common/http";
+
 
 @NgModule({
   declarations: [
@@ -23,12 +26,13 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     FormsModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
+      apiKey: environment.GoogleApiKey,
     }),
   ],
   providers: [],
