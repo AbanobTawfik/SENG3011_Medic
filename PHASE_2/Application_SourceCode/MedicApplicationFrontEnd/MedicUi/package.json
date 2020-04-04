@@ -21,9 +21,13 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "angular-bootstrap-datetimepicker": "^4.0.2",
+    "bootstrap": "^4.4.1",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
+    "open-iconic": "^1.1.1",
     "rxjs": "~6.4.0",
+    "tempusdominus-bootstrap-4": "^5.1.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

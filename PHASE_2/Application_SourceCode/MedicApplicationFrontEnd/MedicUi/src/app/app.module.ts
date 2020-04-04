@@ -9,6 +9,8 @@ import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,9 @@ import { AgmCoreModule } from "@agm/core";
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
     }),
