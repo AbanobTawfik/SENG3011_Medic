@@ -12,7 +12,7 @@ export class MapComponent implements OnInit {
   currentMarker;
   constructor(private articleRetriever: ArticleRetrieverService) {}
   ngOnInit() {
-    this.articleRetriever.getOwnArticles();
+    //this.articleRetriever.getOwnArticles();
   }
   //infowindow = new google.maps.InfoWindow();
   markers = [
