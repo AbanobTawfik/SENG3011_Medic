@@ -2,7 +2,7 @@
 
 import StandardReport from './StandardReport';
 
-class StandardArticle {
+export class StandardArticle {
     url: string;
     dateOfPublication: string;
     headline: string;
