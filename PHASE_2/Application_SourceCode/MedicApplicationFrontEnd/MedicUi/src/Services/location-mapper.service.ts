@@ -3,7 +3,7 @@ import { environment } from "../environments/environment";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { HttpParams } from "@angular/common/http";
 import { NgxXml2jsonService } from "ngx-xml2json";
-
+import { delay } from "rxjs/internal/operators";
 @Injectable({
   providedIn: "root",
 })
@@ -32,6 +32,7 @@ export class LocationMapperService {
     const options = { params: searchParams };
     var response = await this.http
       .get<any>(environment.OpenMapsEndPoint, options)
+      .pipe(delay(10000))
       .toPromise();
     if (response === [] || response.Length === 0) {
       return {};
@@ -41,7 +42,9 @@ export class LocationMapperService {
       return { latitude: this.latitude, longtitude: this.longtitude };
     }
   }
-
+  async sleep(msec) {
+    return new Promise((resolve) => setTimeout(resolve, msec));
+  }
   async convertGeoIdToLocation(geoId: string) {
     // ?geonameId=5551752&username=medics
     var response = await this.http
@@ -53,13 +56,13 @@ export class LocationMapperService {
           environment.GeoNameUserName,
         { responseType: "text" }
       )
+      .pipe(delay(10000))
       .toPromise();
     const parser = new DOMParser();
     const xml = parser.parseFromString(response, "text/xml");
     var obj = this.ngxXml2jsonService.xmlToJson(xml);
     this.latitude = obj["geoname"]["lat"];
     this.longtitude = obj["geoname"]["lng"];
-    console.log("print1 poopy");
     return { latitude: this.latitude, longtitude: this.longtitude };
   }
 }

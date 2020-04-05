@@ -1,7 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { ArticleRetrieverService } from "../../../Services/article-retriever.service";
 import { LocationMapperService } from "../../../Services/location-mapper.service";
+import { DateFormatterService } from "../../../Services/date-formatter.service";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
+import articleStore from "../../apis/articles/interfaces/articleStore";
+import * as moment from "moment";
+import StandardArticle from "../../types/StandardArticle";
 declare var google;
 @Component({
   selector: "app-map",
@@ -9,18 +14,81 @@ declare var google;
   styleUrls: ["./map.component.scss"],
 })
 export class MapComponent implements OnInit {
-  lat = 43.879078;
-  lng = -103.4615581;
+  map: Map<{ latitude: any; longtitude: any }, StandardArticle[]>;
   currentMarker;
   constructor(
     private articleRetriever: ArticleRetrieverService,
-    private locationRetriever: LocationMapperService
+    private locationRetriever: LocationMapperService,
+    private dateFormatter: DateFormatterService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
-    var x = this.locationRetriever
-      .convertLocationToGeoLocation("China", "Wuhan")
-      .then((res) => console.log(res));
+    // var currentdate = moment();
+    // var previousweek = currentdate.subtract(2, "w");
+    // const articleRequests = articleStore.createRequests(
+    //   moment.utc([2020, 0, 1, 0, 0, 0]),
+    //   moment.utc([2020, 1, 1, 0, 0, 0]),
+    //   [],
+    //   "",
+    //   []
+    // );
+    // articleRequests.forEach((req) => {
+    //   req.fetchAmount(10).then((res) => {
+    //     res.forEach((article) => {
+    //       article.reports.forEach((report) => {
+    //         report.locations.forEach((location) => {
+    //           if (location.geonamesId === null) {
+    //             const coords = this.locationRetriever
+    //               .convertLocationToGeoLocation(
+    //                 location.country,
+    //                 location.location
+    //               )
+    //               .then((resultant) => {
+    //                 const coordinates = {
+    //                   latitude: resultant.latitude,
+    //                   longtitude: resultant.longtitude,
+    //                 };
+    //                 console.log(coordinates);
+    //                 if (!this.map.has(coordinates)) {
+    //                   this.map.set(coordinates, []);
+    //                   var update = this.map.get(coordinates);
+    //                   update.push(article);
+    //                   this.map.set(coordinates, update);
+    //                 } else {
+    //                   var update = this.map.get(coordinates);
+    //                   update.push(article);
+    //                   this.map.set(coordinates, update);
+    //                 }
+    //               });
+    //           } else {
+    //             const coordsGeoId = this.locationRetriever
+    //               .convertGeoIdToLocation(location.geonamesId.toString())
+    //               .then((resultant) => {
+    //                 const coordinates = {
+    //                   latitude: resultant.latitude,
+    //                   longtitude: resultant.longtitude,
+    //                 };
+    //                 console.log(coordinates);
+    //                 if (!this.map.has(coordinates)) {
+    //                   this.map.set(coordinates, []);
+    //                   var update = this.map.get(coordinates);
+    //                   update.push(article);
+    //                   this.map.set(coordinates, update);
+    //                 } else {
+    //                   var update = this.map.get(coordinates);
+    //                   update.push(article);
+    //                   this.map.set(coordinates, update);
+    //                 }
+    //               });
+    //           }
+    //         });
+    //       });
+    //     });
+    //   });
+    // });
+    // console.log("END END NED");
+    // console.log(this.map);
   }
   //infowindow = new google.maps.InfoWindow();
   markers = [
@@ -53,5 +121,9 @@ export class MapComponent implements OnInit {
 
   isInfoWindowOpen(id) {
     return this.openedWindow == id; // alternative: check if id is in array
+  }
+
+  open(content) {
+    this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
   }
 }
