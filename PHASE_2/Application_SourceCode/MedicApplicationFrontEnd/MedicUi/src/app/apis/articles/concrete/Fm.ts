@@ -112,8 +112,11 @@ class Fm extends ArticleApi
         const country = resLocation['country'];
         const location = resLocation['location'];
         const googleId = resLocation['google_id'];
+
+        // TODO: Find more robust way to get the city
+        const location2 = location.replace(/,.*/, '');
         
-        return new StandardLocation(country, location, null, googleId);
+        return new StandardLocation(country, location2, null, googleId);
     }
 
     ////////////////////////////////////////////////////////////////////

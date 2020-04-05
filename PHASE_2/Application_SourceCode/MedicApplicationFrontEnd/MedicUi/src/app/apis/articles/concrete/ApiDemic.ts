@@ -112,8 +112,13 @@ class APIdemic extends ArticleApi
 
     private toStandardLocation(resLocation)
     {
-        return new StandardLocation(resLocation['country'],
-                                    resLocation['location']);
+        const country = resLocation['country'];
+        const location = resLocation['location'];
+
+        // TODO: Find more robust way to get the city
+        const location2 = location.replace(/,.*/, '');
+
+        return new StandardLocation(country, location2);
     }
 
     ////////////////////////////////////////////////////////////////////

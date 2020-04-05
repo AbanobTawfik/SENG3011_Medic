@@ -89,6 +89,25 @@ class ArticleRequest
         return result;
     }
 
+    /**
+     * Fetch some number of articles satisfying the request.  Subsequent
+     * calls will return an empty list.
+     * @param n 
+     */
+    public async fetchAmount(n: number): Promise<StandardArticle[]> {
+        if (this.done) return [];
+        
+        const articles = [];
+        let numArticles: number = 0;
+        let someArticles = await this.fetchMore();
+        while (someArticles.length > 0 && numArticles < n) {
+            articles.push(...someArticles);
+            numArticles += someArticles.length;
+            someArticles = await this.fetchMore();
+        }
+        return articles.slice(0, n);
+    }
+
     ////////////////////////////////////////////////////////////////////
 
     // Set next parameters for the next call to fetch

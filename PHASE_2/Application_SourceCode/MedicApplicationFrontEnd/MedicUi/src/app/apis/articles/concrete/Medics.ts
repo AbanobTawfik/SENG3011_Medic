@@ -94,8 +94,11 @@ class Medics extends ArticleApi
         const country = resLocation['country'];
         const location = resLocation['location'];
         const geonamesId = resLocation['geonames_id'];
+
+        // TODO: Find more robust way to get the city
+        const location2 = location.replace(/,.*/, '');
         
-        return new StandardLocation(country, location, geonamesId);
+        return new StandardLocation(country, location2, geonamesId);
     }
 
     ////////////////////////////////////////////////////////////////////

@@ -86,8 +86,11 @@ class FlyingSplaucers extends ArticleApi
     {
         const country = resLocation['country'];
         const location = resLocation['location'];
-        
-        return new StandardLocation(country, location);
+
+        // TODO: Find more robust way to get the city
+        const location2 = location.replace(/,.*/, '');
+
+        return new StandardLocation(country, location2);
     }
 
     ////////////////////////////////////////////////////////////////////

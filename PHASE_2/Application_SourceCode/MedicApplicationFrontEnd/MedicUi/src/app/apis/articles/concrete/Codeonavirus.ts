@@ -132,9 +132,11 @@ class Codeonavirus extends ArticleApi
         if (city) {
             location += `, ${city}`;
         }
-        if (state) {
-            location += `, ${state}`;
-        }
+
+        // TODO: Find more robust way to get the city
+        // if (state) {
+        //     location += `, ${state}`;
+        // }
 
         location = location.slice(2);
         return new StandardLocation(country, location);

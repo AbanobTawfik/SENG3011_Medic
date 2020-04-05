@@ -94,7 +94,13 @@ class CalmClams extends ArticleApi
 
         const coordinates = this.toCoordinates(resLocation['coords']);
 
-        return new StandardLocation(country, location, geonames_id, 
+        // TODO: Find more robust way to get the city
+        let location2 = null;
+        if (location) {
+            location2 = location.replace(/,.*/, '');
+        }
+
+        return new StandardLocation(country, location2, geonames_id, 
                                     google_id, coordinates);
     }
 
