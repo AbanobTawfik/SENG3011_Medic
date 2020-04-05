@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ArticleRetrieverService } from "../../../Services/article-retriever.service";
+import { LocationMapperService } from "../../../Services/location-mapper.service";
+
 declare var google;
 @Component({
   selector: "app-map",
@@ -10,9 +12,15 @@ export class MapComponent implements OnInit {
   lat = 43.879078;
   lng = -103.4615581;
   currentMarker;
-  constructor(private articleRetriever: ArticleRetrieverService) {}
+  constructor(
+    private articleRetriever: ArticleRetrieverService,
+    private locationRetriever: LocationMapperService
+  ) {}
+
   ngOnInit() {
-    //this.articleRetriever.getOwnArticles();
+    this.locationRetriever
+      .convertGeoIdToLocation("5551752")
+      .then((res) => console.log(res));
   }
   //infowindow = new google.maps.InfoWindow();
   markers = [

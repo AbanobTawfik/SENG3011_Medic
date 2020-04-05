@@ -26,6 +26,7 @@
     "bootstrap": "^4.4.1",
     "highcharts": "^8.0.4",
     "moment": "^2.24.0",
+    "ngx-xml2json": "^1.0.2",
     "node-fetch": "^2.6.0",
     "open-iconic": "^1.1.1",
     "rxjs": "~6.4.0",
