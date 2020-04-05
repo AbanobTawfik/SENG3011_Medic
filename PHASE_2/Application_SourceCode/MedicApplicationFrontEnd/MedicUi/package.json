@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "colors": "^1.4.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "rxjs": "~6.4.0",

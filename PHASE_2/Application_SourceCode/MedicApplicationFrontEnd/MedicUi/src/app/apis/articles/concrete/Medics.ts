@@ -1,94 +1,104 @@
 // CDC
+// https://seng3011medics.azurewebsites.net/swagger/index.html
 
-import * as util from "util";
+import * as util from 'util';
 
-import StandardArticle from "../../../types/StandardArticle";
-import StandardLocation from "../../../types/StandardLocation";
-import StandardReport from "../../../types/StandardReport";
-import ArticleApi from "../base/ArticleApi";
-import { environment } from "../../../../environments/environment";
+import * as moment from 'moment';
 
-class Medics extends ArticleApi {
-  constructor() {
-    super(environment.MedicEndPoint, "/api/Reports/GetArticles");
-  }
+import StandardArticle from '../../../types/StandardArticle';
+import StandardLocation from '../../../types/StandardLocation';
+import StandardReport from '../../../types/StandardReport';
+import ArticleApi from '../base/ArticleApi';
 
-  ////////////////////////////////////////////////////////////////////
-  // Building a Request
+class Medics extends ArticleApi
+{
+    constructor() {
+        super("https://seng3011medics.azurewebsites.net",
+              "/api/Reports/GetArticles");
+        this.name = 'Medics';
 
-  public makeQueryString(
-    startDate: Date,
-    endDate: Date,
-    keyTerms: string[],
-    location: string
-  ): string {
-    let query =
-      `?start_date=${this.startDateValue(startDate)}` +
-      `&end_date=${this.endDateValue(endDate)}`;
-
-    if (keyTerms && keyTerms.length > 0) {
-      query += `&key_terms=${this.keyTermsValue(keyTerms)}`;
+        this.limit = 50;
     }
 
-    if (location) {
-      query += `&location=${this.locationValue(location)}`;
+    ////////////////////////////////////////////////////////////////////
+    // Building a Request
+
+    public makeQueryString(startDate:  moment.Moment,
+                           endDate:    moment.Moment,
+                           keyTerms:   string[],
+                           location:   string,
+                           pageNumber: number): string
+    {
+        let query = `?start_date=${this.startDateValue(startDate)}` +
+                    `&end_date=${this.endDateValue(endDate)}`;
+
+        if (keyTerms && keyTerms.length > 0) {
+            query += `&key_terms=${this.keyTermsValue(keyTerms)}`;
+        }
+
+        if (location) {
+            query += `&location=${this.locationValue(location)}`;
+        }
+
+        query += `&max=${this.limit}`;
+        query += `&offset=${this.limit * pageNumber}`;
+
+        return query;
     }
 
-    return query;
-  }
+    ////////////////////////////////////////////////////////////////////
+    // Post-Processing
+    
+    public processResponse(responseJson)
+    {
+        return this.getArticlesFromResponse(responseJson);
+    }
 
-  ////////////////////////////////////////////////////////////////////
-  // Post-Processing
+    private getArticlesFromResponse(json)
+    {
+        // console.log(util.inspect(json, false, null, true));
+        return json['articles'].map(
+            resArticle => this.toStandardArticle(resArticle)
+        );
+    }
 
-  public processResponse(responseJson) {
-    return this.getArticlesFromResponse(responseJson);
-  }
+    private toStandardArticle(resArticle)
+    {
+        const url = resArticle['url'];
+        const dateOfPublication = resArticle['date_of_publication'];
+        const headline = resArticle['headline'];
+        const mainText = resArticle['main_text'];
+        const reports = resArticle['reports'].map(
+            resReport => this.toStandardReport(resReport)
+        );
 
-  private getArticlesFromResponse(json) {
-    // console.log(util.inspect(json, false, null, true));
-    return json["articles"].map((resArticle) =>
-      this.toStandardArticle(resArticle)
-    );
-  }
+        return new StandardArticle(url, dateOfPublication, headline,
+                                   mainText, reports);
+    }
 
-  private toStandardArticle(resArticle) {
-    const url = resArticle["url"];
-    const dateOfPublication = resArticle["date_of_publication"];
-    const headline = resArticle["headline"];
-    const mainText = resArticle["main_text"];
-    const reports = resArticle["reports"].map((resReport) =>
-      this.toStandardReport(resReport)
-    );
+    private toStandardReport(resReport)
+    {
+        const diseases = resReport['diseases'];
+        const syndromes = resReport['syndromes'];
+        const event_date = resReport['event_date'];
+        const locations = resReport['locations'].map(
+            resLocation => this.toStandardLocation(resLocation)
+        );
 
-    return new StandardArticle(
-      url,
-      dateOfPublication,
-      headline,
-      mainText,
-      reports
-    );
-  }
+        return new StandardReport(diseases, syndromes, event_date,
+                                  locations);
+    }
 
-  private toStandardReport(resReport) {
-    const diseases = resReport["diseases"];
-    const syndromes = resReport["syndromes"];
-    const event_date = resReport["event_date"];
-    const locations = resReport["locations"].map((resLocation) =>
-      this.toStandardLocation(resLocation)
-    );
+    private toStandardLocation(resLocation)
+    {
+        const country = resLocation['country'];
+        const location = resLocation['location'];
+        const geonamesId = resLocation['geonames_id'];
+        
+        return new StandardLocation(country, location, geonamesId);
+    }
 
-    return new StandardReport(diseases, syndromes, event_date, locations);
-  }
-
-  private toStandardLocation(resLocation) {
-    const country = resLocation["country"];
-    const location = resLocation["location"];
-    const geonamesId = resLocation["geonames_id"];
-
-    return new StandardLocation(country, location, geonamesId);
-  }
-
-  ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 }
 
 export default Medics;
