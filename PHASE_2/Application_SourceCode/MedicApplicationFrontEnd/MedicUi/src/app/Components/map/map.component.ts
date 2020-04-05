@@ -18,8 +18,8 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.locationRetriever
-      .convertGeoIdToLocation("5551752")
+    var x = this.locationRetriever
+      .convertLocationToGeoLocation("China", "Wuhan")
       .then((res) => console.log(res));
   }
   //infowindow = new google.maps.InfoWindow();

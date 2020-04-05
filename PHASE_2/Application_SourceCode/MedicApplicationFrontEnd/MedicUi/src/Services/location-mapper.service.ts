@@ -29,13 +29,17 @@ export class LocationMapperService {
         location +
         "&format=json",
     });
-
     const options = { params: searchParams };
-    await this.http
+    var response = await this.http
       .get<any>(environment.OpenMapsEndPoint, options)
-      .subscribe((res) => {
-        console.log(res);
-      });
+      .toPromise();
+    if (response === [] || response.Length === 0) {
+      return {};
+    } else {
+      this.latitude = response[0]["lat"];
+      this.longtitude = response[0]["lon"];
+      return { latitude: this.latitude, longtitude: this.longtitude };
+    }
   }
 
   async convertGeoIdToLocation(geoId: string) {
