@@ -10,7 +10,7 @@ import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
 
@@ -29,6 +29,7 @@ import { HttpClientModule } from "@angular/common/http";
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
     AgmCoreModule.forRoot({
