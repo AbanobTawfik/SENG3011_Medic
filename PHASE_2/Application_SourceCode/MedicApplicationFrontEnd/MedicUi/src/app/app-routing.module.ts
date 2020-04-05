@@ -8,7 +8,7 @@ import { SummaryComponent } from './summary/summary.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'search', component: SearchComponent },
-  { path: 'summary', component: SummaryComponent },
+  { path: 'epidemic/COVID-19', component: SummaryComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
