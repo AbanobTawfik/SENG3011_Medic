@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -15,7 +15,6 @@ import {
   DlDateTimeDateModule,
   DlDateTimePickerModule,
 } from "angular-bootstrap-datetimepicker";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";

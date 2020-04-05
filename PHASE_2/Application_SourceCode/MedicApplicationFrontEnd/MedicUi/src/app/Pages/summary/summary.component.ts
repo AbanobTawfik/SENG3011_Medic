@@ -243,7 +243,7 @@ export class SummaryComponent implements OnInit {
       curr.setDate(curr.getDate() + 1);
       total *= rate;
       if (i >= end) {
-        rate = (rate - 1) * 0.9 * (0.5 + (this.inputR - 1) * 0.5) + 1;
+        rate = (rate - 1) * (1 + (1 - 1 / (this.inputR + 1))) / 2 + 1;
       }
     }
   }
