@@ -9,8 +9,19 @@ import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
 import { AgmCoreModule } from "@agm/core";
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+
+import exporting from 'highcharts/modules/exporting.src';
+import windbarb from 'highcharts/modules/windbarb.src';
+
+export function highchartsModules() {
+  // apply Highcharts Modules to this array
+  return [ exporting,windbarb ];
+}
 
 @NgModule({
   declarations: [
@@ -25,11 +36,18 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule,
+    ChartModule,
     AgmCoreModule.forRoot({
       apiKey: environment.GoogleApiKey,
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules } // add as factory to your providers
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

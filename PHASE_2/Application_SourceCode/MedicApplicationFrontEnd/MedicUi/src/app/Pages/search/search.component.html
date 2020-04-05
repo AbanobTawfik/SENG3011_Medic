@@ -1,1 +1,123 @@
-<p>search works!</p>
+<h2 style="padding-top:30px; padding-left:50px; padding-right: 50px;">Fill Out Form Below to Search through Outbreaks Database</h2><br>
+<div style="padding-left:50px; width: 500px;">
+    <div class="input-group md-form form-sm form-2 pl-0">
+        <input class="form-control my-0 py-1 amber-border" type="text" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+        <span class="input-group-text amber lighten-3" id="basic-text1"><i class="fas fa-search text-grey"
+            aria-hidden="true"></i></span>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="d-flex" style="padding-left:50px; padding-right:50px;">
+    <div class="row">
+      <div class="col">
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Advanced Search
+        </a>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form style="padding-left: 0px;" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                      
+                      <label>Start Date Required</label>
+                      <small style="color:red" class="form-text text-muted">Required</small>
+                      <div style="width: 300px;" class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <input type="text" id="startDate" class="form-control datetimepicker-input" formControlName="startDate" name="startDate" data-target="#datetimepicker1" #startDate required/>
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                      <br>
+                      <label>End Date Required</label>
+                      <small style="color:red" class="form-text text-muted">Required</small>
+                      <div style="width: 300px;" class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                        <input type="text" id="endDate" class="form-control datetimepicker-input" formControlName="endDate" name="endDate" data-target="#datetimepicker3" required/>
+                        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                      <br>
+                      <label>Timezone</label>
+                      <small class="form-text text-muted">The timezone associated with the given start and end date. <br>Must be an unambiguous timezone abbreviation or timezone name from this list. <br>Example: AEDT</small>
+                      <input style="width: 300px;" type="text" class="form-control" formControlName="timezone" name="timezone" placeholder="Timezone">
+                      <br>
+                      <label>Key Terms</label>
+                      <small class="form-text text-muted">The list of key terms to search for in a comma-separated string. All articles returned will match at least one of the given terms. <br> Leave blank to retrieve all articles matching other specified criteria. <br> Example: Listeria,Salmonella</small>
+                      <input style="width: 300px;" type="text" class="form-control" formControlName="keyTerms" name="keyTerms" placeholder="Key Terms">
+                      <br>
+                      <label>Location</label>
+                      <small class="form-text text-muted">The name of the location to search for. <br> All articles returned will contain a report that references either the specified location or a sub-location within the specified location. <br> Leave blank to retrieve articles matching other specified criteria. <br> Example: United States</small>
+                      <input style="width: 300px;" type="text" class="form-control" formControlName="location" name="location" placeholder="Location">
+                      <br>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                    <!-- <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker3').datetimepicker({
+                                format: 'LT'
+                            });
+                        });
+                        $(function () {
+                            $('#datetimepicker1').datetimepicker({
+                                format: 'LT'
+                            });
+                        });
+                    </script> -->
+                  </form>
+            </div>
+        </div> 
+        
+      </div>
+      <div class="col" style="padding-left: 60px;">
+        Results:
+        <table class="table">
+            <thead>
+           
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Headline</th>
+                    <th scope="col">Date Of Publication</th>
+                    <th scope="col">Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-toggle="modal" data-target="#myModal" *ngFor="let data of result">
+                    <td>{{data.id}}</td>
+                    <td>{{data.headline}}</td>
+                    <td>{{data.dateOfPublication}}</td>
+                    <td>CDC</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<!-- The Modal -->
+<div class="modal" style="padding: 50px;" id="myModal">
+    <div class="modal-dialog" style="width: 900px;margin: auto;justify-content: center; align-items: center;position: absolute;">
+      <div class="modal-content" style="width: 200%; margin: 0 auto;justify-content: center; align-items: center;">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Enoki Mushrooms - Listeria Infections</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+          <h3>Date Published: 2020-03-01 17:40:00</h3>
+
+          <h3>Article</h3>
+          <p>Outbreak of Listeria Infections Linked to Enoki Mushrooms\n\n\tPosted March 10, 2020 at 4:30 PM ETCDC, public health and regulatory officials in several states, and the U. S. Food and Drug Administration (FDA) are investigating a multistate outbreak of Listeria monocytogenes infections linked to enoki mushrooms. Recall and Advice for Consumers, Food Service Operators, and RetailersAt A GlanceReported Cases: 36States: 17Hospitalizations: 30Deaths: 4Recall: YesRecall InformationOn March 9, 2020, Sun Hong Foods, Inc. recalled enoki mushrooms because they may be contaminated with Listeria monocytogenes bacteria. Enoki mushrooms are white, with long stems and small caps. Enoki mushrooms from Sun Hong Foods were sold in 7. 05 oz / 200 g clear plastic packaging with a green label. “Product of Korea” is labeled on the front of the packaging, and “Sun Hong Foods, Inc. ” is labeled on the back of the packaging underneath the bar code. These products can also be identified by the UPC code: 7 426852 625810. This investigation is ongoing to determine the source of contamination and if additional products are linked to illness. Advice to Consumers, Food Service Operators, and RetailersDo not eat, serve, or sell any recalled enoki mushrooms distributed by Sun Hong Foods, Inc. Check your refrigerator for recalled enoki mushrooms. Return them to the purchase location or throw them away. Do not eat any food made with recalled enoki mushrooms, even if some was consumed and no one became sick. Wash and sanitize any surfaces and containers that may have come in contact with the recalled enoki mushrooms. Listeria can survive in refrigerated temperatures and can easily spread to other foods and surfaces. Follow these five steps to clean your refrigerator. Wash surfaces with hot, soapy water. Wash containers with hot, soapy water or clean in the dishwasher. Call your healthcare provider if you have consumed recalled enoki mushrooms and are experiencing symptoms of Listeria infection. Until we learn more about the source and distribution of the enoki mushrooms, CDC advises that people at higher risk for Listeria infections – pregnant women, adults ages 65 or older, and people with weakened immune systems, such as people with cancer or on dialysis – avoid eating any enoki mushrooms labeled as “Product of Korea”. At home, check your refrigerator for enoki mushrooms labeled as “Product of Korea”. If you have them, don’t eat them and throw them out. If you have them, wash and sanitize drawers or shelves in refrigerators where they were stored. Follow these five steps to clean your refrigerator. When you buy, order, or eat out, check with stores and restaurants that they do not use enoki mushrooms labeled as “Product of Korea”. If they don’t know where their enoki mushrooms are from, don’t buy or order the product. Call your healthcare provider if you have consumed enoki mushrooms labeled as “Product of Korea” and are experiencing symptoms of Listeria infection. Latest Outbreak Information36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. Illnesses started on dates ranging from November 23, 2016 to December 13, 2019. 30 hospitalizations have been reported.  Four deaths have been reported from California, Hawaii, and New Jersey. Six pregnancy-associated cases have been reported, of which two resulted in fetal loss. Epidemiologic and laboratory evidence indicates that enoki mushrooms labeled as “Product of Korea” are the likely source of this outbreak. On March 9, 2020, Sun Hong Foods, Inc. recalled enoki mushrooms labeled as “Product of Korea” because they may be contaminated with Listeria monocytogenes bacteria. This investigation is ongoing to determine the source of contamination and if additional products are linked to illness. CDC will provide updates when more information is available. Symptoms of Listeria InfectionListeriosis can cause different symptoms, depending on the person and the part of the body affected. Pregnant women typically experience only fever and other flu-like symptoms, such as fatigue and muscle aches. However, infections during pregnancy can lead to miscarriage, stillbirth, premature delivery, or life-threatening infection of the newborn. People other than pregnant women: Symptoms can include headache, stiff neck, confusion, loss of balance, and convulsions in addition to fever and muscle aches. Symptoms for invasive listeriosis usually start 1 to 4 weeks after eating food contaminated with Listeria. Some people have reported symptoms starting as late as 70 days after exposure or as early as the same day of exposure. Listeriosis is treated with antibiotics. Investigation DetailsMarch 10, 2020CDC, public health and regulatory officials in several states, and the U. S. Food and Drug Administration (FDA) are investigating a multistate outbreak of Listeria monocytogenes infections linked to enoki mushrooms. Public health investigators are using the PulseNet system to identify illnesses that may be part of this outbreak. PulseNet is the national subtyping network of public health and food regulatory agency laboratories coordinated by CDC. DNA fingerprinting is performed on Listeria bacteria isolated from ill people by using a standardized laboratory and data analysis method called whole genome sequencing (WGS). CDC PulseNet manages a national database of these sequences that are used to identify possible outbreaks. WGS gives investigators detailed information about the bacteria causing illness. In this investigation, WGS showed that bacteria isolated from ill people were closely related genetically. This means that people in this outbreak are more likely to share a common source of infection. As of March 9, 2020, 36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. A list of the states and the number of cases in each can be found on the Map of Reported Cases page. Listeria samples from ill people were collected from November 23, 2016 to December 13, 2019. Ill people range in age from less than 1 to 97 years, with a median age of 67. Fifty-eight percent of ill people are female. Of 32 ill people with information available, 30 hospitalizations have been reported. Four deaths have been reported from California, Hawaii, and New Jersey. Six cases are pregnancy-associated and two resulted in fetal loss. Investigation of the OutbreakEpidemiologic and laboratory evidence indicates that enoki mushrooms labeled as “Product of Korea” are the likely source of this outbreak. State and local public health officials interviewed ill people about the foods they ate in the month before they became ill. Twelve out of 22 (55%) reported eating mushrooms, including enoki, portobello, white, button, cremini, wood ear, maitake, and oyster. Michigan Department of Agriculture and Rural Development collected mushrooms for testing from a grocery store where an ill person purchased enoki mushrooms. Two samples of enoki mushrooms yielded the outbreak strain of Listeria monocytogenes. These mushrooms are labeled as “Product of Korea” and were distributed by Sun Hong Foods, Inc. Additional product testing is ongoing in California. On March 9, 2020, Sun Hong Foods, Inc. recalled enoki mushrooms (UPC 7 426852 625810) labeled as “Product of Korea”. Consumers, food service operators, and retailers should not eat, serve, or sell recalled enoki mushrooms. Enoki mushrooms distributed by Sun Hong Foods, Inc. do not account for all illnesses in this outbreak. FDA is working to identify the source of the enoki mushrooms distributed by Sun Hong Foods, Inc. and determine if other distributors received the same enoki mushrooms. CDC is concerned that enoki mushrooms labeled as “Product of Korea” may be contaminated with Listeria monocytogenes and are advising people at higher risk – pregnant women, adults ages 65 years or older, and people with weakened immune systems – to avoid eating any enoki mushrooms labeled as “Product of Korea”, until investigators determine the source of contamination and if additional products are linked to illness. CDC will provide updates when more information is available. Outbreak By the Numbersmap iconMap of Reported Caseschart iconTimeline of Reported CasesKey ResourcesFDA: Sun Hong Foods, Inc. Recalls Enoki Mushroom FDA: Outbreak Investigations of Listeria monocytogenes – Enoki Mushrooms Questions and Answers on ListeriaPreventing Listeria infectionSolve Foodborne OutbreaksCDC’s Food Safety Information\t\n\n</p>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
