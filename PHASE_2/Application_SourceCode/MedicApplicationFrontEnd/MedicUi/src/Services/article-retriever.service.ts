@@ -11,6 +11,8 @@ import articleStore from "../app/apis/articles/interfaces/articleStore";
 export class ArticleRetrieverService {
   // get all articles from all apis stored into here
   articles: any[];
+
+  
 }
 
 // articles: any[] = [];

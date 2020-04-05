@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   GoogleApiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
   MedicEndPoint: "https://localhost:5003/api/Reports/GetArticles",
+  OpenMapsEndPoint: "https://nominatim.openstreetmap.org/search"
 };
 
 /*

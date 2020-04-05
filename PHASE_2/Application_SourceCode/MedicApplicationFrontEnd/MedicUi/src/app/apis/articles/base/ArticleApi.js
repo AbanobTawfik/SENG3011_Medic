@@ -47,56 +47,98 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var moment = require("moment");
+var util = require("util");
 var fetch = require("node-fetch");
+var colors = require("colors");
 var ArticleApi = /** @class */ (function () {
     function ArticleApi(url, endpoint) {
+        this.limit = null; // number of articles to fetch at a time
         this.url = url;
         this.endpoint = endpoint;
     }
     ////////////////////////////////////////////////////////////////////
+    // Getters
+    ArticleApi.prototype.supportsPaging = function () {
+        return false;
+    };
+    ////////////////////////////////////////////////////////////////////
+    // Fetching Articles
     /**
      *
-     * @param start_date - start date in local time
-     * @param end_date   - end date in local time
-     * @param key_terms  - list of key terms
-     * @param location   - location
+     * @param startDate  - the start date in UTC time
+     * @param endDate    - the end date in UTC time
+     * @param keyTerms   - an array of key terms
+     * @param location   - a location
+     * @param pageNumber - zero-indexed page number
      */
-    ArticleApi.prototype.fetchArticles = function (startDate, endDate, keyTerms, location) {
+    ArticleApi.prototype.fetchArticles = function (startDate, endDate, keyTerms, location, pageNumber) {
         if (keyTerms === void 0) { keyTerms = []; }
         if (location === void 0) { location = ""; }
+        if (pageNumber === void 0) { pageNumber = null; }
         return __awaiter(this, void 0, void 0, function () {
-            var method, query, body, headers, request, response, responseJson;
+            var method, query, body, headers, request, response, e_1, responseJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!location)
                             location = "";
                         method = this.makeMethod();
-                        query = this.makeQueryString(startDate, endDate, keyTerms, location);
-                        console.log(query);
-                        body = this.makeBody(startDate, endDate, keyTerms, location);
-                        console.log(body);
+                        query = this.makeQueryString(startDate, endDate, keyTerms, location, pageNumber);
+                        if (query.length > 0) {
+                            console.log(colors.cyan('[INFO]') +
+                                colors.green('[' + ("API: " + this.name).padEnd(22) + "] ") +
+                                ("Query string:  " + query));
+                        }
+                        body = this.makeBody(startDate, endDate, keyTerms, location, pageNumber);
+                        if (Object.keys(body).length > 0) {
+                            console.log(colors.cyan('[INFO]') +
+                                colors.green('[' + ("API: " + this.name).padEnd(22) + "] ") +
+                                ("Body:          " + body['body']));
+                        }
                         headers = this.makeHeaders();
+                        if (Object.keys(body).length > 0) {
+                            console.log(colors.cyan('[INFO]') +
+                                colors.green('[' + ("API: " + this.name).padEnd(22) + "] ") +
+                                'Headers:       ' +
+                                util.inspect(headers, false, null, false));
+                        }
                         request = "" + this.url + this.endpoint + query;
-                        return [4 /*yield*/, fetch(request, __assign(__assign({ method: method }, body), { headers: __assign({ 'Accept': 'application/json' }, headers) }))];
+                        _a.label = 1;
                     case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, fetch(request, __assign(__assign({ method: method }, body), { headers: __assign({ 'Accept': 'application/json' }, headers) }))];
                     case 2:
+                        response = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        console.log(colors.red('[API ERROR]') +
+                            colors.green('[' + ("API: " + this.name).padEnd(22) + "] ") +
+                            e_1);
+                        return [2 /*return*/, []];
+                    case 4: return [4 /*yield*/, response.json()];
+                    case 5:
                         responseJson = _a.sent();
-                        return [2 /*return*/, this.processResponse(responseJson)];
+                        try {
+                            return [2 /*return*/, this.processResponse(responseJson)];
+                        }
+                        catch (e) {
+                            console.log(colors.red('[PROCESSING ERROR]') +
+                                colors.green('[' + ("API: " + this.name).padEnd(22) + "] ") +
+                                e);
+                            return [2 /*return*/, []];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
     ////////////////////////////////////////////////////////////////////
     // Building a Request
-    // Override to replace default
     ArticleApi.prototype.makeMethod = function () {
         return 'GET';
     };
-    ArticleApi.prototype.makeBody = function (startDate, endDate, keyTerms, location) {
+    ArticleApi.prototype.makeBody = function (startDate, endDate, keyTerms, location, pageNumber) {
         return {};
     };
     ArticleApi.prototype.makeHeaders = function () {
@@ -105,16 +147,19 @@ var ArticleApi = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////
     // Parameter Values
     ArticleApi.prototype.startDateValue = function (date) {
-        return moment(date).format('YYYY-MM-DDTHH:mm:ss');
+        return date.format('YYYY-MM-DDTHH:mm:ss');
     };
     ArticleApi.prototype.endDateValue = function (date) {
-        return moment(date).format('YYYY-MM-DDTHH:mm:ss');
+        return date.format('YYYY-MM-DDTHH:mm:ss');
+    };
+    ArticleApi.prototype.locationValue = function (location) {
+        return location;
     };
     ArticleApi.prototype.keyTermsValue = function (keyTerms) {
         return keyTerms.join(',');
     };
-    ArticleApi.prototype.locationValue = function (location) {
-        return location;
+    ArticleApi.prototype.getNextParameters = function (startDate, endDate, articles) {
+        return null;
     };
     return ArticleApi;
 }());

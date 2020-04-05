@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "colors": "^1.4.0",
     "angular-bootstrap-datetimepicker": "^4.0.2",
     "angular-highcharts": "^9.0.2",
     "bootstrap": "^4.4.1",
