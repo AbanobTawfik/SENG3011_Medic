@@ -13,15 +13,6 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
-import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
-
-import exporting from 'highcharts/modules/exporting.src';
-import windbarb from 'highcharts/modules/windbarb.src';
-
-export function highchartsModules() {
-  // apply Highcharts Modules to this array
-  return [ exporting,windbarb ];
-}
 
 @NgModule({
   declarations: [
@@ -40,14 +31,11 @@ export function highchartsModules() {
     ReactiveFormsModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
-    ChartModule,
     AgmCoreModule.forRoot({
       apiKey: environment.GoogleApiKey,
     }),
   ],
-  providers: [
-    { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules } // add as factory to your providers
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

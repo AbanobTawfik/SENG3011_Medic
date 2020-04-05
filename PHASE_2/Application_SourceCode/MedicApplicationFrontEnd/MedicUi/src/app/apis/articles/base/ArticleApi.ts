@@ -1,111 +1,183 @@
-import * as moment from "moment";
-import * as fetch from "node-fetch";
+
+import * as util from 'util';
+
+import * as moment from 'moment';
+import * as fetch from 'node-fetch';
+
+import * as colors from 'colors';
+
+import StandardArticle from '../../../types/StandardArticle';
 
 abstract class ArticleApi {
-  url: string;
-  endpoint: string;
+    name:     string;
+    url:      string;
+    endpoint: string;
 
-  constructor(url: string, endpoint: string) {
-    this.url = url;
-    this.endpoint = endpoint;
-  }
+    limit:    number = null; // number of articles to fetch at a time
 
-  ////////////////////////////////////////////////////////////////////
-  /**
-   *
-   * @param start_date - start date in local time
-   * @param end_date   - end date in local time
-   * @param key_terms  - list of key terms
-   * @param location   - location
-   */
-  async fetchArticles(
-    startDate: Date,
-    endDate: Date,
-    keyTerms: string[] = [],
-    location: string = ""
-  ) {
-    if (!location) location = "";
+    constructor(url: string, endpoint: string) {
+        this.url = url;
+        this.endpoint = endpoint;
+    }
 
-    let method = this.makeMethod();
+    ////////////////////////////////////////////////////////////////////
+    // Getters
 
-    let query = this.makeQueryString(startDate, endDate, keyTerms, location);
+    public supportsPaging()
+    {
+        return false;
+    }
 
-    console.log(query);
+    ////////////////////////////////////////////////////////////////////
+    // Fetching Articles
 
-    let body = this.makeBody(startDate, endDate, keyTerms, location);
+    /**
+     * 
+     * @param startDate  - the start date in UTC time
+     * @param endDate    - the end date in UTC time
+     * @param keyTerms   - an array of key terms
+     * @param location   - a location
+     * @param pageNumber - zero-indexed page number
+     */
+    async fetchArticles(startDate:  moment.Moment,
+                        endDate:    moment.Moment,
+                        keyTerms:   string[] = [],
+                        location:   string   = "",
+                        pageNumber: number   = null)
+    {
+        if (!location) location = "";
 
-    console.log(body);
+        let method = this.makeMethod();
 
-    let headers = this.makeHeaders();
+        let query = this.makeQueryString(startDate, endDate, keyTerms,
+                                         location, pageNumber);
 
-    let request = `${this.url}${this.endpoint}${query}`;
+        if (query.length > 0) {
+            console.log(
+                colors.cyan('[INFO]') +
+                colors.green('[' + `API: ${this.name}`.padEnd(22) + `] `) +
+                `Query string:  ${query}`
+            );
+        }
+        
+        let body = this.makeBody(startDate, endDate, keyTerms, location,
+                                 pageNumber);
 
-    let response = await fetch(request, {
-      method: method,
-      ...body,
-      headers: {
-        Accept: "application/json",
-        ...headers,
-      },
-    });
+        if (Object.keys(body).length > 0) {
+            console.log(
+                colors.cyan('[INFO]') +
+                colors.green('[' + `API: ${this.name}`.padEnd(22) + `] `) +
+                `Body:          ${body['body']}`
+            );
+        }
 
-    let responseJson = await response.json();
-    return this.processResponse(responseJson);
-  }
+        let headers = this.makeHeaders();
 
-  ////////////////////////////////////////////////////////////////////
-  // Building a Request
-  // Override to replace default
+        if (Object.keys(body).length > 0) {
+            console.log(
+                colors.cyan('[INFO]') +
+                colors.green('[' + `API: ${this.name}`.padEnd(22) + `] `) +
+                'Headers:       ' +
+                util.inspect(headers, false, null, false)
+            );
+        }
 
-  public makeMethod(): string {
-    return "GET";
-  }
+        let request = `${this.url}${this.endpoint}${query}`;
 
-  public abstract makeQueryString(
-    startDate: Date,
-    endDate: Date,
-    keyTerms: string[],
-    location: string
-  ): string;
+        let response;
+        try {
+            response = await fetch(
+                request,
+                {
+                    method: method,
+                    ...body,
+                    headers: {
+                        'Accept': 'application/json',
+                        ...headers,
+                    },
+                },
+            );
+        } catch (e) {
+            console.log(
+                colors.red('[API ERROR]') +
+                colors.green('[' + `API: ${this.name}`.padEnd(22) + `] `) +
+                e
+            );
+            return [];
+        }
+        
+        let responseJson = await response.json();
 
-  public makeBody(
-    startDate: Date,
-    endDate: Date,
-    keyTerms: string[],
-    location: string
-  ): object {
-    return {};
-  }
+        try {
+            return this.processResponse(responseJson);
+        } catch (e) {
+            console.log(
+                colors.red('[PROCESSING ERROR]') +
+                colors.green('[' + `API: ${this.name}`.padEnd(22) + `] `) +
+                e
+            );
+            return [];
+        }
+    }
 
-  public makeHeaders(): object {
-    return {};
-  }
+    ////////////////////////////////////////////////////////////////////
+    // Building a Request
 
-  ////////////////////////////////////////////////////////////////////
-  // Parameter Values
+    public makeMethod(): string {
+        return 'GET';
+    }
 
-  public startDateValue(date: Date): string {
-    return moment(date).format("YYYY-MM-DDTHH:mm:ss");
-  }
+    public abstract makeQueryString(startDate:  moment.Moment,
+                                    endDate:    moment.Moment,
+                                    keyTerms:   string[],
+                                    location:   string,
+                                    pageNumber: number): string;
+    
+    public makeBody(startDate:  moment.Moment,
+                    endDate:    moment.Moment,
+                    keyTerms:   string[],
+                    location:   string,
+                    pageNumber: number)
+    {
+        return {};
+    }
 
-  public endDateValue(date: Date): string {
-    return moment(date).format("YYYY-MM-DDTHH:mm:ss");
-  }
+    public makeHeaders(): object {
+        return {};
+    }
+    
+    ////////////////////////////////////////////////////////////////////
+    // Parameter Values
 
-  public keyTermsValue(keyTerms: string[]): string {
-    return keyTerms.join(",");
-  }
+    public startDateValue(date: moment.Moment): string {
+        return date.format('YYYY-MM-DDTHH:mm:ss');
+    }
 
-  public locationValue(location: string): string {
-    return location;
-  }
+    public endDateValue(date: moment.Moment): string {
+        return date.format('YYYY-MM-DDTHH:mm:ss');
+    }
 
-  ////////////////////////////////////////////////////////////////////
-  // Post-Processing
+    public locationValue(location: string): string {
+        return location;
+    }
 
-  public abstract processResponse(responseJson);
+    public keyTermsValue(keyTerms: string[]): string {
+        return keyTerms.join(',');
+    }
 
-  ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    // Post-Processing
+
+    public abstract processResponse(responseJson);
+
+    public getNextParameters(startDate: moment.Moment,
+                             endDate:   moment.Moment,
+                             articles:  StandardArticle[])
+    {
+        return null;
+    }
+
+    ////////////////////////////////////////////////////////////////////
 }
 
 export default ArticleApi;

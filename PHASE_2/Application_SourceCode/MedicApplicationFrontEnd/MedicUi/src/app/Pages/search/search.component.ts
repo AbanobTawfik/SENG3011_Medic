@@ -37,11 +37,11 @@ export class SearchComponent implements OnInit {
     
     // console.log($('#datetimepicker1').datetimepicker());
     var mystartDate = window.document.getElementById("startDate");
-    var myendDate = window.document.getElementById("endDate");
+    var myendDate = window.document.getElementById("endDate"); // alittle faulty and hacky way to do it add .value behind
     console.log(mystartDate);
     console.log(myendDate);
     this.searchForm.value.startDate = mystartDate;
     this.searchForm.value.endDate = myendDate;
-    console.log(this.searchForm.value); // Form Input is here
+    console.log(this.searchForm.value); // Form Input is here to be connected to query DB
   }
 }
