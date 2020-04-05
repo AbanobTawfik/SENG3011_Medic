@@ -36,8 +36,8 @@ export class SearchComponent implements OnInit {
   onSubmit() {
     
     // console.log($('#datetimepicker1').datetimepicker());
-    var mystartDate = window.document.getElementById("startDate").value;
-    var myendDate = window.document.getElementById("endDate").value;
+    var mystartDate = window.document.getElementById("startDate");
+    var myendDate = window.document.getElementById("endDate");
     console.log(mystartDate);
     console.log(myendDate);
     this.searchForm.value.startDate = mystartDate;
