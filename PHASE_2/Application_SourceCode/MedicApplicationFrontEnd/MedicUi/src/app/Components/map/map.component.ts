@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   currentMarker;
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
+  openedWindow: number = 0; // alternative: array of numbers
 
   constructor(
     private articleRetriever: ArticleRetrieverService,
@@ -35,29 +36,18 @@ export class MapComponent implements OnInit {
       });
     } else {
       console.log("autoloaded")
-      this.map = new Map(JSON.parse(localStorage.getItem("map")));
+      this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
       let markerId = 1;
-        Array.from(this.map.keys()).forEach(x => {
-          const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
-          this.markers.push(marker);
-          markerId++;
-        })
-      console.log(this.map);
+      Array.from(this.map.keys()).forEach(x => {
+        const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
+        this.markers.push(marker);
+        markerId++;
+      })
     }
   }
 
-
-  clickedMarker() {
-    var infowindow = new google.maps.InfoWindow({
-      content: "poooop",
-    });
-    console.log(infowindow);
-    infowindow.open();
-  }
-  openedWindow: number = 0; // alternative: array of numbers
-
-  openWindow(id) {
-    console.log(id);
+  openWindow(id, lat, long) {
+    console.log(id, lat, long);
     if (id == this.openedWindow && this.openedWindow !== undefined) {
       this.openedWindow = 0;
       return;
@@ -142,8 +132,20 @@ export class MapComponent implements OnInit {
           this.markers.push(marker);
           markerId++;
         })
-        localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        // localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
       });
     });
+  }
+
+  getArticlesFromLatitudeLongtitude(latitude, longtitude) {
+    const coordinates = {
+      latitude: latitude.toString(),
+      longtitude: longtitude.toString(),
+    };
+    for (const [key, value] of this.map.entries()) {
+      if (key.latitude === latitude && key.longtitude === longtitude) {
+        return value;
+      }
+    }
   }
 }
