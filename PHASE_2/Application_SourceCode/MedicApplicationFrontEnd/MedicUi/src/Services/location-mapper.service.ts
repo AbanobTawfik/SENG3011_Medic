@@ -32,19 +32,22 @@ export class LocationMapperService {
     const options = { params: searchParams };
     var response = await this.http
       .get<any>(environment.OpenMapsEndPoint, options)
-      .pipe(delay(10000))
+      .pipe(delay(2000))
       .toPromise();
     if (response === [] || response.Length === 0) {
       return {};
     } else {
+      console.log(response)
       this.latitude = response[0]["lat"];
       this.longtitude = response[0]["lon"];
       return { latitude: this.latitude, longtitude: this.longtitude };
     }
   }
+
   async sleep(msec) {
     return new Promise((resolve) => setTimeout(resolve, msec));
   }
+
   async convertGeoIdToLocation(geoId: string) {
     // ?geonameId=5551752&username=medics
     var response = await this.http
@@ -56,9 +59,10 @@ export class LocationMapperService {
           environment.GeoNameUserName,
         { responseType: "text" }
       )
-      .pipe(delay(10000))
+      .pipe(delay(2000))
       .toPromise();
     const parser = new DOMParser();
+    //console.log(response);
     const xml = parser.parseFromString(response, "text/xml");
     var obj = this.ngxXml2jsonService.xmlToJson(xml);
     this.latitude = obj["geoname"]["lat"];
