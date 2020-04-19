@@ -15,9 +15,10 @@ const AUTH_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFiYzEyM0B
 class Webbscrapers extends ArticleApi
 {
     constructor() {
-        super("https://webbscrapers.live",
-              "/reports");
-        this.name = 'Webbscrapers';
+        super('Webbscrapers',
+              'WHO',
+              'https://webbscrapers.live',
+              '/reports');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -80,7 +81,7 @@ class Webbscrapers extends ArticleApi
         );
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports);
+                                   mainText, reports, this.name);
     }
 
     private toStandardReport(resReport)
