@@ -1,5 +1,5 @@
-// CIDRAP
-// http://13.55.197.137/
+// Global Incident Map
+// https://app.swaggerhub.com/apis/d-Nic/Hi-4_API/1.0.0-oas3
 
 import * as util from 'util';
 
@@ -10,13 +10,13 @@ import StandardLocation from '../../../types/StandardLocation';
 import StandardReport from '../../../types/StandardReport';
 import ArticleApi from '../base/ArticleApi';
 
-class GnarlyNarwhals extends ArticleApi
+class Hi4 extends ArticleApi
 {
     constructor() {
-        super('Gnarly Narwhals',
-              'CIDRAP',
-              'http://13.55.197.137',
-              '/data');
+        super('Hi4',
+              'Global Incident Map',
+              'https://us-central1-seng3011-hi-4.cloudfunctions.net',
+              '/app/reports');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -39,6 +39,7 @@ class GnarlyNarwhals extends ArticleApi
             query += `&location=${this.locationValue(location)}`;
         }
 
+        query += `&num=1000000`;
         return query;
     }
 
@@ -52,7 +53,7 @@ class GnarlyNarwhals extends ArticleApi
 
     private getArticlesFromResponse(json)
     {
-        // console.log(util.inspect(json, false, null, true));
+        console.log(util.inspect(json, false, null, true));
         return json.map(
             resArticle => this.toStandardArticle(resArticle)
         );
@@ -67,9 +68,11 @@ class GnarlyNarwhals extends ArticleApi
         const reports = resArticle['reports'].map(
             resReport => this.toStandardReport(resReport)
         );
+        const cases = resArticle['cases'];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name);
+                                   mainText, reports, this.name, null,
+                                   { cases: cases });
     }
 
     private toStandardReport(resReport)
@@ -77,9 +80,9 @@ class GnarlyNarwhals extends ArticleApi
         const diseases = resReport['diseases'];
         const syndromes = resReport['syndromes'];
         const event_date = resReport['event_date'];
-        const locations = resReport['locations'].map(
-            resLocation => this.toStandardLocation(resLocation)
-        );
+        const locations = [
+            this.toStandardLocation(resReport['locations'])
+        ];
 
         return new StandardReport(diseases, syndromes, event_date,
                                   locations);
@@ -87,12 +90,14 @@ class GnarlyNarwhals extends ArticleApi
 
     private toStandardLocation(resLocation)
     {
-        const geonamesId = parseInt(resLocation['geonames_id']);
-        
-        return new StandardLocation(null, null, geonamesId);
+        const country = resLocation['country'];
+        const location = resLocation['location'];
+
+        return new StandardLocation(country, location);
     }
 
     ////////////////////////////////////////////////////////////////////
 }
 
-export default GnarlyNarwhals;
+export default Hi4;
+

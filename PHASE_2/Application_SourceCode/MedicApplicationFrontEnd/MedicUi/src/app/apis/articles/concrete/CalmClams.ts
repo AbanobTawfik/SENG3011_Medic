@@ -13,9 +13,10 @@ import ArticleApi from '../base/ArticleApi';
 class CalmClams extends ArticleApi
 {
     constructor() {
-        super("http://calmclams.appspot.com",
-              "/disease_reports");
-        this.name = 'CalmClams';
+        super('Calm Clams',
+              'Global Incident Map',
+              'http://calmclams.appspot.com',
+              '/disease_reports');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -69,7 +70,7 @@ class CalmClams extends ArticleApi
         const id = resArticle['_id'] || null;
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, id);
+                                   mainText, reports, this.name, id);
     }
 
     private toStandardReport(resReport)
