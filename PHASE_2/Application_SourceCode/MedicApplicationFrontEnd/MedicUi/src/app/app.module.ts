@@ -19,6 +19,9 @@ import { environment } from "../environments/environment";
 import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-articles-popup.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +30,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     SearchComponent,
     SummaryComponent,
     MapComponent,
+    MapArticlesPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +45,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     AgmCoreModule.forRoot({
       apiKey: environment.GoogleApiKey,
     }),
+    FlexLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+
 import { ArticleRetrieverService } from "../../../Services/article-retriever.service";
 import { LocationMapperService } from "../../../Services/location-mapper.service";
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+
+import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 
 import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";

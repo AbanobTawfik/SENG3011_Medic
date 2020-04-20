@@ -129,7 +129,7 @@ class APIdemic extends ArticleApi
                              articles:  StandardArticle[])
     {
         const a = articles[articles.length - 1];
-        const lastDate = dateUtils.xStrToDateFloor(a.dateOfPublication);
+        const lastDate = dateUtils.xStrToDateFloor(a.dateOfPublicationStr);
         const newStartDate = lastDate.add(1, 's');
         return {
             startDate: newStartDate,

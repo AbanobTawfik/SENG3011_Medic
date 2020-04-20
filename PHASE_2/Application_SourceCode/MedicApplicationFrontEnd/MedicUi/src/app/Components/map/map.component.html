@@ -28,11 +28,12 @@
   <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [opacity]="marker.alpha"
     (markerClick)="openWindow(marker.id, marker.lat, marker.lng)">
     <agm-info-window [isOpen]="isInfoWindowOpen(marker.id)" [latitude]="marker.lat" [longitude]="marker.lng">
-      <div *ngFor="let article of getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)">
+      <app-map-articles-popup [articles]="getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)"></app-map-articles-popup>
+      <!-- <div *ngFor="let article of getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)">
         <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
           {{article.headline}}
-        </button> </div>
-
+        </button>
+      </div> -->
     </agm-info-window>
   </agm-marker>
 </agm-map>
