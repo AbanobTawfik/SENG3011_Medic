@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicApi.Models
 {
+    [BsonIgnoreExtraElements]
     public class FrontEndLocation
     {
         public string Country { get; set; }

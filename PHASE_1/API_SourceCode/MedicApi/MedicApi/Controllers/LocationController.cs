@@ -21,15 +21,16 @@ namespace MedicApi.Controllers
             this._db = db;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GeoId")]
         // GET api/Location/GeoId
-        public ActionResult TranslateGeoId([FromBody] string geoId)
+        public ActionResult TranslateGeoId([FromBody] GeoId geoid)
         {
-            var ret = _db.GetLocationIfExists(geoId);
+            var ret = _db.GetLocationIfExists(geoid.geoId);
             if (ret == null)
             {
-                return Ok("NO RESULT");
+                var err = new { error = "NO RESULT" };
+                return Ok(err);
             }
             else
             {
@@ -37,15 +38,16 @@ namespace MedicApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GeoName")]
         // GET api/Location/GeoName
-        public ActionResult TranslateGeoName([FromBody] string country, string location)
+        public ActionResult TranslateGeoName([FromBody] Location place)
         {
-            var ret = _db.GetLocationIfExists(country, location);
+            var ret = _db.GetLocationIfExists(place.country, place.location);
             if (ret == null)
             {
-                return Ok("NO RESULT");
+                var err = new { error = "NO RESULT" };
+                return Ok(err);
             }
             else
             {

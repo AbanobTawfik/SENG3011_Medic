@@ -117,9 +117,7 @@ namespace MedicApi.Services
             {
                 frontEndLocation = collections.Find(a =>
                         (
-                            a.GeoId.Any(r =>
-                                r.Equals(GeoId)
-                            )
+                            a.GeoId == GeoId
                         )).FirstOrDefault();
             }
 
@@ -127,13 +125,7 @@ namespace MedicApi.Services
             {
                 frontEndLocation = collections.Find(a =>
                 (
-                    a.Country.Any(r =>
-                        r.Equals(Country)
-                    )
-                    &&
-                    a.Location.Any(r =>
-                        r.Equals(Location)
-                    )
+                    a.Country == Country && a.Location == Location
                 )).FirstOrDefault();
                 if (frontEndLocation == null)
                 {
@@ -158,19 +150,19 @@ namespace MedicApi.Services
                 var collections = db.GetCollection<FrontEndLocation>("locations");
                 await collections.InsertOneAsync(location);
             }
-             catch (MongoBulkWriteException e)
-             {
+            catch (MongoBulkWriteException e)
+            {
                 var bulkWriteErrors = e.WriteErrors;
                 foreach (BulkWriteError bulkWriteError in bulkWriteErrors)
                 {   // Ignore duplicate key exception
                     if (bulkWriteError.Category != ServerErrorCategory.DuplicateKey)
                         Console.WriteLine("Exception while writing record: " + bulkWriteError.Message);
                 };
-             }
-             catch (Exception e)
-             {
+            }
+            catch (Exception e)
+            {
                 Console.Write("EXCEPTION:\n" + e.Message);
-             }
+            }
         }
 
         /**********************************************************************/

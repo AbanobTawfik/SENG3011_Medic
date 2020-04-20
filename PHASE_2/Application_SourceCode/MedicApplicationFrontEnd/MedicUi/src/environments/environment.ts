@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   GoogleApiKey: "AIzaSyCkEeVkb2etUdi93S5RWX5pZ9cUaoOsQ7Q",
-  MedicEndPoint: "https://localhost:5003/api/Reports/GetArticles",
+  MedicEndPoint: "https://localhost:5003/api/Location/",
   OpenMapsEndPoint: "https://nominatim.openstreetmap.org/search",
   GeoNameUserName: "medics",
   GeoIdEndPoint:
