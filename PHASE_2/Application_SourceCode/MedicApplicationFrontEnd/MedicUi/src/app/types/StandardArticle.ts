@@ -38,7 +38,8 @@ export class StandardArticle {
 
     formatDateOfPublication() {
         if (this.dateOfPublication === null) {
-            console.log("BAD DATE OF PUBLICATION:" + this.dateOfPublicationStr);
+            console.log("BAD DATE OF PUBLICATION: " + this.dateOfPublicationStr +
+                        " " + this.teamName + " " + this.url);
             return "";
         } else {
             return this.dateOfPublication.format("DD MMM YYYY");
