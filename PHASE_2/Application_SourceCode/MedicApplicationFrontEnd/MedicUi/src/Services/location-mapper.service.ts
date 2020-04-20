@@ -34,10 +34,9 @@ export class LocationMapperService {
       .get<any>(environment.OpenMapsEndPoint, options)
       .pipe(delay(2000))
       .toPromise();
-    if (response === [] || response.Length === 0) {
+    if (response === null || response === [] || response.Length === 0 || response[0] == null) {
       return {};
     } else {
-      console.log(response)
       this.latitude = response[0]["lat"];
       this.longtitude = response[0]["lon"];
       return { latitude: this.latitude, longtitude: this.longtitude };
@@ -62,9 +61,9 @@ export class LocationMapperService {
       .pipe(delay(2000))
       .toPromise();
     const parser = new DOMParser();
-    //console.log(response);
     const xml = parser.parseFromString(response, "text/xml");
     var obj = this.ngxXml2jsonService.xmlToJson(xml);
+    console.log(obj);
     this.latitude = obj["geoname"]["lat"];
     this.longtitude = obj["geoname"]["lng"];
     return { latitude: this.latitude, longtitude: this.longtitude };

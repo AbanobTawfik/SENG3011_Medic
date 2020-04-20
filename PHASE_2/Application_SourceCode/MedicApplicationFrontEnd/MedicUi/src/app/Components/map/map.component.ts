@@ -30,7 +30,7 @@ export class MapComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    if (localStorage.getItem("map") === null && JSON.parse(localStorage.getItem("map")) !== []) {
+    if (localStorage.getItem("map") === null || JSON.parse(localStorage.getItem("map")) == []) {
       await this.getAllRequests().then(() => {
         console.log("used map api");
       });
@@ -132,7 +132,8 @@ export class MapComponent implements OnInit {
           this.markers.push(marker);
           markerId++;
         })
-        // localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        console.log(this.map);
+        localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
       });
     });
   }

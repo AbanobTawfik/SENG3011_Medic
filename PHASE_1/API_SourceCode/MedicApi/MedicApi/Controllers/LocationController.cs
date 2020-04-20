@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MedicApi.Models;
 using MedicApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,24 +15,51 @@ namespace MedicApi.Controllers
     public class LocationController : ControllerBase
     {
         private Scraper _scraperService;
+        private ArticleRetriever _db;
+        public LocationController(ArticleRetriever db)
+        {
+            this._db = db;
+        }
 
         [HttpGet]
         [Route("GeoId")]
         // GET api/Location/GeoId
-        public ActionResult TestGenerate()
+        public ActionResult TranslateGeoId([FromBody] string geoId)
         {
-            var service = new Generator();
-            service.GenerateAdd();
-            return Ok("done");
+            var ret = _db.GetLocationIfExists(geoId);
+            if (ret == null)
+            {
+                return Ok("NO RESULT");
+            }
+            else
+            {
+                return Ok(ret);
+            }
         }
 
-        // GET api/Location/GeoName
         [HttpGet]
         [Route("GeoName")]
-        public ActionResult TestRSS()
+        // GET api/Location/GeoName
+        public ActionResult TranslateGeoName([FromBody] string country, string location)
         {
-            _scraperService.ScrapeAndStoreOutbreaksFromRSS("https://tools.cdc.gov/api/v2/resources/media/285676.rss");
-            return Ok("done");
+            var ret = _db.GetLocationIfExists(country, location);
+            if (ret == null)
+            {
+                return Ok("NO RESULT");
+            }
+            else
+            {
+                return Ok(ret);
+            }
+        }
+
+        [HttpPost]
+        [Route("AddLocation")]
+        // POST api/Location/AddLocation
+        public async Task<ActionResult> AddLocationAsync([FromBody] FrontEndLocation location)
+        {
+            _db.AddLocation(location);
+            return Ok();
         }
     }
 }

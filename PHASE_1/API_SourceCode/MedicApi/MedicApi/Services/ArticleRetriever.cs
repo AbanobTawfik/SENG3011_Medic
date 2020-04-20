@@ -14,7 +14,6 @@ namespace MedicApi.Services
     {
         private bool testing = false;
         private readonly MongoClient client = new MongoClient("mongodb+srv://medics:adfrZUBj4IF4TNibOnLxQKansolSPoW6@cluster0-nqmfu.mongodb.net/test?retryWrites=true&w=majority");
-
         /**********************************************************************/
 
         public void SetTesting(bool setting)
@@ -29,12 +28,12 @@ namespace MedicApi.Services
                                       string key_terms, string location,
                                       string max, string offset)
         {
-            DateTime     start_date_value;
-            DateTime     end_date_value;
+            DateTime start_date_value;
+            DateTime end_date_value;
             List<string> key_terms_value;
-            string       location_value;
-            int          max_value;
-            int          offset_value;
+            string location_value;
+            int max_value;
+            int offset_value;
 
             ParseRawInput(start_date, end_date, timezone, key_terms, location,
                           max, offset, out start_date_value, out end_date_value,
@@ -67,9 +66,9 @@ namespace MedicApi.Services
                             start <= r.event_date_end
                         )
                     )
-                    
+
                     &&
-                    
+
                     // location match
                     (
                         location == "" ||
@@ -85,7 +84,7 @@ namespace MedicApi.Services
                     )
 
                     &&
-                        
+
                     // key term match
                     (
                         key_terms.Count == 0 ||
@@ -106,6 +105,72 @@ namespace MedicApi.Services
                 Console.WriteLine("Exception:\n" + e.Message);
                 return null;
             }
+        }
+
+        public FrontEndLocation GetLocationIfExists(string GeoId = "", string Country = "", string Location = "")
+        {
+            var db = client.GetDatabase("frontend-locations");
+            var collections = db.GetCollection<FrontEndLocation>("locations");
+            FrontEndLocation frontEndLocation = null;
+
+            if (GeoId != "")
+            {
+                frontEndLocation = collections.Find(a =>
+                        (
+                            a.GeoId.Any(r =>
+                                r.Equals(GeoId)
+                            )
+                        )).FirstOrDefault();
+            }
+
+            if (frontEndLocation == null && GeoId == "")
+            {
+                frontEndLocation = collections.Find(a =>
+                (
+                    a.Country.Any(r =>
+                        r.Equals(Country)
+                    )
+                    &&
+                    a.Location.Any(r =>
+                        r.Equals(Location)
+                    )
+                )).FirstOrDefault();
+                if (frontEndLocation == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return frontEndLocation;
+                }
+            }
+            else
+            {
+                return frontEndLocation;
+            }
+        }
+
+        public async void AddLocation(FrontEndLocation location)
+        {
+            try
+            {
+                var db = client.GetDatabase("frontend-locations");
+                var collections = db.GetCollection<FrontEndLocation>("locations");
+                await collections.InsertOneAsync(location);
+            }
+             catch (MongoBulkWriteException e)
+             {
+                var bulkWriteErrors = e.WriteErrors;
+                foreach (BulkWriteError bulkWriteError in bulkWriteErrors)
+                {   // Ignore duplicate key exception
+                    if (bulkWriteError.Category != ServerErrorCategory.DuplicateKey)
+                        Console.WriteLine("Exception while writing record: " + bulkWriteError.Message);
+                };
+             }
+             catch (Exception e)
+             {
+                Console.Write("EXCEPTION:\n" + e.Message);
+             }
         }
 
         /**********************************************************************/
@@ -143,11 +208,11 @@ namespace MedicApi.Services
                                        .Where(t => t.Length > 0)
                                        .ToList();
 
-            location_value  = location.ToLower();
+            location_value = location.ToLower();
 
-            max_value       = max == "" ? 25 : Math.Min(int.Parse(max), 50);
+            max_value = max == "" ? 25 : Math.Min(int.Parse(max), 50);
 
-            offset_value    = offset == "" ? 0 : int.Parse(offset);
+            offset_value = offset == "" ? 0 : int.Parse(offset);
         }
 
         private void ParseDateRange(string start_date,
@@ -206,7 +271,7 @@ namespace MedicApi.Services
         {
             // start_date
             DateTime start_date_value = DateTime.Now;
-            bool     start_date_valid = false;
+            bool start_date_valid = false;
 
             if (start_date == "")
             {
@@ -225,7 +290,7 @@ namespace MedicApi.Services
 
             // end_date
             DateTime end_date_value = DateTime.Now;
-            bool     end_date_valid = false;
+            bool end_date_valid = false;
 
             if (end_date == "")
             {
@@ -266,7 +331,7 @@ namespace MedicApi.Services
         private void CheckMaxAndOffset(ApiGetArticlesError e, string max, string offset)
         {
             // max
-            int  max_value = 0;
+            int max_value = 0;
             bool max_valid;
 
             if (max != "")
@@ -279,9 +344,9 @@ namespace MedicApi.Services
             }
 
             // offset
-            int  offset_value = 0;
+            int offset_value = 0;
             bool offset_valid;
-            
+
             if (offset != "")
             {
                 offset_valid = int.TryParse(offset, out offset_value);
