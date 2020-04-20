@@ -33,20 +33,19 @@ export class MapComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    if (localStorage.getItem("map") === null && JSON.parse(localStorage.getItem("map")) !== []) {
+    // if (localStorage.getItem("map") === null || JSON.parse(localStorage.getItem("map")) == []) {
       await this.getAllRequests().then(() => {
-        console.log("used map api");
       });
-    } else {
-      console.log("autoloaded")
-      this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
-      let markerId = 1;
-      Array.from(this.map.keys()).forEach(x => {
-        const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
-        this.markers.push(marker);
-        markerId++;
-      })
-    }
+    // } else {
+    //   var x = await this.locationRetriever.convertGeoIdToLocation("204376").then(xx => console.log(xx));
+    //   this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
+    //   let markerId = 1;
+    //   Array.from(this.map.keys()).forEach(x => {
+    //     const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
+    //     this.markers.push(marker);
+    //     markerId++;
+    //   })
+    // }
   }
 
   openWindow(id, lat, long) {
@@ -135,7 +134,8 @@ export class MapComponent implements OnInit {
           this.markers.push(marker);
           markerId++;
         })
-        // localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        console.log(this.map);
+        localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
       });
     });
   }
