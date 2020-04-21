@@ -52,7 +52,7 @@ export class MapComponent implements OnInit {
           markerId++;
           // }
         })
-        console.log(this.markers);
+        console.log(this.map);
     }
   }
 
@@ -179,7 +179,17 @@ export class MapComponent implements OnInit {
     for (const [key, value] of this.map.entries()) {
       var latlongString = key.split("&");
       if (latlongString[0] === latitude.toString() && latlongString[1] === longtitude.toString()) {
-        return value;
+        if(sessionStorage.getItem("map") === null){
+          return value;
+        }else{
+          let ret: StandardArticle[] = [];
+          value.forEach(element => {
+            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
+            ret.push(article);
+          });
+          console.log(ret);
+          return ret;
+        }
       }
     }
   }
