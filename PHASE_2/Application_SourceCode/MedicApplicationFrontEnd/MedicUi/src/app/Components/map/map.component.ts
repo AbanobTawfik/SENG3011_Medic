@@ -24,9 +24,10 @@ export class MapComponent implements OnInit {
   currentMarker;
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
+  mapLoaded = false;
 
-  infoWindowOpened:AgmInfoWindow = null
-  previous_info_window:AgmInfoWindow = null
+  infoWindowOpened: AgmInfoWindow = null
+  previous_info_window: AgmInfoWindow = null
 
   constructor(
     private articleRetriever: ArticleRetrieverService,
@@ -35,42 +36,43 @@ export class MapComponent implements OnInit {
     private modalService: NgbModal
   ) { }
 
-  async ngOnInit() {
-    // if (localStorage.getItem("map") === null || JSON.parse(localStorage.getItem("map")) == []) {
-    await this.getAllRequests().then(() => {
-      console.log("POOO");
-      alert("DONE");
-    });
-    // } else {
-    //   var x = await this.locationRetriever.convertGeoIdToLocation("204376").then(xx => console.log(xx));
-    //   this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
-    //   let markerId = 1;
-    //   Array.from(this.map.keys()).forEach(x => {
-    //     const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
-    //     this.markers.push(marker);
-    //     markerId++;
-    //   })
-    // }
+  ngOnInit() {
+    if (sessionStorage.getItem("map") === null || JSON.parse(sessionStorage.getItem("map")) == []) {
+      this.getAllRequests().then(() => {
+      });
+    } else {
+      this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
+      let markerId = 1;
+      this.markers = [];
+      Array.from(this.map.keys()).forEach(x => {
+        var latlongString = x.split("&");
+        // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+          const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+          this.markers.push(marker);
+          markerId++;
+          // }
+        })
+        console.log(this.markers);
+    }
   }
 
-  close_window(){
-    if (this.infoWindowOpened != null ) {
+  close_window() {
+    if (this.infoWindowOpened != null) {
       this.infoWindowOpened.close()
-      }    
     }
-    
-    select_marker(infoWindow){
-      console.log(this.infoWindowOpened);
-      if (this.infoWindowOpened === infoWindow) {
-        console.log("window already opened");
-        return;
+  }
+
+  select_marker(infoWindow) {
+    if (this.infoWindowOpened == infoWindow) {
+      this.infoWindowOpened.close();
+      return;
     }
 
     if (this.infoWindowOpened !== null && this.infoWindowOpened !== undefined) {
-        this.infoWindowOpened.close();
+      this.infoWindowOpened.close();
     }
     this.infoWindowOpened = infoWindow;
-    }
+  }
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
@@ -157,13 +159,13 @@ export class MapComponent implements OnInit {
               const uniqueArray = this.map.get(x).filter((thing, index) => {
                 const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
                 return index === this.map.get(x).findIndex(obj => {
-                  return  JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+                  return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
                 });
               });
               this.map.set(x, uniqueArray);
             }
           })
-          localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+          sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
         });
       });
     });
