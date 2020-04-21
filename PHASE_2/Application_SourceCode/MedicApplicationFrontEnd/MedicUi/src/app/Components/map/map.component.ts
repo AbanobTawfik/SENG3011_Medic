@@ -6,6 +6,7 @@ import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
+import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
 import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";
@@ -23,7 +24,9 @@ export class MapComponent implements OnInit {
   currentMarker;
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
-  openedWindow: number = 0; // alternative: array of numbers
+
+  infoWindowOpened:AgmInfoWindow = null
+  previous_info_window:AgmInfoWindow = null
 
   constructor(
     private articleRetriever: ArticleRetrieverService,
@@ -50,18 +53,24 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  openWindow(id, lat, long) {
-    console.log(id, lat, long);
-    if (id == this.openedWindow && this.openedWindow !== undefined) {
-      this.openedWindow = -1;
-      return;
+  close_window(){
+    if (this.infoWindowOpened != null ) {
+      this.infoWindowOpened.close()
+      }    
     }
-    this.openedWindow = id; // alternative: push to array of numbers
-  }
+    
+    select_marker(infoWindow){
+      console.log(this.infoWindowOpened);
+      if (this.infoWindowOpened === infoWindow) {
+        console.log("window already opened");
+        return;
+    }
 
-  isInfoWindowOpen(id) {
-    return this.openedWindow == id; // alternative: check if id is in array
-  }
+    if (this.infoWindowOpened !== null && this.infoWindowOpened !== undefined) {
+        this.infoWindowOpened.close();
+    }
+    this.infoWindowOpened = infoWindow;
+    }
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
@@ -146,16 +155,14 @@ export class MapComponent implements OnInit {
               this.markers.push(marker);
               markerId++;
               const uniqueArray = this.map.get(x).filter((thing, index) => {
-                const _thing = JSON.stringify(thing);
+                const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
                 return index === this.map.get(x).findIndex(obj => {
-                  return JSON.stringify(obj) === _thing;
+                  return  JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
                 });
               });
               this.map.set(x, uniqueArray);
-              console.log("we in", uniqueArray);
             }
           })
-          //console.log(this.map);
           localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
         });
       });
@@ -183,9 +190,5 @@ export class MapComponent implements OnInit {
     })
 
     return false;
-  }
-
-  close_window() {
-    this.openedWindow = -1;
   }
 }
