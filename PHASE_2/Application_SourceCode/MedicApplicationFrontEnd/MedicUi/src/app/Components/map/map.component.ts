@@ -19,7 +19,7 @@ declare var google;
 })
 export class MapComponent implements OnInit {
 
-  map: Map<{ latitude: any; longtitude: any }, StandardArticle[]> = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>();
+  map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
@@ -34,8 +34,10 @@ export class MapComponent implements OnInit {
 
   async ngOnInit() {
     // if (localStorage.getItem("map") === null || JSON.parse(localStorage.getItem("map")) == []) {
-      await this.getAllRequests().then(() => {
-      });
+    await this.getAllRequests().then(() => {
+      console.log("POOO");
+      alert("DONE");
+    });
     // } else {
     //   var x = await this.locationRetriever.convertGeoIdToLocation("204376").then(xx => console.log(xx));
     //   this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
@@ -51,7 +53,7 @@ export class MapComponent implements OnInit {
   openWindow(id, lat, long) {
     console.log(id, lat, long);
     if (id == this.openedWindow && this.openedWindow !== undefined) {
-      this.openedWindow = 0;
+      this.openedWindow = -1;
       return;
     }
     this.openedWindow = id; // alternative: push to array of numbers
@@ -76,66 +78,86 @@ export class MapComponent implements OnInit {
       []
     );
 
-    articleRequests.forEach((req) => {
-      req.fetchAmount(10).then((res) => {
-        res.forEach((article) => {
-          article.reports.forEach((report) => {
-            report.locations.forEach((location) => {
-              if (location.geonamesId === null) {
-                const coords = this.locationRetriever
-                  .convertLocationToGeoLocation(
-                    location.country,
-                    location.location
-                  )
-                  .then((resultant) => {
-                    const coordinates = {
-                      latitude: resultant.latitude,
-                      longtitude: resultant.longtitude,
-                    };
-                    if (coordinates !== undefined && !this.map.has(coordinates)) {
-                      this.map.set(coordinates, []);
-                      var update = this.map.get(coordinates);
-                      update.push(article);
-                      this.map.set(coordinates, update);
-                    } else {
-                      var update = this.map.get(coordinates);
-                      update.push(article);
-                      this.map.set(coordinates, update);
-                    }
-                  });
-              }
-              else {
-                const coordsGeoId = this.locationRetriever
-                  .convertGeoIdToLocation(location.geonamesId.toString())
-                  .then((resultant) => {
-                    const coordinates = {
-                      latitude: resultant.latitude,
-                      longtitude: resultant.longtitude,
-                    };
-                    if (coordinates !== undefined && !this.map.has(coordinates)) {
-                      this.map.set(coordinates, []);
-                      var update = this.map.get(coordinates);
-                      update.push(article);
-                      this.map.set(coordinates, update);
-                    } else {
-                      var update = this.map.get(coordinates);
-                      update.push(article);
-                      this.map.set(coordinates, update);
-                    }
-                  });
-              }
+    return new Promise(() => {
+      articleRequests.forEach((req) => {
+        req.fetchAmount(10).then((res) => {
+          res.forEach(async (article) => {
+            await article.reports.forEach(async (report) => {
+              await report.locations.forEach(async (location) => {
+                if (!location.geonamesId && location.country && location.location) {
+                  await this.locationRetriever
+                    .convertLocationToGeoLocation(
+                      location.country,
+                      location.location
+                    )
+                    .then((resultant) => {
+                      const coordinates = {
+                        latitude: resultant.latitude,
+                        longtitude: resultant.longtitude,
+                      };
+                      if (coordinates.latitude && coordinates.longtitude) {
+                        const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
+                        if (!this.map.has(stringCoordinates)) {
+                          this.map.set(stringCoordinates, []);
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        } else {
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        }
+                      }
+                    });
+                }
+                else if (location.geonamesId) {
+                  await this.locationRetriever
+                    .convertGeoIdToLocation(location.geonamesId.toString())
+                    .then((resultant) => {
+                      const coordinates = {
+                        latitude: resultant.latitude,
+                        longtitude: resultant.longtitude,
+                      };
+                      const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
+                      if (coordinates.latitude && coordinates.longtitude) {
+                        if (!this.map.has(stringCoordinates)) {
+                          this.map.set(stringCoordinates, []);
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        } else {
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        }
+                      }
+                    });
+                }
+              });
             });
           });
+        }).then(() => {
+          let markerId = 1;
+          this.markers = [];
+          Array.from(this.map.keys()).forEach(x => {
+            var latlongString = x.split("&");
+            if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+              const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+              this.markers.push(marker);
+              markerId++;
+              const uniqueArray = this.map.get(x).filter((thing, index) => {
+                const _thing = JSON.stringify(thing);
+                return index === this.map.get(x).findIndex(obj => {
+                  return JSON.stringify(obj) === _thing;
+                });
+              });
+              this.map.set(x, uniqueArray);
+              console.log("we in", uniqueArray);
+            }
+          })
+          //console.log(this.map);
+          localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
         });
-      }).then(() => {
-        let markerId = 1;
-        Array.from(this.map.keys()).forEach(x => {
-          const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
-          this.markers.push(marker);
-          markerId++;
-        })
-        console.log(this.map);
-        localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
       });
     });
   }
@@ -146,9 +168,24 @@ export class MapComponent implements OnInit {
       longtitude: longtitude.toString(),
     };
     for (const [key, value] of this.map.entries()) {
-      if (key.latitude === latitude && key.longtitude === longtitude) {
+      var latlongString = key.split("&");
+      if (latlongString[0] === latitude.toString() && latlongString[1] === longtitude.toString()) {
         return value;
       }
     }
+  }
+
+  checkMarkerInMap(latitude, longtitude) {
+    this.markers.forEach(x => {
+      if (x.latitude === latitude || x.longtitude === longtitude) {
+        return true;
+      }
+    })
+
+    return false;
+  }
+
+  close_window() {
+    this.openedWindow = -1;
   }
 }
