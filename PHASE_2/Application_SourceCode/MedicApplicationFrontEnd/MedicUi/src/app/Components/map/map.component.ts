@@ -172,6 +172,9 @@ export class MapComponent implements OnInit {
   }
 
   getArticlesFromLatitudeLongtitude(latitude, longtitude) {
+    if(!latitude || !longtitude){
+      return;
+    }
     const coordinates = {
       latitude: latitude.toString(),
       longtitude: longtitude.toString(),
@@ -202,17 +205,5 @@ export class MapComponent implements OnInit {
     })
 
     return false;
-  }
-  
-  expandInput(event) {
-    event.target.parentNode.getElementsByTagName("span")[0].innerText = event.target.value;
-  }
-  
-  onFromSelect(event) {
-    document.getElementById("from").dispatchEvent(new Event("input"));
-  }
-  
-  onToSelect(event) {
-    document.getElementById("to").dispatchEvent(new Event("input"));
   }
 }
