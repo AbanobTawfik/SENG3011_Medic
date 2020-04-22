@@ -10,8 +10,7 @@ import articleStore from "../../apis/articles/interfaces/articleStore";
 })
 export class SearchComponent implements OnInit {
   keyterms = [];
-  keyterm = '';
-  locations = [];
+  keyterm:string = '';
   location = '';
   startEnd = '';
   endDate = '';
@@ -27,22 +26,14 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  addLocation(){
-    if (!(this.location === '')) {
-      this.locations.push(this.location);
-      this.location = '';
-    }
-    console.log(this.locations);
-  }
-
   submitSearch(){
     var currentdate = moment();
-    var previousweek = currentdate.subtract(2, "w");
+    var previousweek = currentdate.subtract(3, "w");
     const articleRequests = articleStore.createRequests(
       moment.utc([2020, 0, 1, 0, 0, 0]),
       moment.utc([2020, 1, 1, 0, 0, 0]),
-      [],
-      "",
+      this.keyterms,
+      this.location,
       []
     );
     this.articleService.modifyStatus(true);

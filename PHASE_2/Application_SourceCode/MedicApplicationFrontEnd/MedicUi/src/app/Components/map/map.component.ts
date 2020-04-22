@@ -27,8 +27,8 @@ export class MapComponent implements OnInit {
   markers: any[] = [];
   mapView = true;
 
-  infoWindowOpened: AgmInfoWindow = null
-  previous_info_window: AgmInfoWindow = null
+  infoWindowOpened: AgmInfoWindow = null;
+  previous_info_window: AgmInfoWindow = null;
 
   constructor(
     private articleService: ArticleRetrieverService,
@@ -74,6 +74,8 @@ export class MapComponent implements OnInit {
       if(x === true){
         const request = this.articleService.currentRequest.subscribe(x => {this.getAllRequests(x)});
         this.articleService.modifyStatus(false);
+        this.infoWindowOpened = null;
+        this.previous_info_window = null;
       }else{
         console.log("already loaded map search");
       }

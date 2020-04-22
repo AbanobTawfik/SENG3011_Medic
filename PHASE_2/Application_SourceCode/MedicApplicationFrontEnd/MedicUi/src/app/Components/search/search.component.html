@@ -36,13 +36,6 @@
                             <input type="text" name="terms" class="form-control" placeholder="location"
                                 [(ngModel)]="this.location" #locations>
                             <!-- </div> -->
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-success" type="button"
-                                    (click)="addLocation()">add</button>
-                            </div>
-                        </div>
-                        <div>
-                            <div *ngFor="let loc of this.locations"> {{loc}} </div>
                         </div>
                     </div>
                 </div>
