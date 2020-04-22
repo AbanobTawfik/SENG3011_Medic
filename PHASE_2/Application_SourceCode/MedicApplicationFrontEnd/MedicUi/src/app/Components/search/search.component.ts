@@ -47,4 +47,9 @@ export class SearchComponent implements OnInit {
   onToSelect(event) {
     document.getElementById("to").dispatchEvent(new Event("input"));
   }
+  
+  openFocus(event, input) {
+    if (event)
+      setTimeout(() => input.focus(), 10);
+  }
 }

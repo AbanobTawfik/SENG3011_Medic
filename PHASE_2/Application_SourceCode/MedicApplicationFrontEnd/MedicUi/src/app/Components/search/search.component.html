@@ -1,7 +1,7 @@
 <div class="card m-2 p-2" style="width: 32rem; position: absolute; z-index: 64;">
     <div class="form-row">
         <div class="col form-row">
-            <div ngbDropdown class="btn-group col-md-3">
+            <div ngbDropdown class="btn-group col-md-3" (openChange)="openFocus($event, terms)">
                 <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
                     ngbDropdownToggle>Diseases</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
@@ -11,7 +11,7 @@
                             <!-- <div class="form-control expander"> -->
                             <!-- <span class="form-control"></span> -->
                             <input type="text" name="terms" class="form-control" placeholder="Key term"
-                                [(ngModel)]="this.keyterm">
+                                [(ngModel)]="this.keyterm" #terms>
                             <!-- </div> -->
                             <div class="input-group-append">
                                 <button class="btn btn-outline-success" type="button"
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div ngbDropdown class="btn-group col-md-3">
+            <div ngbDropdown class="btn-group col-md-3" (openChange)="openFocus($event, locations)">
                 <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
                     ngbDropdownToggle>Locations</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
@@ -34,7 +34,7 @@
                             <!-- <div class="form-control expander"> -->
                             <!-- <span class="form-control"></span> -->
                             <input type="text" name="terms" class="form-control" placeholder="location"
-                                [(ngModel)]="this.location">
+                                [(ngModel)]="this.location" #locations>
                             <!-- </div> -->
                             <div class="input-group-append">
                                 <button class="btn btn-outline-success" type="button"
@@ -116,7 +116,7 @@
                     </form>
                 </div>
             </div>
-            <div class="btn-group col-md-3"><button type="submit" class="btn btn-info"
+            <div class="btn-group col-md-3"><button type="submit" class="btn btn-sm btn-info"
                     (click)="submitSearch()">Search</button></div>
         </div>
     </div>
