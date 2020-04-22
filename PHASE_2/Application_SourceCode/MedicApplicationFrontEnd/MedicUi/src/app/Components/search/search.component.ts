@@ -10,6 +10,8 @@ export class SearchComponent implements OnInit {
   keyterm = '';
   locations = [];
   location = '';
+  startEnd = '';
+  endDate = '';
   constructor() { }
 
   ngOnInit() {
