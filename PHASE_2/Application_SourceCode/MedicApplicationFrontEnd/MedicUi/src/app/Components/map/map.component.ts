@@ -30,15 +30,27 @@ export class MapComponent implements OnInit {
   previous_info_window: AgmInfoWindow = null
 
   constructor(
-    private articleRetriever: ArticleRetrieverService,
+    private articleService: ArticleRetrieverService,
     private locationRetriever: LocationMapperService,
     private dateFormatter: DateFormatterService,
     private modalService: NgbModal
-  ) { }
+  ) {
+    this.articleService.currentStatus.subscribe(x => { console.log(x) });
+    this.articleService.modifyStatus(false);
+  }
 
   ngOnInit() {
     if (sessionStorage.getItem("map") === null || JSON.parse(sessionStorage.getItem("map")) == []) {
-      this.getAllRequests().then(() => {
+      var currentdate = moment();
+      var previousweek = currentdate.subtract(2, "w");
+      const articleRequests = articleStore.createRequests(
+        moment.utc([2020, 0, 1, 0, 0, 0]),
+        moment.utc([2020, 1, 1, 0, 0, 0]),
+        [],
+        "",
+        []
+      );
+      this.getAllRequests(articleRequests).then(() => {
       });
     } else {
       this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
@@ -47,13 +59,23 @@ export class MapComponent implements OnInit {
       Array.from(this.map.keys()).forEach(x => {
         var latlongString = x.split("&");
         // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-          const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
-          this.markers.push(marker);
-          markerId++;
-          // }
-        })
-        console.log(this.map);
+        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+        this.markers.push(marker);
+        markerId++;
+        // }
+      })
+      console.log(this.map);
     }
+
+    this.articleService.currentStatus.subscribe(x => {
+      if(x === true){
+        const request = this.articleService.currentRequest.subscribe(x => {this.getAllRequests(x)});
+        this.articleService.modifyStatus(false);
+      }else{
+        console.log("already loaded map search");
+      }
+
+    });
   }
 
   close_window() {
@@ -78,101 +100,8 @@ export class MapComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
   }
 
-  async getAllRequests() {
-    var currentdate = moment();
-    var previousweek = currentdate.subtract(2, "w");
-    const articleRequests = articleStore.createRequests(
-      moment.utc([2020, 0, 1, 0, 0, 0]),
-      moment.utc([2020, 1, 1, 0, 0, 0]),
-      [],
-      "",
-      []
-    );
-
-    return new Promise(() => {
-      articleRequests.forEach((req) => {
-        req.fetchAmount(10).then((res) => {
-          res.forEach(async (article) => {
-            await article.reports.forEach(async (report) => {
-              await report.locations.forEach(async (location) => {
-                if (!location.geonamesId && location.country && location.location) {
-                  await this.locationRetriever
-                    .convertLocationToGeoLocation(
-                      location.country,
-                      location.location
-                    )
-                    .then((resultant) => {
-                      const coordinates = {
-                        latitude: resultant.latitude,
-                        longtitude: resultant.longtitude,
-                      };
-                      if (coordinates.latitude && coordinates.longtitude) {
-                        const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
-                        if (!this.map.has(stringCoordinates)) {
-                          this.map.set(stringCoordinates, []);
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        } else {
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        }
-                      }
-                    });
-                }
-                else if (location.geonamesId) {
-                  await this.locationRetriever
-                    .convertGeoIdToLocation(location.geonamesId.toString())
-                    .then((resultant) => {
-                      const coordinates = {
-                        latitude: resultant.latitude,
-                        longtitude: resultant.longtitude,
-                      };
-                      const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
-                      if (coordinates.latitude && coordinates.longtitude) {
-                        if (!this.map.has(stringCoordinates)) {
-                          this.map.set(stringCoordinates, []);
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        } else {
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        }
-                      }
-                    });
-                }
-              });
-            });
-          });
-        }).then(() => {
-          let markerId = 1;
-          this.markers = [];
-          Array.from(this.map.keys()).forEach(x => {
-            var latlongString = x.split("&");
-            if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-              const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
-              this.markers.push(marker);
-              markerId++;
-              const uniqueArray = this.map.get(x).filter((thing, index) => {
-                const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
-                return index === this.map.get(x).findIndex(obj => {
-                  return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
-                });
-              });
-              this.map.set(x, uniqueArray);
-            }
-          })
-          sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
-        });
-      });
-    });
-  }
-
   getArticlesFromLatitudeLongtitude(latitude, longtitude) {
-    if(!latitude || !longtitude){
+    if (!latitude || !longtitude) {
       return;
     }
     const coordinates = {
@@ -182,9 +111,9 @@ export class MapComponent implements OnInit {
     for (const [key, value] of this.map.entries()) {
       var latlongString = key.split("&");
       if (latlongString[0] === latitude.toString() && latlongString[1] === longtitude.toString()) {
-        if(sessionStorage.getItem("map") === null){
+        if (sessionStorage.getItem("map") === null) {
           return value;
-        }else{
+        } else {
           let ret: StandardArticle[] = [];
           value.forEach(element => {
             const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
@@ -197,6 +126,11 @@ export class MapComponent implements OnInit {
     }
   }
 
+  searchRequest(articleRequests) {
+    this.getAllRequests(articleRequests).then(() => {
+    });
+  }
+
   checkMarkerInMap(latitude, longtitude) {
     this.markers.forEach(x => {
       if (x.latitude === latitude || x.longtitude === longtitude) {
@@ -205,5 +139,86 @@ export class MapComponent implements OnInit {
     })
 
     return false;
+  }
+
+  async getAllRequests(articleRequests) {
+    articleRequests.forEach((req) => {
+      req.fetchAmount(10).then((res) => {
+        res.forEach(async (article) => {
+          await article.reports.forEach(async (report) => {
+            await report.locations.forEach(async (location) => {
+              if (!location.geonamesId && location.country && location.location) {
+                await this.locationRetriever
+                  .convertLocationToGeoLocation(
+                    location.country,
+                    location.location
+                  )
+                  .then((resultant) => {
+                    const coordinates = {
+                      latitude: resultant.latitude,
+                      longtitude: resultant.longtitude,
+                    };
+                    if (coordinates.latitude && coordinates.longtitude) {
+                      const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
+                      if (!this.map.has(stringCoordinates)) {
+                        this.map.set(stringCoordinates, []);
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      } else {
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      }
+                    }
+                  });
+              }
+              else if (location.geonamesId) {
+                await this.locationRetriever
+                  .convertGeoIdToLocation(location.geonamesId.toString())
+                  .then((resultant) => {
+                    const coordinates = {
+                      latitude: resultant.latitude,
+                      longtitude: resultant.longtitude,
+                    };
+                    const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
+                    if (coordinates.latitude && coordinates.longtitude) {
+                      if (!this.map.has(stringCoordinates)) {
+                        this.map.set(stringCoordinates, []);
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      } else {
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      }
+                    }
+                  });
+              }
+            });
+          });
+        });
+      }).then(() => {
+        let markerId = 1;
+        this.markers = [];
+        Array.from(this.map.keys()).forEach(x => {
+          var latlongString = x.split("&");
+          if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+            const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+            this.markers.push(marker);
+            markerId++;
+            const uniqueArray = this.map.get(x).filter((thing, index) => {
+              const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+              return index === this.map.get(x).findIndex(obj => {
+                return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+              });
+            });
+            this.map.set(x, uniqueArray);
+          }
+        })
+        sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+      });
+    });
   }
 }

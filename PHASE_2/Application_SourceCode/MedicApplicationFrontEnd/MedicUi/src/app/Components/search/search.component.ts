@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ArticleRetrieverService } from '../../../Services/article-retriever.service';
+import * as moment from "moment";
+import articleStore from "../../apis/articles/interfaces/articleStore";
 
 @Component({
   selector: 'app-search',
@@ -12,7 +15,7 @@ export class SearchComponent implements OnInit {
   location = '';
   startEnd = '';
   endDate = '';
-  constructor() { }
+  constructor(private articleService: ArticleRetrieverService) { }
 
   ngOnInit() {
   }
@@ -33,7 +36,17 @@ export class SearchComponent implements OnInit {
   }
 
   submitSearch(){
-    console.log("sent");
+    var currentdate = moment();
+    var previousweek = currentdate.subtract(2, "w");
+    const articleRequests = articleStore.createRequests(
+      moment.utc([2020, 0, 1, 0, 0, 0]),
+      moment.utc([2020, 1, 1, 0, 0, 0]),
+      [],
+      "",
+      []
+    );
+    this.articleService.modifyStatus(true);
+    this.articleService.CreateRequest(articleRequests);
   }
 
   expandInput(event) {
