@@ -1,12 +1,17 @@
 import { Component, OnInit } from "@angular/core";
+
 import { ArticleRetrieverService } from "../../../Services/article-retriever.service";
 import { LocationMapperService } from "../../../Services/location-mapper.service";
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
+import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
+import { AgmInfoWindow } from '@agm/core/directives/info-window';
+
 import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";
 import StandardArticle from "../../types/StandardArticle";
+import { isDefined } from "@ng-bootstrap/ng-bootstrap/util/util";
 declare var google;
 @Component({
   selector: "app-map",
@@ -14,117 +19,189 @@ declare var google;
   styleUrls: ["./map.component.scss"],
 })
 export class MapComponent implements OnInit {
-  map: Map<{ latitude: any; longtitude: any }, StandardArticle[]>;
+
+  map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
+  //infowindow = new google.maps.InfoWindow();
+  markers: any[] = [];
+  mapLoaded = false;
+
+  infoWindowOpened: AgmInfoWindow = null
+  previous_info_window: AgmInfoWindow = null
+
   constructor(
     private articleRetriever: ArticleRetrieverService,
     private locationRetriever: LocationMapperService,
     private dateFormatter: DateFormatterService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
-    // var currentdate = moment();
-    // var previousweek = currentdate.subtract(2, "w");
-    // const articleRequests = articleStore.createRequests(
-    //   moment.utc([2020, 0, 1, 0, 0, 0]),
-    //   moment.utc([2020, 1, 1, 0, 0, 0]),
-    //   [],
-    //   "",
-    //   []
-    // );
-    // articleRequests.forEach((req) => {
-    //   req.fetchAmount(10).then((res) => {
-    //     res.forEach((article) => {
-    //       article.reports.forEach((report) => {
-    //         report.locations.forEach((location) => {
-    //           if (location.geonamesId === null) {
-    //             const coords = this.locationRetriever
-    //               .convertLocationToGeoLocation(
-    //                 location.country,
-    //                 location.location
-    //               )
-    //               .then((resultant) => {
-    //                 const coordinates = {
-    //                   latitude: resultant.latitude,
-    //                   longtitude: resultant.longtitude,
-    //                 };
-    //                 console.log(coordinates);
-    //                 if (!this.map.has(coordinates)) {
-    //                   this.map.set(coordinates, []);
-    //                   var update = this.map.get(coordinates);
-    //                   update.push(article);
-    //                   this.map.set(coordinates, update);
-    //                 } else {
-    //                   var update = this.map.get(coordinates);
-    //                   update.push(article);
-    //                   this.map.set(coordinates, update);
-    //                 }
-    //               });
-    //           } else {
-    //             const coordsGeoId = this.locationRetriever
-    //               .convertGeoIdToLocation(location.geonamesId.toString())
-    //               .then((resultant) => {
-    //                 const coordinates = {
-    //                   latitude: resultant.latitude,
-    //                   longtitude: resultant.longtitude,
-    //                 };
-    //                 console.log(coordinates);
-    //                 if (!this.map.has(coordinates)) {
-    //                   this.map.set(coordinates, []);
-    //                   var update = this.map.get(coordinates);
-    //                   update.push(article);
-    //                   this.map.set(coordinates, update);
-    //                 } else {
-    //                   var update = this.map.get(coordinates);
-    //                   update.push(article);
-    //                   this.map.set(coordinates, update);
-    //                 }
-    //               });
-    //           }
-    //         });
-    //       });
-    //     });
-    //   });
-    // });
-    // console.log("END END NED");
-    // console.log(this.map);
+    if (sessionStorage.getItem("map") === null || JSON.parse(sessionStorage.getItem("map")) == []) {
+      this.getAllRequests().then(() => {
+      });
+    } else {
+      this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
+      let markerId = 1;
+      this.markers = [];
+      Array.from(this.map.keys()).forEach(x => {
+        var latlongString = x.split("&");
+        // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+          const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+          this.markers.push(marker);
+          markerId++;
+          // }
+        })
+        console.log(this.map);
+    }
   }
-  //infowindow = new google.maps.InfoWindow();
-  markers = [
-    // These are all just random coordinates from https://www.random.org/geographic-coordinates/
-    { lat: 22.33159, lng: 105.63233, alpha: 1, id: 3 },
-    { lat: 7.92658, lng: -12.05228, alpha: 1, id: 4 },
-    { lat: 48.75606, lng: -118.859, alpha: 1, id: 5 },
-    { lat: 5.19334, lng: -67.03352, alpha: 1, id: 6 },
-    { lat: 12.09407, lng: 26.31618, alpha: 1, id: 8 },
-    { lat: 47.92393, lng: 78.58339, alpha: 1, id: 9 },
-  ];
 
-  clickedMarker() {
-    var infowindow = new google.maps.InfoWindow({
-      content: "poooop",
-    });
-    console.log(infowindow);
-    infowindow.open();
+  close_window() {
+    if (this.infoWindowOpened != null) {
+      this.infoWindowOpened.close()
+    }
   }
-  openedWindow: number = 0; // alternative: array of numbers
 
-  openWindow(id) {
-    console.log(id);
-    if (id == this.openedWindow && this.openedWindow !== undefined) {
-      this.openedWindow = 0;
+  select_marker(infoWindow) {
+    if (this.infoWindowOpened == infoWindow) {
+      this.infoWindowOpened.close();
       return;
     }
-    this.openedWindow = id; // alternative: push to array of numbers
-  }
 
-  isInfoWindowOpen(id) {
-    return this.openedWindow == id; // alternative: check if id is in array
+    if (this.infoWindowOpened !== null && this.infoWindowOpened !== undefined) {
+      this.infoWindowOpened.close();
+    }
+    this.infoWindowOpened = infoWindow;
   }
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
+  }
+
+  async getAllRequests() {
+    var currentdate = moment();
+    var previousweek = currentdate.subtract(2, "w");
+    const articleRequests = articleStore.createRequests(
+      moment.utc([2020, 0, 1, 0, 0, 0]),
+      moment.utc([2020, 1, 1, 0, 0, 0]),
+      [],
+      "",
+      []
+    );
+
+    return new Promise(() => {
+      articleRequests.forEach((req) => {
+        req.fetchAmount(10).then((res) => {
+          res.forEach(async (article) => {
+            await article.reports.forEach(async (report) => {
+              await report.locations.forEach(async (location) => {
+                if (!location.geonamesId && location.country && location.location) {
+                  await this.locationRetriever
+                    .convertLocationToGeoLocation(
+                      location.country,
+                      location.location
+                    )
+                    .then((resultant) => {
+                      const coordinates = {
+                        latitude: resultant.latitude,
+                        longtitude: resultant.longtitude,
+                      };
+                      if (coordinates.latitude && coordinates.longtitude) {
+                        const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
+                        if (!this.map.has(stringCoordinates)) {
+                          this.map.set(stringCoordinates, []);
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        } else {
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        }
+                      }
+                    });
+                }
+                else if (location.geonamesId) {
+                  await this.locationRetriever
+                    .convertGeoIdToLocation(location.geonamesId.toString())
+                    .then((resultant) => {
+                      const coordinates = {
+                        latitude: resultant.latitude,
+                        longtitude: resultant.longtitude,
+                      };
+                      const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
+                      if (coordinates.latitude && coordinates.longtitude) {
+                        if (!this.map.has(stringCoordinates)) {
+                          this.map.set(stringCoordinates, []);
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        } else {
+                          var update = this.map.get(stringCoordinates);
+                          update.push(article);
+                          this.map.set(stringCoordinates, update);
+                        }
+                      }
+                    });
+                }
+              });
+            });
+          });
+        }).then(() => {
+          let markerId = 1;
+          this.markers = [];
+          Array.from(this.map.keys()).forEach(x => {
+            var latlongString = x.split("&");
+            if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+              const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+              this.markers.push(marker);
+              markerId++;
+              const uniqueArray = this.map.get(x).filter((thing, index) => {
+                const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+                return index === this.map.get(x).findIndex(obj => {
+                  return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+                });
+              });
+              this.map.set(x, uniqueArray);
+            }
+          })
+          sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        });
+      });
+    });
+  }
+
+  getArticlesFromLatitudeLongtitude(latitude, longtitude) {
+    const coordinates = {
+      latitude: latitude.toString(),
+      longtitude: longtitude.toString(),
+    };
+    for (const [key, value] of this.map.entries()) {
+      var latlongString = key.split("&");
+      if (latlongString[0] === latitude.toString() && latlongString[1] === longtitude.toString()) {
+        if(sessionStorage.getItem("map") === null){
+          return value;
+        }else{
+          let ret: StandardArticle[] = [];
+          value.forEach(element => {
+            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
+            ret.push(article);
+          });
+          console.log(ret);
+          return ret;
+        }
+      }
+    }
+  }
+
+  checkMarkerInMap(latitude, longtitude) {
+    this.markers.forEach(x => {
+      if (x.latitude === latitude || x.longtitude === longtitude) {
+        return true;
+      }
+    })
+
+    return false;
   }
   
   expandInput(event) {
@@ -137,9 +214,5 @@ export class MapComponent implements OnInit {
   
   onToSelect(event) {
     document.getElementById("to").dispatchEvent(new Event("input"));
-  }
-  
-  change() {
-    console.log("change");
   }
 }

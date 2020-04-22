@@ -15,9 +15,10 @@ class Fm extends ArticleApi
     lastIndex: number;
 
     constructor() {
-        super("https://seng3011.mikuray.cf",
-              "/api/v1/articles/reports");
-        this.name = 'Fm';
+        super('Fm',
+              'ProMed',
+              'https://seng3011.mikuray.cf',
+              '/api/v1/articles/reports');
 
         this.limit = 200;
         this.lastIndex = 0;
@@ -91,7 +92,7 @@ class Fm extends ArticleApi
         const id = resArticle['id'];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, id);
+                                   mainText, reports, this.name, id);
     }
 
     private toStandardReport(resReport)

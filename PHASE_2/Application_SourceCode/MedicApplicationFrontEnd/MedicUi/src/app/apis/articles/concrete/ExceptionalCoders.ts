@@ -13,9 +13,10 @@ import ArticleApi from '../base/ArticleApi';
 class ExceptionalCoders extends ArticleApi
 {
     constructor() {
-        super("https://us-central1-seng3011-859af.cloudfunctions.net",
-              "/app/api/v1/articles");
-        this.name = 'ExceptionalCoders';
+        super('ExceptionalCoders',
+              'Flu Tracker',
+              'https://us-central1-seng3011-859af.cloudfunctions.net',
+              '/app/api/v1/articles');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ class ExceptionalCoders extends ArticleApi
         );
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports);
+                                   mainText, reports, this.name);
     }
 
     private toStandardReport(resReport)

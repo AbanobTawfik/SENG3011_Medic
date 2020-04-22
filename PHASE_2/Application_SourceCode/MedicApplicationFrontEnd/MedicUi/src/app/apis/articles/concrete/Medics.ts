@@ -12,8 +12,10 @@ import ArticleApi from "../base/ArticleApi";
 
 class Medics extends ArticleApi {
   constructor() {
-    super("https://localhost:5003", "/api/Reports/GetArticles");
-    this.name = "Medics";
+    super('Medics',
+          'CDC',
+          'https://seng3011medics-staging.azurewebsites.net',
+          '/api/Reports/GetArticles');
 
     this.limit = 50;
   }
@@ -74,7 +76,8 @@ class Medics extends ArticleApi {
       dateOfPublication,
       headline,
       mainText,
-      reports
+      reports,
+      this.name,
     );
   }
 

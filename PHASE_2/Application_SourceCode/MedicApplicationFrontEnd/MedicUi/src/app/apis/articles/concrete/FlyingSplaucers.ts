@@ -13,9 +13,10 @@ import ArticleApi from '../base/ArticleApi';
 class FlyingSplaucers extends ArticleApi
 {
     constructor() {
-        super("https://us-central1-flyingsplaucers-7b3cf.cloudfunctions.net",
-              "/reports/reports");
-        this.name = 'FlyingSplaucers';
+        super('Flying Splaucers',
+              'CDC',
+              'https://us-central1-flyingsplaucers-7b3cf.cloudfunctions.net',
+              '/reports/reports');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ class FlyingSplaucers extends ArticleApi
         const reports = [this.toStandardReport(resArticle['reports'])];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports);
+                                   mainText, reports, this.name);
     }
 
     private toStandardReport(resReport)

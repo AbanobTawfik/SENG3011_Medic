@@ -15,9 +15,10 @@ import ArticleApi from '../base/ArticleApi';
 class APIdemic extends ArticleApi
 {
     constructor() {
-        super("http://api-demic.herokuapp.com",
-              "/v1.1/articles");
-        this.name = 'ApiDemic';
+        super('ApiDemic',
+              'H5N1',
+              'http://api-demic.herokuapp.com',
+              '/v1.1/articles');
 
         this.limit = 250;
     }
@@ -78,7 +79,7 @@ class APIdemic extends ArticleApi
         );
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports);
+                                   mainText, reports, this.name);
     }
 
     private toStandardReport(resReport)
@@ -128,7 +129,7 @@ class APIdemic extends ArticleApi
                              articles:  StandardArticle[])
     {
         const a = articles[articles.length - 1];
-        const lastDate = dateUtils.xStrToDateFloor(a.dateOfPublication);
+        const lastDate = dateUtils.xStrToDateFloor(a.dateOfPublicationStr);
         const newStartDate = lastDate.add(1, 's');
         return {
             startDate: newStartDate,

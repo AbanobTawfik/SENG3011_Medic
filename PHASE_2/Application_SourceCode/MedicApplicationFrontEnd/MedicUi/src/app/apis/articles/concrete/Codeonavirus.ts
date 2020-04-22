@@ -13,9 +13,10 @@ import ArticleApi from '../base/ArticleApi';
 class Codeonavirus extends ArticleApi
 {
     constructor() {
-        super("https://www.codeonavirus.com",
-              "/who/articles");
-        this.name = 'Codeonavirus';
+        super('Codeonavirus',
+              'WHO',
+              'https://www.codeonavirus.com',
+              '/who/articles');
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -106,7 +107,7 @@ class Codeonavirus extends ArticleApi
         );
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports);
+                                   mainText, reports, this.name);
     }
 
     private toStandardReport(resReport)
