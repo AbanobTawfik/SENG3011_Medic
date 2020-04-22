@@ -22,9 +22,10 @@ export class MapComponent implements OnInit {
 
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
+  searchResult: StandardArticle[] = [];
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
-  mapLoaded = false;
+  mapView = true;
 
   infoWindowOpened: AgmInfoWindow = null
   previous_info_window: AgmInfoWindow = null
@@ -40,7 +41,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (sessionStorage.getItem("map") === null || JSON.parse(sessionStorage.getItem("map")) == []) {
+    if (sessionStorage.getItem("map") === null || !JSON.parse(sessionStorage.getItem("map"))) {
       var currentdate = moment();
       var previousweek = currentdate.subtract(2, "w");
       const articleRequests = articleStore.createRequests(
@@ -52,6 +53,7 @@ export class MapComponent implements OnInit {
       );
       this.getAllRequests(articleRequests).then(() => {
       });
+      console.log(this.map);
     } else {
       this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
       let markerId = 1;
@@ -63,8 +65,9 @@ export class MapComponent implements OnInit {
         this.markers.push(marker);
         markerId++;
         // }
-      })
+      });
       console.log(this.map);
+      this.convertMapToArray();
     }
 
     this.articleService.currentStatus.subscribe(x => {
@@ -218,7 +221,28 @@ export class MapComponent implements OnInit {
           }
         })
         sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        this.convertMapToArray();
       });
     });
+  }
+
+  convertMapToArray(){
+    this.searchResult = [];
+    Array.from(this.map.keys()).forEach(x => {
+      this.map.get(x).forEach(res => {
+        this.searchResult.push(res);
+      })
+    })
+    this.searchResult = this.searchResult.filter((thing, index) => {
+      const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+      return index === this.searchResult.findIndex(obj => {
+        return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+      });
+    });
+    console.log(this.searchResult);
+  }
+
+  switchView(){
+    this.mapView = !this.mapView;
   }
 }

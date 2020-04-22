@@ -119,11 +119,18 @@
   </div>
 </div>
  -->
-<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="2" (mapClick)="close_window($event)">
+<div style="text-align:right;">
+  <label class="btn-primary" ngbButtonLabel>
+    <input type="checkbox" ngbButton [(ngModel)]="this.mapView"> Map View
+  </label>
+</div>
+<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="2" (mapClick)="close_window($event)"
+  *ngIf="this.mapView">
   <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [opacity]="marker.alpha"
-  (markerClick)="select_marker(infoWindow)">
+    (markerClick)="select_marker(infoWindow)">
     <agm-info-window #infoWindow [latitude]="marker.lat" [longitude]="marker.lng">
-      <app-map-articles-popup [articles]="getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)"></app-map-articles-popup>
+      <app-map-articles-popup [articles]="getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)">
+      </app-map-articles-popup>
       <!-- <div *ngFor="let article of getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)">
         <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
           {{article.headline}}
@@ -132,3 +139,8 @@
     </agm-info-window>
   </agm-marker>
 </agm-map>
+<div *ngIf="!this.mapView">
+  <div *ngFor="let article of this.searchResult">
+    <pre>{{ article|json}}</pre>
+  </div>
+</div>
