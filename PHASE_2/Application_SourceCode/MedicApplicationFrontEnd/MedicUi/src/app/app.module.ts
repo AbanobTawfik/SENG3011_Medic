@@ -21,6 +21,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-articles-popup.component';
+import { MapArticleModalComponent } from './Components/map-article-modal/map-article-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-a
     SummaryComponent,
     MapComponent,
     MapArticlesPopupComponent,
+    MapArticleModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,5 +51,8 @@ import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-a
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [
+    MapArticleModalComponent
+  ],
 })
 export class AppModule {}

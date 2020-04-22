@@ -69,7 +69,8 @@ class GnarlyNarwhals extends ArticleApi
         );
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name);
+                                   mainText, reports, this.name,
+                                   this.source);
     }
 
     private toStandardReport(resReport)

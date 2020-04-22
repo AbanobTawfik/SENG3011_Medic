@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import StandardReport from './StandardReport';
 import dateUtils from '../utils/dateParser';
+import textUtils from '../utils/textUtils';
 
 export class StandardArticle {
     url: string;
@@ -13,6 +14,7 @@ export class StandardArticle {
     mainText: string;
     reports: StandardReport[];
     teamName: string;
+    source: string;
     id;
     extra;
 
@@ -22,6 +24,7 @@ export class StandardArticle {
                 mainText: string,
                 reports: StandardReport[],
                 teamName: string = null,
+                source: string = null,
                 id = null,
                 extra = null)
     {
@@ -29,9 +32,10 @@ export class StandardArticle {
         this.dateOfPublicationStr = dateOfPublicationStr;
         this.dateOfPublication = dateUtils.xStrToDateFloor(dateOfPublicationStr);
         this.headline = headline;
-        this.mainText = mainText;
+        this.mainText = textUtils.removeExcessSpace(mainText);
         this.reports = reports;
         this.teamName = teamName;
+        this.source = source;
         this.id = id;
         this.extra = extra;
     }
@@ -44,6 +48,10 @@ export class StandardArticle {
         } else {
             return this.dateOfPublication.format("DD MMM YYYY");
         }
+    }
+
+    generatePreview() {
+        return textUtils.getFirstWords(this.mainText, 75);
     }
 }
 

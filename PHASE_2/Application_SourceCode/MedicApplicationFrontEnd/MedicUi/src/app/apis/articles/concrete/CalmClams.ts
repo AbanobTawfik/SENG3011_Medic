@@ -70,7 +70,8 @@ class CalmClams extends ArticleApi
         const id = resArticle['_id'] || null;
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name, id);
+                                   mainText, reports, this.name,
+                                   this.source, id);
     }
 
     private toStandardReport(resReport)

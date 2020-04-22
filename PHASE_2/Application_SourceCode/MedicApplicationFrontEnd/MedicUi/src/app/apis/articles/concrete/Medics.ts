@@ -78,6 +78,7 @@ class Medics extends ArticleApi {
       mainText,
       reports,
       this.name,
+      this.source,
     );
   }
 

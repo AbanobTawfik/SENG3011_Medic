@@ -67,7 +67,8 @@ class FlyingSplaucers extends ArticleApi
         const reports = [this.toStandardReport(resArticle['reports'])];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name);
+                                   mainText, reports, this.name,
+                                   this.source);
     }
 
     private toStandardReport(resReport)

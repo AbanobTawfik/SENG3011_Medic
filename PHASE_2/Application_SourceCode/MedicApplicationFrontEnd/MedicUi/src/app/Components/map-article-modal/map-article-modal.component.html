@@ -1,0 +1,48 @@
+
+<div class="article-modal">
+    <div class="article-modal-header">
+        {{ article.headline }}
+        <div style="float: right; font-size: 18px;">
+            <span class="badge badge-secondary" style="text-align: right;">{{ article.teamName }}</span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="margin: 0px;">
+
+        <div style="padding: 10px; margin: 0px">
+            <div style="float: left; width: 20%;">
+                <span style="color: #888;">Date of Publication</span>
+            </div>
+            <div style="float: right; width: 80%;">
+                {{ article.formatDateOfPublication() }}
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <hr style="margin: 0px; padding: 0px;">
+
+        <div style="padding: 10px">
+            <div style="float: left; width: 20%;">
+                <span style="color: #888;">Preview</span>
+            </div>
+            <div style="float: right; width: 80%; text-align: justify;">
+                {{ article.generatePreview() }}
+                <a href="{{ article.url }}" target="_blank" style="color: #cc0015; text-decoration: none;">View full article</a>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <hr style="margin: 0px; padding: 0px;">
+
+        <div style="padding: 10px; margin: 0px">
+            <div style="float: left; width: 20%;">
+                <span style="color: #888;">Source</span>
+            </div>
+            <div style="float: right; width: 80%;">
+                {{ article.source }}
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+

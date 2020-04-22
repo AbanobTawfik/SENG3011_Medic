@@ -92,7 +92,8 @@ class Fm extends ArticleApi
         const id = resArticle['id'];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name, id);
+                                   mainText, reports, this.name,
+                                   this.source, id);
     }
 
     private toStandardReport(resReport)

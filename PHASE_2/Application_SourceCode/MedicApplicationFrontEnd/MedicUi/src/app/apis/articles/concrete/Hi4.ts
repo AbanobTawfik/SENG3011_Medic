@@ -71,8 +71,8 @@ class Hi4 extends ArticleApi
         const cases = resArticle['cases'];
 
         return new StandardArticle(url, dateOfPublication, headline,
-                                   mainText, reports, this.name, null,
-                                   { cases: cases });
+                                   mainText, reports, this.name,
+                                   this.source, null, { cases: cases });
     }
 
     private toStandardReport(resReport)
