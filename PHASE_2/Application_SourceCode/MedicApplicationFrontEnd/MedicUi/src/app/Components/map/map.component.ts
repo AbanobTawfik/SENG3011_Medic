@@ -126,4 +126,20 @@ export class MapComponent implements OnInit {
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
   }
+  
+  expandInput(event) {
+    event.target.parentNode.getElementsByTagName("span")[0].innerText = event.target.value;
+  }
+  
+  onFromSelect(event) {
+    document.getElementById("from").dispatchEvent(new Event("input"));
+  }
+  
+  onToSelect(event) {
+    document.getElementById("to").dispatchEvent(new Event("input"));
+  }
+  
+  change() {
+    console.log("change");
+  }
 }
