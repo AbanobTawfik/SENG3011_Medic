@@ -3,7 +3,7 @@ import { StandardArticle } from '../../types/StandardArticle';
 import { FormGroup, FormBuilder } from  '@angular/forms';
 declare var $:any;
 @Component({
-  selector: 'app-search',
+  selector: 'app-searchalt',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })

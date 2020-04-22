@@ -187,7 +187,7 @@ export class MapComponent implements OnInit {
             const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
             ret.push(article);
           });
-          console.log(ret);
+          //console.log(ret);
           return ret;
         }
       }
