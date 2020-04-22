@@ -6,6 +6,7 @@ import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
+import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
 import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";
@@ -21,148 +22,93 @@ export class MapComponent implements OnInit {
 
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
+  searchResult: StandardArticle[] = [];
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
-  openedWindow: number = 0; // alternative: array of numbers
+  mapView = true;
+
+  infoWindowOpened: AgmInfoWindow = null;
+  previous_info_window: AgmInfoWindow = null;
 
   constructor(
-    private articleRetriever: ArticleRetrieverService,
+    private articleService: ArticleRetrieverService,
     private locationRetriever: LocationMapperService,
     private dateFormatter: DateFormatterService,
     private modalService: NgbModal
-  ) { }
-
-  async ngOnInit() {
-    // if (localStorage.getItem("map") === null || JSON.parse(localStorage.getItem("map")) == []) {
-    await this.getAllRequests().then(() => {
-      console.log("POOO");
-      alert("DONE");
-    });
-    // } else {
-    //   var x = await this.locationRetriever.convertGeoIdToLocation("204376").then(xx => console.log(xx));
-    //   this.map = new Map<{ latitude: any; longtitude: any }, StandardArticle[]>(JSON.parse(localStorage.getItem("map")));
-    //   let markerId = 1;
-    //   Array.from(this.map.keys()).forEach(x => {
-    //     const marker = { lat: x.latitude, lng: x.longtitude, alpha: 1, id: markerId };
-    //     this.markers.push(marker);
-    //     markerId++;
-    //   })
-    // }
+  ) {
+    this.articleService.currentStatus.subscribe(x => { console.log(x) });
+    this.articleService.modifyStatus(false);
   }
 
-  openWindow(id, lat, long) {
-    console.log(id, lat, long);
-    if (id == this.openedWindow && this.openedWindow !== undefined) {
-      this.openedWindow = -1;
+  ngOnInit() {
+    if (sessionStorage.getItem("map") === null || !JSON.parse(sessionStorage.getItem("map"))) {
+      var currentdate = moment();
+      var previousweek = currentdate.subtract(2, "w");
+      const articleRequests = articleStore.createRequests(
+        moment.utc([2020, 0, 1, 0, 0, 0]),
+        moment.utc([2020, 1, 1, 0, 0, 0]),
+        [],
+        "",
+        []
+      );
+      this.getAllRequests(articleRequests).then(() => {
+      });
+      console.log(this.map);
+    } else {
+      this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
+      let markerId = 1;
+      this.markers = [];
+      Array.from(this.map.keys()).forEach(x => {
+        var latlongString = x.split("&");
+        // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+        this.markers.push(marker);
+        markerId++;
+        // }
+      });
+      console.log(this.map);
+      this.convertMapToArray();
+    }
+
+    this.articleService.currentStatus.subscribe(x => {
+      if(x === true){
+        const request = this.articleService.currentRequest.subscribe(x => {this.getAllRequests(x)});
+        this.articleService.modifyStatus(false);
+        this.infoWindowOpened = null;
+        this.previous_info_window = null;
+      }else{
+        console.log("already loaded map search");
+      }
+
+    });
+  }
+
+  close_window() {
+    if (this.infoWindowOpened != null) {
+      this.infoWindowOpened.close()
+    }
+  }
+
+  select_marker(infoWindow) {
+    if (this.infoWindowOpened == infoWindow) {
+      this.infoWindowOpened.close();
       return;
     }
-    this.openedWindow = id; // alternative: push to array of numbers
-  }
 
-  isInfoWindowOpen(id) {
-    return this.openedWindow == id; // alternative: check if id is in array
+    if (this.infoWindowOpened !== null && this.infoWindowOpened !== undefined) {
+      this.infoWindowOpened.close();
+    }
+    this.infoWindowOpened = infoWindow;
   }
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
   }
 
-  async getAllRequests() {
-    var currentdate = moment();
-    var previousweek = currentdate.subtract(2, "w");
-    const articleRequests = articleStore.createRequests(
-      moment.utc([2020, 0, 1, 0, 0, 0]),
-      moment.utc([2020, 1, 1, 0, 0, 0]),
-      [],
-      "",
-      []
-    );
-
-    return new Promise(() => {
-      articleRequests.forEach((req) => {
-        req.fetchAmount(10).then((res) => {
-          res.forEach(async (article) => {
-            await article.reports.forEach(async (report) => {
-              await report.locations.forEach(async (location) => {
-                if (!location.geonamesId && location.country && location.location) {
-                  await this.locationRetriever
-                    .convertLocationToGeoLocation(
-                      location.country,
-                      location.location
-                    )
-                    .then((resultant) => {
-                      const coordinates = {
-                        latitude: resultant.latitude,
-                        longtitude: resultant.longtitude,
-                      };
-                      if (coordinates.latitude && coordinates.longtitude) {
-                        const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
-                        if (!this.map.has(stringCoordinates)) {
-                          this.map.set(stringCoordinates, []);
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        } else {
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        }
-                      }
-                    });
-                }
-                else if (location.geonamesId) {
-                  await this.locationRetriever
-                    .convertGeoIdToLocation(location.geonamesId.toString())
-                    .then((resultant) => {
-                      const coordinates = {
-                        latitude: resultant.latitude,
-                        longtitude: resultant.longtitude,
-                      };
-                      const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
-                      if (coordinates.latitude && coordinates.longtitude) {
-                        if (!this.map.has(stringCoordinates)) {
-                          this.map.set(stringCoordinates, []);
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        } else {
-                          var update = this.map.get(stringCoordinates);
-                          update.push(article);
-                          this.map.set(stringCoordinates, update);
-                        }
-                      }
-                    });
-                }
-              });
-            });
-          });
-        }).then(() => {
-          let markerId = 1;
-          this.markers = [];
-          Array.from(this.map.keys()).forEach(x => {
-            var latlongString = x.split("&");
-            if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-              const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
-              this.markers.push(marker);
-              markerId++;
-              const uniqueArray = this.map.get(x).filter((thing, index) => {
-                const _thing = JSON.stringify(thing);
-                return index === this.map.get(x).findIndex(obj => {
-                  return JSON.stringify(obj) === _thing;
-                });
-              });
-              this.map.set(x, uniqueArray);
-              console.log("we in", uniqueArray);
-            }
-          })
-          //console.log(this.map);
-          localStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
-        });
-      });
-    });
-  }
-
   getArticlesFromLatitudeLongtitude(latitude, longtitude) {
+    if (!latitude || !longtitude) {
+      return;
+    }
     const coordinates = {
       latitude: latitude.toString(),
       longtitude: longtitude.toString(),
@@ -170,9 +116,24 @@ export class MapComponent implements OnInit {
     for (const [key, value] of this.map.entries()) {
       var latlongString = key.split("&");
       if (latlongString[0] === latitude.toString() && latlongString[1] === longtitude.toString()) {
-        return value;
+        if (sessionStorage.getItem("map") === null) {
+          return value;
+        } else {
+          let ret: StandardArticle[] = [];
+          value.forEach(element => {
+            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
+            ret.push(article);
+          });
+          //console.log(ret);
+          return ret;
+        }
       }
     }
+  }
+
+  searchRequest(articleRequests) {
+    this.getAllRequests(articleRequests).then(() => {
+    });
   }
 
   checkMarkerInMap(latitude, longtitude) {
@@ -185,8 +146,106 @@ export class MapComponent implements OnInit {
     return false;
   }
 
-  close_window() {
-    this.openedWindow = -1;
+  async getAllRequests(articleRequests) {
+    articleRequests.forEach((req) => {
+      req.fetchAmount(10).then((res) => {
+        res.forEach(async (article) => {
+          await article.reports.forEach(async (report) => {
+            await report.locations.forEach(async (location) => {
+              if (!location.geonamesId && location.country && location.location) {
+                await this.locationRetriever
+                  .convertLocationToGeoLocation(
+                    location.country,
+                    location.location
+                  )
+                  .then((resultant) => {
+                    const coordinates = {
+                      latitude: resultant.latitude,
+                      longtitude: resultant.longtitude,
+                    };
+                    if (coordinates.latitude && coordinates.longtitude) {
+                      const stringCoordinates = coordinates.latitude.toString() + "-" + coordinates.longtitude.toString();
+                      if (!this.map.has(stringCoordinates)) {
+                        this.map.set(stringCoordinates, []);
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      } else {
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      }
+                    }
+                  });
+              }
+              else if (location.geonamesId) {
+                await this.locationRetriever
+                  .convertGeoIdToLocation(location.geonamesId.toString())
+                  .then((resultant) => {
+                    const coordinates = {
+                      latitude: resultant.latitude,
+                      longtitude: resultant.longtitude,
+                    };
+                    const stringCoordinates = coordinates.latitude.toString() + "&" + coordinates.longtitude.toString();
+                    if (coordinates.latitude && coordinates.longtitude) {
+                      if (!this.map.has(stringCoordinates)) {
+                        this.map.set(stringCoordinates, []);
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      } else {
+                        var update = this.map.get(stringCoordinates);
+                        update.push(article);
+                        this.map.set(stringCoordinates, update);
+                      }
+                    }
+                  });
+              }
+            });
+          });
+        });
+      }).then(() => {
+        let markerId = 1;
+        this.markers = [];
+        Array.from(this.map.keys()).forEach(x => {
+          var latlongString = x.split("&");
+          if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+            const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+            this.markers.push(marker);
+            markerId++;
+            const uniqueArray = this.map.get(x).filter((thing, index) => {
+              const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+              return index === this.map.get(x).findIndex(obj => {
+                return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+              });
+            });
+            this.map.set(x, uniqueArray);
+          }
+        })
+        sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        this.convertMapToArray();
+      });
+    });
+  }
+
+  convertMapToArray(){
+    this.searchResult = [];
+    Array.from(this.map.keys()).forEach(x => {
+      this.map.get(x).forEach(res => {
+        this.searchResult.push(res);
+      })
+    })
+    this.searchResult = this.searchResult.filter((thing, index) => {
+      const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+      return index === this.searchResult.findIndex(obj => {
+        return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+      });
+    });
+    console.log(this.searchResult);
+  }
+
+  switchView(){
+    this.mapView = !this.mapView;
   }
 
 

@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./Pages/home/home.component";
-import { SearchComponent } from "./Pages/search/search.component";
+import { SearchComponent } from "./Components/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { NavBarComponent } from "./Components/nav/nav-bar.component";
 

@@ -7,9 +7,9 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./Components/nav/nav-bar.component";
 import { HomeComponent } from "./Pages/home/home.component";
-import { SearchComponent } from "./Pages/search/search.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
 import { MapComponent } from "./Components/map/map.component";
+import { SearchComponent } from "./Components/search/search.component";
 import { AgmCoreModule } from "@agm/core";
 import {
   DlDateTimeDateModule,
@@ -28,11 +28,11 @@ import { MapArticleModalComponent } from './Components/map-article-modal/map-art
     AppComponent,
     NavBarComponent,
     HomeComponent,
-    SearchComponent,
     SummaryComponent,
     MapComponent,
     MapArticlesPopupComponent,
     MapArticleModalComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,4 +55,4 @@ import { MapArticleModalComponent } from './Components/map-article-modal/map-art
     MapArticleModalComponent
   ],
 })
-export class AppModule {}
+export class AppModule { }
