@@ -24,7 +24,12 @@ export class MapArticlesPopupComponent implements OnInit {
     
   }
 
+  testClick(str: string = '???') {
+    console.log(`You clicked on '${str}'`);
+  }
+
   openArticleModal(article: StandardArticle) {
+    console.log(`Trying to open '${article.headline}'`);
     const modalRef = this.modalService.open(MapArticleModalComponent);
     modalRef.componentInstance.article = article;
   }
