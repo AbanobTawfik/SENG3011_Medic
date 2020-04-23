@@ -15,7 +15,9 @@ import StandardLocation from '../../types/StandardLocation';
 })
 export class MapArticlesPopupComponent implements OnInit {
 
+  articlesReal: StandardArticle[] = [];
   @Input() articles: StandardArticle[];
+
   loaded = false;
   constructor(config: NgbModalConfig, private modalService: NgbModal) {
     config.centered = true;
@@ -23,7 +25,11 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    if (this.articlesReal = []) {
+      this.articles.forEach(x => {
+        this.articlesReal.push(x);
+      })
+    }
   }
 
   testClick(str: string = '???') {
@@ -31,20 +37,17 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   openArticleModal(article: StandardArticle) {
-    alert(JSON.stringify(article));
     const modalRef = this.modalService.open(MapArticleModalComponent);
     modalRef.componentInstance.article = article;
   }
 
   getPopupArticles() {
-    // console.log(this.articles.length);
-    // const sorted = this.sortedArticles();
-    //console.log(JSON.stringify(sorted));
-    return this.articles;
+    const sorted = this.sortedArticles();
+    return sorted;
   }
 
   sortedArticles() {
-    const sorted = this.articles.slice();
+    const sorted = this.articlesReal.slice();
     sorted.sort((a, b) => {
       const aPubDate = a.dateOfPublication;
       const bPubDate = b.dateOfPublication;
@@ -52,13 +55,13 @@ export class MapArticlesPopupComponent implements OnInit {
       if (aPubDate === null) {
         return -1;
       } else if (bPubDate === null) {
-        return  1;
+        return 1;
       } else if (aPubDate < bPubDate) {
         return -1;
       } else if (aPubDate == bPubDate) {
-        return  0;
+        return 0;
       } else {
-        return  1;
+        return 1;
       }
     });
     sorted.reverse();

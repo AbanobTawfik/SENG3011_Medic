@@ -1,8 +1,8 @@
 
-<div style="font-size: 16px; margin-bottom: 5px;" (click)="testClick('Articles')">
+<div style="font-size: 16px; margin-bottom: 5px;">
     Articles
 </div>
-<div *ngFor="let article of articles" style="font-size: 14px;">
-    <span>{{ articles[0].formatDateOfPublication() }}</span> -
-    <span style="color: rgb(165, 0, 0); cursor: pointer;" (click)="openArticleModal(articles[0])">{{ articles[0].headline }}</span>
+<div *ngFor="let article of getPopupArticles()" style="font-size: 14px;">
+    <span>{{ article.formatDateOfPublication() }}</span> -
+    <span style="color: rgb(165, 0, 0); cursor: pointer;" (click)="openArticleModal(article)">{{ article.headline }}</span>
 </div>
