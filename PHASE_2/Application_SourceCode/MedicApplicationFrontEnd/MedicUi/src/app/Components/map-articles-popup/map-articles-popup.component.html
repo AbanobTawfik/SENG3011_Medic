@@ -2,7 +2,7 @@
 <div style="font-size: 16px; margin-bottom: 5px;" (click)="testClick('Articles')">
     Articles
 </div>
-<div *ngFor="let article of getPopupArticles()" style="font-size: 14px;" (click)="testClick('Article Item')">
-    <span (click)="testClick('Date of Publication')">{{ article.formatDateOfPublication() }}</span> -
+<div *ngFor="let article of getPopupArticles()" style="font-size: 14px;">
+    <span>{{ article.formatDateOfPublication() }}</span> -
     <span style="color: rgb(165, 0, 0); cursor: pointer;" (click)="openArticleModal(article)">{{ article.headline }}</span>
 </div>
