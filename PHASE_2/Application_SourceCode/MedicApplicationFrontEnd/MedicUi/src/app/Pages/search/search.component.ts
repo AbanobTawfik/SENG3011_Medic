@@ -11,7 +11,7 @@ export class SearchComponent implements OnInit {
   searchForm: FormGroup;
   
   result: StandardArticle[] = [];
-  a = new StandardArticle("https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html", "2020-03-01 17:40:00", "Enoki Mushrooms - Listeria Infections", "36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...", [], 'NoName', 1);
+  a = new StandardArticle("https://www.cdc.gov/listeria/outbreaks/enoki-mushrooms-03-20/index.html", "2020-03-01 17:40:00", "Enoki Mushrooms - Listeria Infections", "36 people infected with the outbreak strain of Listeria monocytogenes have been reported from 17 states. Illnesses started on dates ranging from November 23, 2016 to December 13, 2019...", [], 'NoName', '1');
   
   constructor(private formBuilder: FormBuilder) {
     this.createSearchForm();

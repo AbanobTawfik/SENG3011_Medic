@@ -1,79 +1,102 @@
-<div class="card m-2 p-2" style="border: none; width: 32rem; position: absolute; z-index: 64;">
-    <div class="form-row">
-        <div class="col form-row">
-            <div ngbDropdown class="btn-group col-md-3" (openChange)="openFocus($event, terms)">
-                <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
-                    ngbDropdownToggle>Diseases</button>
-                <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
-                    <div class="form-inline">
-                        <div class="input-group px-2" placement="bottom"
-                            ngbTooltip="Enter a list of terms, comma-separated">
-                            <!-- <div class="form-control expander"> -->
-                            <!-- <span class="form-control"></span> -->
+<div class="card m-2 p-2" style="border: none; position: absolute; z-index: 64;">
+    <div>
+        <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, terms)">
+            <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
+                ngbDropdownToggle>Diseases</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
+                <div class="form-inline">
+                    <div class="input-group px-2" placement="bottom"
+                        ngbTooltip="Enter a list of terms, comma-separated">
+                        <div class="form-control expander">
+                            <span class="form-control"></span>
                             <input type="text" name="terms" class="form-control" placeholder="Key term"
-                                [(ngModel)]="this.keyterm" #terms>
-                            <!-- </div> -->
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-success" type="button"
-                                    (click)="addKeyTerm()">add</button>
-                            </div>
+                                [(ngModel)]="this.keyterm" #terms (input)="expandInput($event)">
                         </div>
-                        <div>
-                            <div *ngFor="let key of this.keyterms"> {{key}} </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="button"
+                                (click)="addKeyTerm()">+</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div *ngFor="let key of this.keyterms"> {{key}} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, locations)">
+            <button class="btn btn-sm btn-outline-info text-left" id="dropdownTerms"
+                ngbDropdownToggle>Locations</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
+                <div class="form-inline">
+                    <div class="input-group px-2" placement="bottom"
+                        ngbTooltip="Enter a list of terms, comma-separated">
+                        <div class="form-control expander">
+                            <span class="form-control"></span>
+                            <input type="text" name="terms" class="form-control" placeholder="Location"
+                                [(ngModel)]="this.location" #locations (input)="expandInput($event)">
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger" type="button"
+                                (click)="locations.value = ''">X</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div ngbDropdown class="btn-group col-md-3" (openChange)="openFocus($event, locations)">
-                <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
-                    ngbDropdownToggle>Locations</button>
-                <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
-                    <div class="form-inline">
-                        <div class="input-group px-2" placement="bottom"
-                            ngbTooltip="Enter a list of terms, comma-separated">
-                            <!-- <div class="form-control expander"> -->
-                            <!-- <span class="form-control"></span> -->
-                            <input type="text" name="terms" class="form-control" placeholder="location"
-                                [(ngModel)]="this.location" #locations>
-                            <!-- </div> -->
+        </div>
+        <div ngbDropdown class="btn-group pr-2">
+            <button class="btn btn-sm btn-outline-secondary text-left" id="dropdownTerms" ngbDropdownToggle>
+                {{displayPeriod}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms"  style="width: 32rem;">
+                <form class="px-2">
+                    <div class="form-row mb-1">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="period" id="periodWeek"
+                                    value="week" checked (change)="changePeriod($event.target.value)">
+                                <label class="form-check-label" for="periodWeek">
+                                    Past week
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="period" id="periodMonth"
+                                    value="month" (change)="changePeriod($event.target.value)">
+                                <label class="form-check-label" for="periodMonth">
+                                    Past month
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div ngbDropdown class="btn-group col-md-3">
-                <button class="btn btn-sm btn-outline-secondary text-left" id="dropdownTerms" ngbDropdownToggle>Past
-                    week</button>
-                <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms"  style="width: 32rem;">
-                    <form class="px-2">
-                        <div class="form-row mb-1">
-                            <div class="col">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="period" id="periodWeek"
-                                        value="week" checked>
-                                    <label class="form-check-label" for="periodWeek">
-                                        Past week
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="period" id="periodMonth"
-                                        value="month">
-                                    <label class="form-check-label" for="periodMonth">
-                                        Past month
-                                    </label>
-                                </div>
+                    <div class="input-group flex-nowrap">
+                        <div class="input-group-prepend" placement="bottom" ngbTooltip="Enter a custom date range">
+                            <div class="input-group-text">
+                                <input type="radio" name="period" id="periodRange" value="range" (change)="changePeriod($event.target.value)">
                             </div>
                         </div>
-                        <div class="input-group flex-nowrap">
-                            <div class="input-group-prepend" placement="bottom" ngbTooltip="Enter a custom date range">
-                                <div class="input-group-text">
-                                    <input type="radio" name="period" id="periodRange" value="range">
-                                </div>
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="from" id="from"
+                            (dateSelect)="onFromSelect($event)" (input)="onDateChange()" ngbDatepicker #fromPicker="ngbDatepicker" [(ngModel)]="fromDate">
+                        <button class="btn btn-outline-secondary pt-0" (click)="fromPicker.toggle()" type="button">
+                            <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                to
                             </div>
-                            <input type="text" class="form-control" placeholder="yyyy-mm-dd" id="from"
-                                (dateSelect)="onFromSelect($event)" ngbDatepicker #fromPicker="ngbDatepicker">
-                            <button class="btn btn-outline-secondary pt-0" (click)="fromPicker.toggle()" type="button">
+                        </div>
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="to" id="to"
+                            (dateSelect)="onToSelect($event)" (input)="onDateChange()" ngbDatepicker #toPicker="ngbDatepicker" [(ngModel)]="toDate">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary pt-0" (click)="toPicker.toggle()"
+                                type="button">
                                 <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16"
                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -84,33 +107,12 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </button>
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    to
-                                </div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="yyyy-mm-dd" id="to"
-                                (dateSelect)="onToSelect($event)" ngbDatepicker #toPicker="ngbDatepicker">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary pt-0" (click)="toPicker.toggle()"
-                                    type="button">
-                                    <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16"
-                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
-                                            clip-rule="evenodd" />
-                                        <path fill-rule="evenodd"
-                                            d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-            <div class="btn-group col-md-3"><button type="submit" class="btn btn-sm btn-info"
-                    (click)="submitSearch()">Search</button></div>
         </div>
+        <div class="btn-group"><button type="submit" class="btn btn-sm btn-info"
+                (click)="submitSearch()">Search</button></div>
     </div>
 </div>

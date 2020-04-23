@@ -21,7 +21,7 @@
 
 .expander > span {
   min-width: 144px;
-  padding-right: 48px;
+  padding-right: 64px;
   visibility: hidden;
   white-space: pre;
 }
@@ -47,4 +47,9 @@
   /* background-clip: border-box; */
   /* border: 1px solid rgba(0,0,0,.125); */
   /* border-radius: .25rem;*/
+}
+
+.dropdown-toggle {
+  min-width: 128px;
+  padding-right: 32px;
 }
