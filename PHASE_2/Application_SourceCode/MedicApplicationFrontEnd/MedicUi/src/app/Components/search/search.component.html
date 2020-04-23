@@ -2,42 +2,49 @@
     <div>
         <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, terms)">
             <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
-                ngbDropdownToggle>Diseases</button>
+                ngbDropdownToggle>{{displayTerms}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <div class="form-inline">
-                    <div class="input-group px-2" placement="bottom"
-                        ngbTooltip="Enter a list of terms, comma-separated">
+                    <div class="input-group px-2 w-100">
                         <div class="form-control expander">
                             <span class="form-control"></span>
                             <input type="text" name="terms" class="form-control" placeholder="Key term"
-                                [(ngModel)]="this.keyterm" #terms (input)="expandInput($event)">
+                                [(ngModel)]="keyterm" #terms (input)="expandInput($event)" (keyup.enter)="addTerm.click()">
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-success" type="button"
-                                (click)="addKeyTerm()">+</button>
+                            <button class="btn btn-outline-success" type="button" #addTerm
+                                (click)="addKeyTerm(); clearInput(terms)">+</button>
                         </div>
                     </div>
-                    <div>
-                        <div *ngFor="let key of this.keyterms"> {{key}} </div>
+                    <div class="px-2 pt-2 w-100" *ngIf="keyterms.length">
+                        <ul class="list-group">
+                            <li *ngFor="let key of keyterms; let i = index" [style.z-index]="keyterms.length-i"
+                                class="list-group-item list-group-item-action d-table" style="padding: .375rem .75rem;">
+                                <span class="align-top d-table-cell pr-3">{{key}}</span>
+                                <button type="button" class="close" aria-label="Close" (click)="delKeyTerm(i)">
+                                    <span aria-hidden="true" class="small"> &times; </span>
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, locations)">
-            <button class="btn btn-sm btn-outline-info text-left" id="dropdownTerms"
-                ngbDropdownToggle>Locations</button>
+            <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
+                ngbDropdownToggle>{{displayLocation}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <div class="form-inline">
-                    <div class="input-group px-2" placement="bottom"
-                        ngbTooltip="Enter a list of terms, comma-separated">
+                    <div class="input-group px-2">
                         <div class="form-control expander">
                             <span class="form-control"></span>
                             <input type="text" name="terms" class="form-control" placeholder="Location"
-                                [(ngModel)]="this.location" #locations (input)="expandInput($event)">
+                                placement="bottom" ngbTooltip="Enter a location" [(ngModel)]="this.location"
+                                #locations (input)="expandInput($event); changeLocation()">
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-danger" type="button"
-                                (click)="locations.value = ''">X</button>
+                            <button class="btn btn-outline-danger" type="button" 
+                                (click)="clearInput(locations)">X</button>
                         </div>
                     </div>
                 </div>
@@ -46,7 +53,7 @@
         <div ngbDropdown class="btn-group pr-2">
             <button class="btn btn-sm btn-outline-secondary text-left" id="dropdownTerms" ngbDropdownToggle>
                 {{displayPeriod}}</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms"  style="width: 32rem;">
+            <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <form class="px-2">
                     <div class="form-row mb-1">
                         <div class="col">
@@ -74,8 +81,8 @@
                                 <input type="radio" name="period" id="periodRange" value="range" (change)="changePeriod($event.target.value)">
                             </div>
                         </div>
-                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="from" id="from"
-                            (dateSelect)="onFromSelect($event)" (input)="onDateChange()" ngbDatepicker #fromPicker="ngbDatepicker" [(ngModel)]="fromDate">
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="from" id="from" #from
+                            (dateSelect)="updateInput(from)" (input)="onDateChange()" ngbDatepicker #fromPicker="ngbDatepicker" [(ngModel)]="fromDate">
                         <button class="btn btn-outline-secondary pt-0" (click)="fromPicker.toggle()" type="button">
                             <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16"
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -88,12 +95,10 @@
                             </svg>
                         </button>
                         <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                to
-                            </div>
+                            <div class="input-group-text">to</div>
                         </div>
-                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="to" id="to"
-                            (dateSelect)="onToSelect($event)" (input)="onDateChange()" ngbDatepicker #toPicker="ngbDatepicker" [(ngModel)]="toDate">
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="to" id="to" #to
+                            (dateSelect)="updateInput(to)" (input)="onDateChange()" ngbDatepicker #toPicker="ngbDatepicker" [(ngModel)]="toDate">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary pt-0" (click)="toPicker.toggle()"
                                 type="button">
@@ -112,7 +117,6 @@
                 </form>
             </div>
         </div>
-        <div class="btn-group"><button type="submit" class="btn btn-sm btn-info"
-                (click)="submitSearch()">Search</button></div>
+        <button type="submit" class="btn btn-sm btn-info" (click)="submitSearch()">Search</button>
     </div>
 </div>

@@ -9,14 +9,19 @@ import articleStore from "../../apis/articles/interfaces/articleStore";
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+  
   keyterms = [];
   keyterm: string = '';
   location = '';
   startDate: Date;
   endDate: Date;
+  
   constructor(private articleService: ArticleRetrieverService) { }
 
   ngOnInit() {
+    this.changeLocation();
+    this.changePeriod("week");
+    this.updateDisplayTerms();
   }
 
   addKeyTerm() {
@@ -24,6 +29,22 @@ export class SearchComponent implements OnInit {
       this.keyterms.push(this.keyterm);
       this.keyterm = '';
     }
+    this.updateDisplayTerms();
+  }
+  delKeyTerm(index) {
+    this.keyterms.splice(index, 1);
+    this.updateDisplayTerms();
+  }
+  
+  displayTerms: string;
+  updateDisplayTerms() {
+    let displayLength = 20;
+    if (this.keyterms.length) {
+      this.displayTerms = this.keyterms.join(", ");
+      if (this.displayTerms.length > displayLength)
+        this.displayTerms = this.displayTerms.substr(0, displayLength) + "...";
+    } else
+      this.displayTerms = "Diseases";
   }
 
   submitSearch(){
@@ -40,21 +61,9 @@ export class SearchComponent implements OnInit {
     this.articleService.CreateRequest(articleRequests);
   }
 
-  expandInput(event) {
-    event.target.parentNode.getElementsByTagName("span")[0].innerText = event.target.value;
-  }
-
-  onFromSelect(event) {
-    document.getElementById("from").dispatchEvent(new Event("input"));
-  }
-
-  onToSelect(event) {
-    document.getElementById("to").dispatchEvent(new Event("input"));
-  }
-  
-  openFocus(event, input) {
-    if (event)
-      setTimeout(() => input.focus(), 10);
+  displayLocation: string;
+  changeLocation() {
+    this.displayLocation = this.location ? this.location : "Worldwide";
   }
   
   fromDate = null; // Date value from timepickers (use startDate and endDate instead)
@@ -64,8 +73,8 @@ export class SearchComponent implements OnInit {
       this.changePeriod("range");
   }
   
-  periodType: string = "week"
-  displayPeriod: string = "Past week";
+  periodType: string;
+  displayPeriod: string;
   changePeriod(type: string) {
     this.startDate = new Date();
     this.endDate = new Date();
@@ -99,4 +108,21 @@ export class SearchComponent implements OnInit {
     console.log(moment.utc(this.startDate));
     console.log(moment.utc(this.endDate));
   }
+  
+  openFocus(event, input) {
+    if (event)
+      setTimeout(() => input.focus(), 10);
+  }
+  clearInput(input) {
+    input.value = "";
+    input.dispatchEvent(new Event("input"));
+    input.focus();
+  }
+  expandInput(event) {
+    event.target.parentNode.getElementsByTagName("span")[0].innerText = event.target.value;
+  }
+  updateInput(input) {
+    input.dispatchEvent(new Event("input"));
+  }
+
 }

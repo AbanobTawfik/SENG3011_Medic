@@ -20,14 +20,14 @@
 }
 
 .expander > span {
-  min-width: 144px;
+  min-width: 192px;
   padding-right: 64px;
   visibility: hidden;
   white-space: pre;
 }
 
 #from, #to {
-  min-width: 114px;
+  min-width: 144px;
 }
 
 .input-group > button {
@@ -52,4 +52,16 @@
 .dropdown-toggle {
   min-width: 128px;
   padding-right: 32px;
+}
+
+.close:focus {
+  outline: none;
+}
+
+.close > .small {
+  position: absolute;
+  padding-right: .75rem;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
 }
