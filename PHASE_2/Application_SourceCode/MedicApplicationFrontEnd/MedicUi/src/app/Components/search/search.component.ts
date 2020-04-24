@@ -49,10 +49,11 @@ export class SearchComponent implements OnInit {
 
   submitSearch(){
     var currentdate = moment();
-    var previousweek = currentdate.subtract(3, "w");
+    var start = moment(this.startDate);
+    var end = moment(this.endDate);
     const articleRequests = articleStore.createRequests(
-      moment.utc([2020, 0, 1, 0, 0, 0]),
-      moment.utc([2020, 1, 1, 0, 0, 0]),
+      start,
+      end,
       this.keyterms,
       this.location,
       []

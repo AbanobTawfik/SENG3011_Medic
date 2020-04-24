@@ -25,11 +25,17 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.articlesReal = []) {
+    if (this.articlesReal = [] && this.articles) {
+      this.articlesReal = [];
       this.articles.forEach(x => {
-        this.articlesReal.push(x);
+        var add = new StandardArticle(x.url, x.dateOfPublicationStr, x.headline, x.mainText, x.reports, x.teamName, x.source, x.id, x.extra);
+        this.articlesReal.push(add);
       })
     }
+  }
+
+  checkDateOfPub(article: StandardArticle){
+    return article.formatDateOfPublication() !== "";
   }
 
   testClick(str: string = '???') {
@@ -37,6 +43,7 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   openArticleModal(article: StandardArticle) {
+    console.log(this.articlesReal);
     const modalRef = this.modalService.open(MapArticleModalComponent);
     modalRef.componentInstance.article = article;
   }
@@ -47,24 +54,26 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   sortedArticles() {
-    const sorted = this.articlesReal.slice();
-    sorted.sort((a, b) => {
-      const aPubDate = a.dateOfPublication;
-      const bPubDate = b.dateOfPublication;
+    if (this.articlesReal) {
+      const sorted = this.articlesReal.slice();
+      sorted.sort((a, b) => {
+        const aPubDate = a.dateOfPublication;
+        const bPubDate = b.dateOfPublication;
 
-      if (aPubDate === null) {
-        return -1;
-      } else if (bPubDate === null) {
-        return 1;
-      } else if (aPubDate < bPubDate) {
-        return -1;
-      } else if (aPubDate == bPubDate) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
-    sorted.reverse();
-    return sorted;
+        if (aPubDate === null) {
+          return -1;
+        } else if (bPubDate === null) {
+          return 1;
+        } else if (aPubDate < bPubDate) {
+          return -1;
+        } else if (aPubDate == bPubDate) {
+          return 0;
+        } else {
+          return 1;
+        }
+      });
+      sorted.reverse();
+      return sorted;
+    }
   }
 }
