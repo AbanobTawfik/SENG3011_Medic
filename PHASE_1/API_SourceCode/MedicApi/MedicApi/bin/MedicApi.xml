@@ -135,6 +135,17 @@
             <response code="400">Invalid input parameters</response>
             <response code="500">Internal server error</response>
         </member>
+        <member name="M:MedicApi.Controllers.ReportsController.GetCases(System.String)">
+            <summary>
+            Provides the daily cases data extracted from a specified article, if available.
+            </summary>
+            <param name="url">
+                The URL of the desired article 
+            </param>
+            <response code="200">Successful request</response>
+            <response code="204">No data available</response>
+            <response code="400">Invalid input parameters</response>
+        </member>
         <member name="T:MedicApi.Swashbuckle.SwaggerExampleValue">
             <summary>
             A custom attribute for setting default parameter values in Swagger.

@@ -107,6 +107,24 @@ namespace MedicApi.Services
             }
         }
 
+        public Cases RetrieveCases(string url)
+        {
+            try
+            {
+                string dbName = this.testing ? "test-articles" : "articles";
+
+                var db = client.GetDatabase(dbName);
+                var collections = db.GetCollection<StoredArticle>("articles");
+
+                return collections.Find(Builders<StoredArticle>.Filter.Eq("_id", url)).FirstOrDefault().reports[0].cases;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception:\n" + e.Message);
+                return null;
+            }
+        }
+
         public FrontEndLocation GetLocationIfExists(string GeoId = "", string Country = "", string Location = "")
         {
             var db = client.GetDatabase("frontend-locations");
