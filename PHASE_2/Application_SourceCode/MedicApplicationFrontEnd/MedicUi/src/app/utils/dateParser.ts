@@ -57,8 +57,12 @@ function isLeapYear(y: number)
     return y % 400 == 0 || (y % 100 != 0 && y % 4 == 0);
 }
 
-function xsToDateFloor(ys: string, Ms: string, ds: string,
-                       Hs: string, ms: string, ss: string)
+function xsToDateFloor(ys: string,
+                       Ms: string = 'xx',
+                       ds: string = 'xx',
+                       Hs: string = 'xx',
+                       ms: string = 'xx',
+                       ss: string = 'xx')
 {
     const y = parseInt(ys);
     const M = (Ms == 'xx' ?  1 : parseInt(Ms));
@@ -122,20 +126,28 @@ const dateUtils = {
     {
         if (str == null) return null;
 
-        const reExact = /(\d{4})-(\d{2}|xx)-(\d{2}|xx) (\d{2}|xx):(\d{2}|xx):(\d{2}|xx)/;
+        const reExact1 = /(\d{4})-(\d{2}|xx)-(\d{2}|xx)(?: |T)(\d{2}|xx):(\d{2}|xx):(\d{2}|xx)/;
+        const reExact2 = /(\d{4})-(\d{2}|xx)-(\d{2}|xx)/;
         
-        const match1 = str.match(reExact);
-
-        if (match1) {
-            const y = match1[1];
-            const M = match1[2];
-            const d = match1[3];
-            const H = match1[4];
-            const m = match1[5];
-            const s = match1[6];
-
+        if (reExact1.test(str)) {
+            const match = str.match(reExact1);
+            const y = match[1];
+            const M = match[2];
+            const d = match[3];
+            const H = match[4];
+            const m = match[5];
+            const s = match[6];
             return xsToDateFloor(y, M, d, H, m, s);
+
+        } else if (reExact2.test(str)) {
+            const match = str.match(reExact2);
+            const y = match[1];
+            const M = match[2];
+            const d = match[3];
+            return xsToDateFloor(y, M, d);
+        
         } else {
+            console.log('BAD DATE: '+ str);
             return null;
         }
     }

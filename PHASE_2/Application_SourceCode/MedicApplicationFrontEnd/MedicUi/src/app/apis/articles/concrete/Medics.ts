@@ -90,7 +90,10 @@ class Medics extends ArticleApi {
       this.toStandardLocation(resLocation)
     );
 
-    return new StandardReport(diseases, syndromes, event_date, locations);
+    const normalisedDiseases = diseases.map(this.normaliseDisease);
+
+    return new StandardReport(normalisedDiseases, syndromes, event_date,
+                              locations);
   }
 
   private toStandardLocation(resLocation) {

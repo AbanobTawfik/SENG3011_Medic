@@ -195,6 +195,25 @@ abstract class ArticleApi {
         return null;
     }
 
+    public normaliseDisease(disease: string) {
+        disease = disease.toLowerCase();
+
+        if (disease === 'covid-19' ||
+                disease === 'coronavirus' ||
+                disease === 'novel coronavirus') {
+            return 'COVID-19';
+        
+        } else if (disease === 'middle east respiratory syndrome') {
+            return 'mers-cov';
+            
+        } else if (disease === 'severe acute respiratory syndrome') {
+            return 'sars';
+
+        } else {
+            return disease;
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////
 }
 

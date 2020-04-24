@@ -1,7 +1,7 @@
-<div class="card m-2 p-2" style="border: none; position: absolute; z-index: 64;">
+<div class="card m-2 p-2" style="background-color: transparent; border: none; position: absolute; z-index: 64;">
     <div>
         <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, terms)">
-            <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
+            <button class="btn btn-md btn-primary text-left" id="dropdownTerms"
                 ngbDropdownToggle>{{displayTerms}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <div class="form-inline">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div ngbDropdown class="btn-group pr-2" (openChange)="openFocus($event, locations)">
-            <button class="btn btn-sm btn-outline-primary text-left" id="dropdownTerms"
+            <button class="btn btn-md btn-primary text-left" id="dropdownTerms"
                 ngbDropdownToggle>{{displayLocation}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <div class="form-inline">
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div ngbDropdown class="btn-group pr-2">
-            <button class="btn btn-sm btn-outline-secondary text-left" id="dropdownTerms" ngbDropdownToggle>
+            <button class="btn btn-md btn-secondary text-left" id="dropdownTerms" ngbDropdownToggle>
                 {{displayPeriod}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownTerms" id="dropTerms">
                 <form class="px-2">
@@ -117,6 +117,6 @@
                 </form>
             </div>
         </div>
-        <button type="submit" class="btn btn-sm btn-info" (click)="submitSearch()">Search</button>
+        <button type="submit" class="btn btn-md btn-info" (click)="submitSearch()">Search</button>
     </div>
 </div>

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -22,6 +23,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-articles-popup.component';
 import { MapArticleModalComponent } from './Components/map-article-modal/map-article-modal.component';
+import { MapArticlesListViewComponent } from './Components/map-articles-list-view/map-articles-list-view.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { MapArticleModalComponent } from './Components/map-article-modal/map-art
     MapArticlesPopupComponent,
     MapArticleModalComponent,
     SearchComponent,
+    MapArticlesListViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ import { MapArticleModalComponent } from './Components/map-article-modal/map-art
       apiKey: environment.GoogleApiKey,
     }),
     FlexLayoutModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

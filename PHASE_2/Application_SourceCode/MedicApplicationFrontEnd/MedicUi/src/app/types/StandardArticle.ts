@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import StandardReport from './StandardReport';
 import dateUtils from '../utils/dateParser';
 import textUtils from '../utils/textUtils';
+import { toArray } from 'rxjs/internal/operators';
 
 export class StandardArticle {
     url: string;
@@ -48,6 +49,12 @@ export class StandardArticle {
         } else {
             return this.dateOfPublication.format("DD MMM YYYY");
         }
+    }
+
+    generateDiseasesString() {
+        const diseases = new Set();
+        this.reports.forEach(rep => rep.diseases.forEach(d =>  diseases.add(d)));
+        return Array.from(diseases).join(', ');
     }
 
     generatePreview() {
