@@ -71,11 +71,12 @@ export class MapComponent implements OnInit {
 
     this.articleService.currentStatus.subscribe(x => {
       if(x === true){
+        this.searchResult = [];
+        this.map = new Map<string, StandardArticle[]>();
         const request = this.articleService.currentRequest.subscribe(x => {this.getAllRequests(x)});
         this.articleService.modifyStatus(false);
         this.infoWindowOpened = null;
         this.previous_info_window = null;
-        this.convertMapToArray();
       }else{
         console.log("already loaded map search");
       }
@@ -131,6 +132,7 @@ export class MapComponent implements OnInit {
   }
 
   searchRequest(articleRequests) {
+    alert("WEO WEO");
     this.getAllRequests(articleRequests).then(() => {
     });
   }
