@@ -25,7 +25,7 @@ export class MapArticlesPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.articlesReal = []) {
+    if (this.articlesReal = [] && this.articles) {
       this.articles.forEach(x => {
         this.articlesReal.push(x);
       })

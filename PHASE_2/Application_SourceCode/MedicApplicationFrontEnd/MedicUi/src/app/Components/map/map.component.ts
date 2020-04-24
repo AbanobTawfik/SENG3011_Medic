@@ -121,7 +121,7 @@ export class MapComponent implements OnInit {
         } else {
           let ret: StandardArticle[] = [];
           value.forEach(element => {
-            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.id, element.extra);
+            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName,element.source, element.id, element.extra);
             ret.push(article);
           });
           //console.log(ret);
