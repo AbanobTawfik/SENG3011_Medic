@@ -26,6 +26,7 @@ export class MapComponent implements OnInit {
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
   mapView = true;
+  allDiseases = [];
 
   infoWindowOpened: AgmInfoWindow = null;
   previous_info_window: AgmInfoWindow = null;
@@ -80,8 +81,26 @@ export class MapComponent implements OnInit {
       }else{
         console.log("already loaded map search");
       }
-
     });
+  }
+
+  getAllDiseases(){
+    this.allDiseases = [];
+    Array.from(this.map.keys()).forEach(x => {
+      var latlongString = x.split("&");
+      if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+        this.markers.push(marker);
+        markerId++;
+        const uniqueArray = this.map.get(x).filter((thing, index) => {
+          const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+          return index === this.map.get(x).findIndex(obj => {
+            return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+          });
+        });
+        this.map.set(x, uniqueArray);
+      }
+    })
   }
 
   close_window() {
