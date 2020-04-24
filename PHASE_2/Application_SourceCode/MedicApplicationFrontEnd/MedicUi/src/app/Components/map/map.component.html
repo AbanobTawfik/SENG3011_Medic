@@ -8,12 +8,10 @@
 
 <div style="border: 1px solid greenyellow; position: relative;">
   <div style="top: 10px; right: 10px; text-align: right; z-index: 64; position: absolute;">
-    <label class="btn-primary" ngbButtonLabel>
-      <input type="checkbox" ngbButton [(ngModel)]="this.mapView"> Map View
-    </label>
-    <label class="btn-primary" ngbButtonLabel>
+      <button class="btn btn-primary" type="button" (click)="resetPopup()"> Map View </button>
+    <!-- <label class="btn-primary" ngbButtonLabel>
       <input type="checkbox" ngbButton [(ngModel)]="this.mapView"> Filter
-    </label>
+    </label> -->
   </div>
 
   <agm-map
@@ -36,8 +34,8 @@
   </agm-map>
 
   <div *ngIf="!this.mapView">
-    <div *ngFor="let article of this.searchResult">
-      <pre>{{ article|json}}</pre>
-    </div>
+    <br/><br/><br/>
+      <app-map-articles-popup [articles]="this.searchResult">
+      </app-map-articles-popup>
   </div>
 </div>
