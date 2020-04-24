@@ -5,6 +5,8 @@ import { LocationMapperService } from "../../../Services/location-mapper.service
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
+import { faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
+
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -19,6 +21,9 @@ declare var google;
   styleUrls: ["./map.component.scss"],
 })
 export class MapComponent implements OnInit {
+  // Icons
+  faMapMarkedAlt = faMapMarkedAlt;
+  faListAlt = faListAlt;
 
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
@@ -26,6 +31,7 @@ export class MapComponent implements OnInit {
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
   mapView = true;
+  mapViewToggleState = true;
 
   infoWindowOpened: AgmInfoWindow = null;
   previous_info_window: AgmInfoWindow = null;
@@ -145,6 +151,12 @@ export class MapComponent implements OnInit {
     })
 
     return false;
+  }
+
+  toggleMapView(mapView: boolean) {
+    if (this.mapView !== mapView) {
+      this.resetPopup();
+    }
   }
 
   resetPopup(){

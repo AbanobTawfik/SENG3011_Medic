@@ -6,9 +6,17 @@
       <app-map-articles-popup [articles]="getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)"></app-map-articles-popup> -->
 
 
-<div style="border: 1px solid greenyellow; position: relative;">
+<div style="border: none; position: relative;">
   <div style="top: 10px; right: 10px; text-align: right; z-index: 64; position: absolute;">
-      <button class="btn btn-primary" type="button" (click)="resetPopup()"> Map View </button>
+    <div class="m-2 btn-group btn-group-toggle" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
+      <label ngbButtonLabel class="btn-md btn-info">
+        <input ngbButton type="radio" [value]="true" (click)="toggleMapView(true)"><fa-icon [icon]="faMapMarkedAlt"></fa-icon> Map View
+      </label>
+      <label ngbButtonLabel class="btn-md btn-info">
+        <input ngbButton type="radio" [value]="false" (click)="toggleMapView(false)"><fa-icon [icon]="faListAlt"></fa-icon> List View
+      </label>
+    </div>
+
     <!-- <label class="btn-primary" ngbButtonLabel>
       <input type="checkbox" ngbButton [(ngModel)]="this.mapView"> Filter
     </label> -->
@@ -34,8 +42,6 @@
   </agm-map>
 
   <div *ngIf="!this.mapView">
-    <br/><br/><br/>
-      <app-map-articles-popup [articles]="this.searchResult">
-      </app-map-articles-popup>
+    <app-map-articles-list-view [articles]="this.searchResult"></app-map-articles-list-view>
   </div>
 </div>
