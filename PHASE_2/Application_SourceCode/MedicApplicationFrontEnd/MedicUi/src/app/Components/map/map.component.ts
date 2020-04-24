@@ -66,7 +66,6 @@ export class MapComponent implements OnInit {
         markerId++;
         // }
       });
-      console.log(this.map);
       this.convertMapToArray();
     }
 
@@ -76,6 +75,7 @@ export class MapComponent implements OnInit {
         this.articleService.modifyStatus(false);
         this.infoWindowOpened = null;
         this.previous_info_window = null;
+        this.convertMapToArray();
       }else{
         console.log("already loaded map search");
       }
@@ -124,7 +124,6 @@ export class MapComponent implements OnInit {
             const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName,element.source, element.id, element.extra);
             ret.push(article);
           });
-          //console.log(ret);
           return ret;
         }
       }
@@ -144,6 +143,12 @@ export class MapComponent implements OnInit {
     })
 
     return false;
+  }
+
+  resetPopup(){
+    this.infoWindowOpened = null;
+    this.previous_info_window = null;
+    this.mapView = !this.mapView;
   }
 
   async getAllRequests(articleRequests) {
@@ -241,7 +246,6 @@ export class MapComponent implements OnInit {
         return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
       });
     });
-    console.log(this.searchResult);
   }
 
   switchView(){
