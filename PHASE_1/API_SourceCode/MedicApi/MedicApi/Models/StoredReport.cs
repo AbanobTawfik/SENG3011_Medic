@@ -15,6 +15,7 @@ namespace MedicApi.Models
         public DateTime event_date_end { get; set; }
         public string event_date_str { get; set; }
         public List<StoredPlace> locations { get; set; }
+        public Cases cases { get; set; }
         public Report ToReport()
         {
             return new Report

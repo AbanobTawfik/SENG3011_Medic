@@ -199,5 +199,24 @@ namespace MedicApi.Controllers
             this._logger.LogSuccess(articles.ToArray(), TimeTakenForSuccess);
             return Ok(res);
         }
+
+        /// <summary>
+        /// Provides the daily cases data extracted from a specified article, if available.
+        /// </summary>
+        /// <param name="url">
+        ///     The URL of the desired article 
+        /// </param>
+        /// <response code="200">Successful request</response>
+        /// <response code="204">No data available</response>
+        /// <response code="400">Invalid input parameters</response>
+        [Route("GetCases")]
+        [ProducesResponseType(typeof(Cases), 200)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Produces("application/json")]
+        [HttpGet]
+        public ActionResult GetCases([FromQuery]string url)
+        {
+            return Ok(_db.RetrieveCases(url));
+        }
     }
 }
