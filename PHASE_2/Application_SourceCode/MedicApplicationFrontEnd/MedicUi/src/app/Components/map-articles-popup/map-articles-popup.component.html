@@ -4,5 +4,5 @@
 </div>
 <div *ngFor="let article of getPopupArticles()" style="font-size: 14px;">
     <span *ngIf="checkDateOfPub(article)">{{ article.formatDateOfPublication() }}</span> -
-    <span style="color: rgb(165, 0, 0); cursor: pointer;" (click)="openArticleModal(article)" *ngIf="checkDateOfPub(article)">{{ article.headline }}</span>
+    <span style="color: rgb(165, 0, 0); cursor: pointer;" (click)="openArticleModal(article)">{{ article.headline }}</span>
 </div>
