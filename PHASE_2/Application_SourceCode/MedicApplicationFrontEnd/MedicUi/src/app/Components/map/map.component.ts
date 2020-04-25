@@ -6,7 +6,6 @@ import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 import { faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
-
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -14,6 +13,9 @@ import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";
 import StandardArticle from "../../types/StandardArticle";
 import { isDefined } from "@ng-bootstrap/ng-bootstrap/util/util";
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import StandardReport from "../../types/StandardReport";
+
 declare var google;
 @Component({
   selector: "app-map",
@@ -24,15 +26,18 @@ export class MapComponent implements OnInit {
   // Icons
   faMapMarkedAlt = faMapMarkedAlt;
   faListAlt = faListAlt;
-
+  selectedDiseases = [];
+  masterMap: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
   searchResult: StandardArticle[] = [];
+  filterResult: StandardArticle[] = [];
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
   mapView = true;
+  allDiseases = [];
   mapViewToggleState = true;
-
+  dropdownSettings = {};
   infoWindowOpened: AgmInfoWindow = null;
   previous_info_window: AgmInfoWindow = null;
 
@@ -47,7 +52,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (sessionStorage.getItem("map") === null || !JSON.parse(sessionStorage.getItem("map"))) {
+    if (sessionStorage.getItem("map") === null || JSON.parse(sessionStorage.getItem("map")).length == 0) {
       var currentdate = moment();
       var previousweek = currentdate.subtract(2, "w");
       const articleRequests = articleStore.createRequests(
@@ -59,35 +64,53 @@ export class MapComponent implements OnInit {
       );
       this.getAllRequests(articleRequests).then(() => {
       });
-      console.log(this.map);
+      //console.log(this.map);
     } else {
+      this.masterMap = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
       this.map = new Map<string, StandardArticle[]>(JSON.parse(sessionStorage.getItem("map")));
-      let markerId = 1;
-      this.markers = [];
-      Array.from(this.map.keys()).forEach(x => {
-        var latlongString = x.split("&");
-        // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
-        this.markers.push(marker);
-        markerId++;
-        // }
-      });
+      this.setMarkers();
+      this.getFilteredArticles();
       this.convertMapToArray();
+      this.getAllDiseases();
     }
 
     this.articleService.currentStatus.subscribe(x => {
-      if(x === true){
+      if (x === true) {
         this.searchResult = [];
+        this.selectedDiseases = [];
+        this.filterResult = [];
         this.map = new Map<string, StandardArticle[]>();
-        const request = this.articleService.currentRequest.subscribe(x => {this.getAllRequests(x)});
+        const request = this.articleService.currentRequest.subscribe(x => { this.getAllRequests(x) });
         this.articleService.modifyStatus(false);
+        // this.articleService.updateListView(this.searchResult);
         this.infoWindowOpened = null;
         this.previous_info_window = null;
-      }else{
+      } else {
         console.log("already loaded map search");
       }
-
     });
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'Filter',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 1,
+      allowSearchFilter: true
+    };
+  }
+
+  getAllDiseases() {
+    this.allDiseases = [];
+    this.searchResult.forEach(article => {
+      article.reports.forEach(report => {
+        report.diseases.forEach(disease => {
+          if (!this.allDiseases.includes(disease)) {
+            this.allDiseases.push(disease);
+          }
+        })
+      })
+    })
   }
 
   close_window() {
@@ -128,7 +151,7 @@ export class MapComponent implements OnInit {
         } else {
           let ret: StandardArticle[] = [];
           value.forEach(element => {
-            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName,element.source, element.id, element.extra);
+            const article = new StandardArticle(element.url, element.dateOfPublicationStr, element.headline, element.mainText, element.reports, element.teamName, element.source, element.id, element.extra);
             ret.push(article);
           });
           return ret;
@@ -138,7 +161,6 @@ export class MapComponent implements OnInit {
   }
 
   searchRequest(articleRequests) {
-    alert("WEO WEO");
     this.getAllRequests(articleRequests).then(() => {
     });
   }
@@ -159,7 +181,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  resetPopup(){
+  resetPopup() {
     this.infoWindowOpened = null;
     this.previous_info_window = null;
     this.mapView = !this.mapView;
@@ -189,10 +211,12 @@ export class MapComponent implements OnInit {
                         var update = this.map.get(stringCoordinates);
                         update.push(article);
                         this.map.set(stringCoordinates, update);
+                        this.masterMap.set(stringCoordinates, update);
                       } else {
                         var update = this.map.get(stringCoordinates);
                         update.push(article);
                         this.map.set(stringCoordinates, update);
+                        this.masterMap.set(stringCoordinates, update);
                       }
                     }
                   });
@@ -212,10 +236,12 @@ export class MapComponent implements OnInit {
                         var update = this.map.get(stringCoordinates);
                         update.push(article);
                         this.map.set(stringCoordinates, update);
+                        this.masterMap.set(stringCoordinates, update);
                       } else {
                         var update = this.map.get(stringCoordinates);
                         update.push(article);
                         this.map.set(stringCoordinates, update);
+                        this.masterMap.set(stringCoordinates, update);
                       }
                     }
                   });
@@ -239,18 +265,21 @@ export class MapComponent implements OnInit {
               });
             });
             this.map.set(x, uniqueArray);
+            this.masterMap.set(x, uniqueArray);
           }
         })
         sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
+        this.getFilteredArticles();
         this.convertMapToArray();
+        this.getAllDiseases();
       });
     });
   }
 
-  convertMapToArray(){
+  convertMapToArray() {
     this.searchResult = [];
-    Array.from(this.map.keys()).forEach(x => {
-      this.map.get(x).forEach(res => {
+    Array.from(this.masterMap.keys()).forEach(x => {
+      this.masterMap.get(x).forEach(res => {
         this.searchResult.push(res);
       })
     })
@@ -262,10 +291,93 @@ export class MapComponent implements OnInit {
     });
   }
 
-  switchView(){
+  switchView() {
     this.mapView = !this.mapView;
   }
 
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+
+  FilterMasterMap() {
+    this.infoWindowOpened = null;
+    this.previous_info_window = null;
+    if (this.selectedDiseases.length == 0) {
+      console.log("nothing to filter");
+    } else {
+      let newMap = new Map<string, StandardArticle[]>();
+      Array.from(this.masterMap.keys()).forEach(x => {
+        newMap.set(x, []);
+      })
+      // go through each marker
+      // check all the articles in each marker
+      // check all the reports in the article
+      // check all the diseases in the article
+      // if match, add the marker + article
+      Array.from(this.masterMap.keys()).forEach(x => {
+        const articles = this.masterMap.get(x);
+        articles.forEach(article => {
+          const reports = article.reports;
+          var found = false;
+          reports.forEach(report => {
+            const diseases = report.diseases;
+            diseases.forEach(disease => {
+              if (this.selectedDiseases.includes(disease) && found == false) {
+                found = true;
+                let articlesOnMarker = newMap.get(x);
+                articlesOnMarker.push(article);
+                newMap.set(x, articlesOnMarker);
+              }
+            })
+          })
+        })
+      });
+
+      Array.from(this.masterMap.keys()).forEach(x => {
+        if (newMap.get(x).length == 0) {
+          newMap.delete(x);
+        }
+      })
+      this.map = newMap;
+      this.getFilteredArticles();
+      //console.log(this.filterResult);
+      this.selectedDiseases = [];
+      this.articleService.updateListView(this.filterResult);
+      this.setMarkers();
+    }
+  }
+
+  getFilteredArticles() {
+    this.filterResult = [];
+    Array.from(this.map.keys()).forEach(x => {
+      this.map.get(x).forEach(res => {
+        this.filterResult.push(res);
+      })
+    })
+    this.filterResult = this.filterResult.filter((thing, index) => {
+      const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+      return index === this.filterResult.findIndex(obj => {
+        return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+      });
+    });
+  }
+
+  setMarkers() {
+    let markerId = 1;
+    this.markers = [];
+    Array.from(this.map.keys()).forEach(x => {
+      var latlongString = x.split("&");
+      // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+      const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+      this.markers.push(marker);
+      markerId++;
+      // }
+    });
+  }
 
   styles: any[] = [
     {

@@ -22,6 +22,7 @@ export class MapArticlesPopupComponent implements OnInit {
     config.size = "lg";
   }
 
+
   ngOnInit() {
     if (this.articlesReal.length === 0 && this.articles) {
       this.articlesReal = [];
@@ -32,7 +33,7 @@ export class MapArticlesPopupComponent implements OnInit {
     }
   }
 
-  checkDateOfPub(article: StandardArticle){
+  checkDateOfPub(article: StandardArticle) {
     return article.formatDateOfPublication() !== "";
   }
 

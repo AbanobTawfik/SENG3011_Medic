@@ -11,5 +11,6 @@ namespace MedicApi.Models
         public DateTime start { get; set; }
         public int interval { get; set; }
         public List<int> data { get; set; }
+        public int deaths { get; set; }
     }
 }
