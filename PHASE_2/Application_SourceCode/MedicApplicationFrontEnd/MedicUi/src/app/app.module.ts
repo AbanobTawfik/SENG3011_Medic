@@ -24,6 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MapArticlesPopupComponent } from './Components/map-articles-popup/map-articles-popup.component';
 import { MapArticleModalComponent } from './Components/map-article-modal/map-article-modal.component';
 import { MapArticlesListViewComponent } from './Components/map-articles-list-view/map-articles-list-view.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MapArticlesListViewComponent } from './Components/map-articles-list-vie
     AgmCoreModule.forRoot({
       apiKey: environment.GoogleApiKey,
     }),
+    NgMultiSelectDropDownModule.forRoot(),
     FlexLayoutModule,
     FontAwesomeModule,
   ],

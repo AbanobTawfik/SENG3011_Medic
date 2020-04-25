@@ -6,7 +6,6 @@ import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 import { faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
-
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -14,6 +13,8 @@ import articleStore from "../../apis/articles/interfaces/articleStore";
 import * as moment from "moment";
 import StandardArticle from "../../types/StandardArticle";
 import { isDefined } from "@ng-bootstrap/ng-bootstrap/util/util";
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
 declare var google;
 @Component({
   selector: "app-map",
@@ -24,19 +25,16 @@ export class MapComponent implements OnInit {
   // Icons
   faMapMarkedAlt = faMapMarkedAlt;
   faListAlt = faListAlt;
-
+  selectedDiseases = [];
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
   searchResult: StandardArticle[] = [];
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
   mapView = true;
-<<<<<<< HEAD
   allDiseases = [];
-=======
   mapViewToggleState = true;
->>>>>>> 30472013c7e2e4fb8bbae8e3794ce510b7c64eea
-
+  dropdownSettings = {};
   infoWindowOpened: AgmInfoWindow = null;
   previous_info_window: AgmInfoWindow = null;
 
@@ -77,6 +75,7 @@ export class MapComponent implements OnInit {
         // }
       });
       this.convertMapToArray();
+      this.getAllDiseases();
     }
 
     this.articleService.currentStatus.subscribe(x => {
@@ -91,24 +90,27 @@ export class MapComponent implements OnInit {
         console.log("already loaded map search");
       }
     });
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'Filter',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 1,
+      allowSearchFilter: true
+    };
   }
 
   getAllDiseases(){
     this.allDiseases = [];
-    Array.from(this.map.keys()).forEach(x => {
-      var latlongString = x.split("&");
-      if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
-        this.markers.push(marker);
-        markerId++;
-        const uniqueArray = this.map.get(x).filter((thing, index) => {
-          const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
-          return index === this.map.get(x).findIndex(obj => {
-            return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
-          });
-        });
-        this.map.set(x, uniqueArray);
-      }
+    this.searchResult.forEach(article => {
+      article.reports.forEach(report => {
+        report.diseases.forEach(disease => {
+          if(!this.allDiseases.includes(disease)){
+            this.allDiseases.push(disease);
+          }
+        })
+      })
     })
   }
 
@@ -265,6 +267,7 @@ export class MapComponent implements OnInit {
         })
         sessionStorage.setItem("map", JSON.stringify(Array.from(this.map.entries())));
         this.convertMapToArray();
+        this.getAllDiseases();
       });
     });
   }
@@ -288,7 +291,13 @@ export class MapComponent implements OnInit {
     this.mapView = !this.mapView;
   }
 
-
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  
   styles: any[] = [
     {
       "elementType": "geometry",
