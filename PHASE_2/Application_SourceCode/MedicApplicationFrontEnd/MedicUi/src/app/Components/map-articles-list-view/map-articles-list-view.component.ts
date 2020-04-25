@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import StandardArticle from "../../types/StandardArticle";
+import { ArticleRetrieverService } from '../../../Services/article-retriever.service';
 
 @Component({
   selector: 'app-map-articles-list-view',
@@ -12,7 +13,21 @@ export class MapArticlesListViewComponent implements OnInit {
   articlesReal: StandardArticle[] = [];
   @Input() articles: StandardArticle[];
 
-  constructor() { }
+  constructor(private articleRetriever: ArticleRetrieverService) { }
+
+  ngOnChanges() {
+    if (!this.compareArticles()) {
+      this.articlesReal = [];
+      this.articles.forEach(x => {
+        var add = new StandardArticle(x.url, x.dateOfPublicationStr, x.headline, x.mainText, x.reports, x.teamName, x.source, x.id, x.extra);
+        this.articlesReal.push(add);
+      });
+    }
+  }
+
+  compareArticles() {
+    return JSON.stringify(this.articles) == JSON.stringify(this.articlesReal);
+  }
 
   ngOnInit() {
     if (this.articlesReal.length === 0 && this.articles) {
@@ -22,6 +37,15 @@ export class MapArticlesListViewComponent implements OnInit {
         this.articlesReal.push(add);
       });
     }
+
+    // this.articleRetriever.currentListView.subscribe(articles => {
+    //   if (articles != null) {
+    //     articles.array.forEach(article => {
+    //       console.log(article);
+    //     });
+    //   }
+    // })
+
   }
 
   getPopupArticles() {

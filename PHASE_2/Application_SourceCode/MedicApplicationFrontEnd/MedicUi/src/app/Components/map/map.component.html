@@ -21,7 +21,7 @@
     </ng-multiselect-dropdown>
 
     <label ngbButtonLabel class="btn-md btn-info">
-      <input ngbButton type="radio" [value]="true" (click)="toggleMapView(true)">
+      <input ngbButton type="radio" [value]="true" (click)="FilterMasterMap()">
       <i class="fa fa-filter" aria-hidden="true"></i>Filter
     </label>
 
@@ -52,6 +52,6 @@
   </agm-map>
 
   <div *ngIf="!this.mapView">
-    <app-map-articles-list-view [articles]="this.searchResult"></app-map-articles-list-view>
+    <app-map-articles-list-view [articles]="this.filterResult"></app-map-articles-list-view>
   </div>
 </div>

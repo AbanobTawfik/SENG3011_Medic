@@ -13,8 +13,12 @@ export class ArticleRetrieverService {
   // get all articles from all apis stored into here
   private isSearch = new BehaviorSubject(false);
   private RequestData = new BehaviorSubject(null);
+  private listView = new BehaviorSubject(null);
+  private isUpdatedMap = new BehaviorSubject(false);
+  currentMapSearched = this.isUpdatedMap.asObservable();
   currentStatus = this.isSearch.asObservable();
   currentRequest = this.RequestData.asObservable();
+  currentListView = this.listView.asObservable();
 
   modifyStatus(status: boolean){
     this.isSearch.next(status);
@@ -25,4 +29,11 @@ export class ArticleRetrieverService {
     this.RequestData.next(request);
   }
 
+  updateListView(list){
+    this.listView.next(list);
+  }
+
+  updateMapStatus(status: boolean){
+    this.isUpdatedMap.next(status);
+  }
 }
