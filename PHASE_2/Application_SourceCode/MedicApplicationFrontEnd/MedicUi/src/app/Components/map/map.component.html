@@ -32,8 +32,13 @@
     (mapClick)="close_window($event)"
     *ngIf="this.mapView"
   >
-    <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [opacity]="marker.alpha"
-      (markerClick)="select_marker(infoWindow)">
+    <agm-marker *ngFor="let marker of markers"
+      [iconUrl]="icon"
+      [latitude]="marker.lat"
+      [longitude]="marker.lng"
+      [opacity]="marker.alpha"
+      (markerClick)="select_marker(infoWindow)"
+    >
       <agm-info-window #infoWindow [latitude]="marker.lat" [longitude]="marker.lng">
         <app-map-articles-popup [articles]="getArticlesFromLatitudeLongtitude(marker.lat, marker.lng)">
         </app-map-articles-popup>

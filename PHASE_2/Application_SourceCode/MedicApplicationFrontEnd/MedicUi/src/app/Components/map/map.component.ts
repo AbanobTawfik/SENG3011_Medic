@@ -167,7 +167,7 @@ export class MapComponent implements OnInit {
 
   async getAllRequests(articleRequests) {
     articleRequests.forEach((req) => {
-      req.fetchAmount(10).then((res) => {
+      req.fetchAll().then((res) => {
         res.forEach(async (article) => {
           await article.reports.forEach(async (report) => {
             await report.locations.forEach(async (location) => {
