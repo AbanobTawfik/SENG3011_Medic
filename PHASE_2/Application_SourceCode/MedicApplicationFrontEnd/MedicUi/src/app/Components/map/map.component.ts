@@ -77,6 +77,8 @@ export class MapComponent implements OnInit {
     this.articleService.currentStatus.subscribe(x => {
       if (x === true) {
         this.searchResult = [];
+        this.selectedDiseases = [];
+        this.filterResult = [];
         this.map = new Map<string, StandardArticle[]>();
         const request = this.articleService.currentRequest.subscribe(x => { this.getAllRequests(x) });
         this.articleService.modifyStatus(false);
@@ -343,6 +345,7 @@ export class MapComponent implements OnInit {
       this.map = newMap;
       this.getFilteredArticles();
       //console.log(this.filterResult);
+      this.selectedDiseases = [];
       this.articleService.updateListView(this.filterResult);
       this.setMarkers();
     }
