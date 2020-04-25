@@ -5,6 +5,8 @@ import { LocationMapperService } from "../../../Services/location-mapper.service
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
+import { faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
+
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -19,6 +21,9 @@ declare var google;
   styleUrls: ["./map.component.scss"],
 })
 export class MapComponent implements OnInit {
+  // Icons
+  faMapMarkedAlt = faMapMarkedAlt;
+  faListAlt = faListAlt;
 
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   currentMarker;
@@ -26,6 +31,11 @@ export class MapComponent implements OnInit {
   //infowindow = new google.maps.InfoWindow();
   markers: any[] = [];
   mapView = true;
+<<<<<<< HEAD
+  allDiseases = [];
+=======
+  mapViewToggleState = true;
+>>>>>>> 30472013c7e2e4fb8bbae8e3794ce510b7c64eea
 
   infoWindowOpened: AgmInfoWindow = null;
   previous_info_window: AgmInfoWindow = null;
@@ -80,8 +90,26 @@ export class MapComponent implements OnInit {
       }else{
         console.log("already loaded map search");
       }
-
     });
+  }
+
+  getAllDiseases(){
+    this.allDiseases = [];
+    Array.from(this.map.keys()).forEach(x => {
+      var latlongString = x.split("&");
+      if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
+        const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+        this.markers.push(marker);
+        markerId++;
+        const uniqueArray = this.map.get(x).filter((thing, index) => {
+          const _thing = JSON.stringify(thing.headline) + JSON.stringify(thing.dateOfPublicationStr);
+          return index === this.map.get(x).findIndex(obj => {
+            return JSON.stringify(obj.headline) + JSON.stringify(obj.dateOfPublicationStr) === _thing;
+          });
+        });
+        this.map.set(x, uniqueArray);
+      }
+    })
   }
 
   close_window() {
@@ -145,6 +173,12 @@ export class MapComponent implements OnInit {
     })
 
     return false;
+  }
+
+  toggleMapView(mapView: boolean) {
+    if (this.mapView !== mapView) {
+      this.resetPopup();
+    }
   }
 
   resetPopup(){

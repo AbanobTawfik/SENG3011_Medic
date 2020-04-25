@@ -120,7 +120,9 @@ class Codeonavirus extends ArticleApi
             resLocation => this.toStandardLocation(resLocation)
         );
 
-        return new StandardReport(diseases, syndromes, event_date,
+        const normalisedDiseases = diseases.map(this.normaliseDisease);
+
+        return new StandardReport(normalisedDiseases, syndromes, event_date,
                                   locations);
     }
 

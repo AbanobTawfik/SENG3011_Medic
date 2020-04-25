@@ -1,26 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input } from '@angular/core';
 
 import StandardArticle from "../../types/StandardArticle";
 
-import { MapArticleModalComponent } from '../map-article-modal/map-article-modal.component';
-
 @Component({
-  selector: 'app-map-articles-popup',
-  templateUrl: './map-articles-popup.component.html',
-  styleUrls: ['./map-articles-popup.component.scss']
+  selector: 'app-map-articles-list-view',
+  templateUrl: './map-articles-list-view.component.html',
+  styleUrls: ['./map-articles-list-view.component.scss']
 })
-export class MapArticlesPopupComponent implements OnInit {
+export class MapArticlesListViewComponent implements OnInit {
 
   articlesReal: StandardArticle[] = [];
   @Input() articles: StandardArticle[];
 
-  loaded = false;
-  constructor(config: NgbModalConfig, private modalService: NgbModal) {
-    config.centered = true;
-    config.size = "lg";
-  }
+  constructor() { }
 
   ngOnInit() {
     if (this.articlesReal.length === 0 && this.articles) {
@@ -28,22 +20,8 @@ export class MapArticlesPopupComponent implements OnInit {
       this.articles.forEach(x => {
         var add = new StandardArticle(x.url, x.dateOfPublicationStr, x.headline, x.mainText, x.reports, x.teamName, x.source, x.id, x.extra);
         this.articlesReal.push(add);
-      })
+      });
     }
-  }
-
-  checkDateOfPub(article: StandardArticle){
-    return article.formatDateOfPublication() !== "";
-  }
-
-  testClick(str: string = '???') {
-    console.log(`You clicked on '${str}'`);
-  }
-
-  openArticleModal(article: StandardArticle) {
-    console.log(this.articlesReal);
-    const modalRef = this.modalService.open(MapArticleModalComponent);
-    modalRef.componentInstance.article = article;
   }
 
   getPopupArticles() {
