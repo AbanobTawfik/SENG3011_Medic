@@ -17,6 +17,9 @@ export class ModelComponent implements OnInit {
   private error;
   private url;
   private article;
+  private start;
+  private timeline = [{}];
+  private hoverIndex = 0;
   
   constructor(
     private route: ActivatedRoute,
@@ -75,30 +78,149 @@ export class ModelComponent implements OnInit {
         }
       }
     );
+    this.start = cases.start;
+    this.updateTimeline();
+    this.updatePopulation();
+  }
+  
+  exposed = true;
+  infectious = true;
+  removed = true;
+  recovered = true;
+  hospitalised = true;
+  deaths = true;
+  
+  population: number = 3000000;
+  initial: number = 1;
+  r0: number = 3;
+  dIncubation: number = 5;
+  dInfectious: number = 4;
+  cfr: number = 10;
+  dDeath: number = 12;
+  dRecoveryMild: number = 11.1;
+  dRecoverySevere: number = 28.6;
+  pServere: number = 20;
+  dHospitalLag: number = 5;
+  r0ReductionPercent: number = 67;
+  r0ReductionDay: number = 80;
+  
+  updateTimeline() {
+    const seirModel = new SeirModel({
+      r0: this.r0,
+      dDeath: this.dDeath - this.dInfectious,
+      dIncubation: this.dIncubation,
+      dInfectious: this.dInfectious,
+      dRecoveryMild: this.dRecoveryMild,
+      dRecoveryServere: this.dRecoverySevere,
+      dHospitalLag: this.dHospitalLag,
+      cfr: this.cfr / 100,
+      pServere: this.pServere / 100,
+      dt: 1,
+    });
+    const timeline = seirModel.calculate({
+      population: this.population,
+      initiallyInfected: this.initial,
+      r0ReductionPercent: this.r0ReductionPercent,
+      r0ReductionDay: this.r0ReductionDay,
+      days: 200,
+    });
+    const order = [
+      i => timeline[i].exposed,
+      i => timeline[i].infected,
+      i => timeline[i].recovered,
+      i => timeline[i].hospitalized,
+      i => timeline[i].deaths
+    ];
+    order.forEach((group, order, a) =>
+      this.totalChartData[a.length - order].data = timeline.map((e, i) => {
+        let d = new Date(this.start);
+        d.setDate(d.getDate() + i);
+        return {
+          t: d,
+          y: group(i)
+        }
+      })
+    )
+    this.timeline = timeline;
+  }
+  
+  onChartHover(event) {
+    this.hoverIndex = event.active[0]._index;
   }
   
   ngOnInit() {}
   
-  inputR: number;
-  peakDate: NgbDateStruct;
+  sliderPop: number;
+  textPop: string;
   
-  onDateChange() {
-    return;
+  onPopChange(event) {
+    if (event.target.type == "range")
+      this.population = Math.round(Math.pow(10, this.sliderPop));
+    else
+      this.population = parseInt(this.textPop.replace(/[^\d]/g, ""));
+    if (isNaN(this.population))
+      this.population = 100;
+    this.updatePopulation();
+  }
+  updatePopulation() {
+    const regex = /(\d+)(\d{3})/;
+    this.textPop = this.population.toString().replace(/^\d+/, function(w) {
+      while (regex.test(w))
+        w = w.replace(regex, '$1,$2');
+      return w;
+    });
+    this.sliderPop = Math.log(this.population) / Math.LN10;
   }
   
+  peakDate: NgbDateStruct = {year: 2020, month: 4, day: 10};
+  onDateChange() {
+    const reduceDate = new Date(this.peakDate.year, this.peakDate.month - 1, this.peakDate.day);
+    this.r0ReductionDay = Math.round(Math.abs((reduceDate.getTime() - (new Date(this.start)).getTime()) / (24*60*60*1000)));
+    this.updateTimeline();
+  }
   updateInput(input) {
     input.dispatchEvent(new Event("input"));
   }
   
   public totalChartData = [{
+    label: 'Cumulative cases',
     data: [],
     fill: 'false',
-    label: 'Cumulative cases',
     backgroundColor: 'transparent',
     borderColor: '#1976D2',
     pointBackgroundColor: '#1976D2',
     pointHoverBorderColor: '#1976D2',
     yAxisID: 'A'
+  },
+  {
+    label: 'Deaths',
+    data: [],
+    type: 'bar',
+    backgroundColor: '#E0E0E0'
+  },
+  {
+    label: 'Hospitalised',
+    data: [],
+    type: 'bar',
+    backgroundColor: '#81D4FA'
+  },
+  {
+    label: 'Recovered',
+    data: [],
+    type: 'bar',
+    backgroundColor: '#C5E1A5'
+  },
+  {
+    label: 'Infectious',
+    data: [],
+    type: 'bar',
+    backgroundColor: '#F48FB1'
+  },
+  {
+    label: 'Exposed',
+    data: [],
+    type: 'bar',
+    backgroundColor: '#FFCC80'
   },
   {
     data: [],
@@ -135,16 +257,14 @@ export class ModelComponent implements OnInit {
   public totalChartOptions = {
     scales: {
       xAxes: [{
+        stacked: true,
         type: 'time'
       }],
       yAxes: [{
         id: 'A',
-        type: 'logarithmic',
-        position: 'left',
-        scaleLabel: {
-          display: true,
-          labelString: 'Total cases'
-        },
+        stacked: true,
+        type: 'linear',
+        position: 'left'/*,
         ticks: {
           min: 1,
           max: 100000000,
@@ -168,8 +288,11 @@ export class ModelComponent implements OnInit {
           chartObj.ticks.push(1000000);
           chartObj.ticks.push(10000000);
           chartObj.ticks.push(100000000);
-        }
+        }*/
       }]
+    },
+    legend: {
+      display: false
     }
   }
   
