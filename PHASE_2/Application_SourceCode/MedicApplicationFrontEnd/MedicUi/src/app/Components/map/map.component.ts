@@ -5,7 +5,7 @@ import { LocationMapperService } from "../../../Services/location-mapper.service
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
-import { faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -26,6 +26,8 @@ export class MapComponent implements OnInit {
   // Icons
   faMapMarkedAlt = faMapMarkedAlt;
   faListAlt = faListAlt;
+  faFilter = faFilter;
+
   selectedDiseases = [];
   masterMap: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
   map: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
@@ -135,6 +137,11 @@ export class MapComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: "modal-basic-title" });
   }
 
+  getMarkerIconUrl(numArticles: number) {
+    numArticles = Math.min(numArticles, 10);
+    return `./assets/custom-markers/circle-${numArticles - 1}.png`;
+  }
+
   getArticlesFromLatitudeLongtitude(latitude, longtitude) {
     if (!latitude || !longtitude) {
       return;
@@ -189,7 +196,7 @@ export class MapComponent implements OnInit {
 
   async getAllRequests(articleRequests) {
     articleRequests.forEach((req) => {
-      req.fetchAll().then((res) => {
+      req.fetchAmount(10).then((res) => {
         res.forEach(async (article) => {
           await article.reports.forEach(async (report) => {
             await report.locations.forEach(async (location) => {
@@ -255,7 +262,14 @@ export class MapComponent implements OnInit {
         Array.from(this.map.keys()).forEach(x => {
           var latlongString = x.split("&");
           if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-            const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+            const numArticles = this.map.get(x).length;
+            const marker = {
+              lat: latlongString[0],
+              lng: latlongString[1],
+              alpha: 1,
+              id: markerId,
+              iconUrl: this.getMarkerIconUrl(numArticles),
+            };
             this.markers.push(marker);
             markerId++;
             const uniqueArray = this.map.get(x).filter((thing, index) => {
@@ -371,8 +385,16 @@ export class MapComponent implements OnInit {
     this.markers = [];
     Array.from(this.map.keys()).forEach(x => {
       var latlongString = x.split("&");
+      
       // if (!this.checkMarkerInMap(latlongString[0], latlongString[1])) {
-      const marker = { lat: latlongString[0], lng: latlongString[1], alpha: 1, id: markerId };
+      const numArticles = this.map.get(x).length;
+      const marker = {
+        lat: latlongString[0],
+        lng: latlongString[1],
+        alpha: 1,
+        id: markerId,
+        iconUrl: this.getMarkerIconUrl(numArticles),
+      };
       this.markers.push(marker);
       markerId++;
       // }

@@ -8,23 +8,6 @@
 <div style="border: none; position: relative;">
   <div style="top: 10px; right: 10px; text-align: right; z-index: 64; position: absolute;">
     <div class="m-2 btn-group btn-group-toggle" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
-
-      <ng-multiselect-dropdown
-      class="btn-md btn-info multiselect-dropdown"
-      [placeholder]="'Diseases'"
-      [data]="allDiseases"
-      [(ngModel)]="selectedDiseases"
-      [settings]="dropdownSettings"
-      (onSelect)="onItemSelect($event)"
-      (onSelectAll)="onSelectAll($event)"
-    >
-    </ng-multiselect-dropdown>
-
-    <label ngbButtonLabel class="btn-md btn-info">
-      <input ngbButton type="radio" [value]="true" (click)="FilterMasterMap()">
-      <i class="fa fa-filter" aria-hidden="true"></i>Filter
-    </label>
-
       <label ngbButtonLabel class="btn-md btn-info">
         <input ngbButton type="radio" [value]="true" (click)="toggleMapView(true)">
         <fa-icon [icon]="faMapMarkedAlt"></fa-icon> Map View
@@ -34,10 +17,26 @@
         <fa-icon [icon]="faListAlt"></fa-icon> List View
       </label>
     </div>
+  </div>
 
-    <!-- <label class="btn-primary" ngbButtonLabel>
-      <input type="checkbox" ngbButton [(ngModel)]="this.mapView"> Filter
-    </label> -->
+  <div style="top: 65px; right: 10px; z-index: 64; position: absolute;">
+    <div class="m-2 btn-group btn-group-toggle" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
+      <ng-multiselect-dropdown
+        class="btn-md btn-info multiselect-dropdown"
+        [placeholder]="'Diseases'"
+        [data]="allDiseases"
+        [(ngModel)]="selectedDiseases"
+        [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
+
+      <label ngbButtonLabel class="btn-md btn-info" style="width: 105px">
+        <input ngbButton type="radio" [value]="false" (click)="FilterMasterMap()">
+        <fa-icon [icon]="faFilter"></fa-icon> Filter
+      </label>
+    </div>
   </div>
 
   <agm-map
@@ -51,6 +50,7 @@
     *ngIf="this.mapView"
   >
     <agm-marker *ngFor="let marker of markers"
+      [iconUrl]="{ url: marker.iconUrl, scaledSize: { width: 20, height: 20 } }"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
       [opacity]="marker.alpha"
