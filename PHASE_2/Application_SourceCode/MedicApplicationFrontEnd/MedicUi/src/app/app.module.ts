@@ -9,6 +9,7 @@ import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./Components/nav/nav-bar.component";
 import { HomeComponent } from "./Pages/home/home.component";
 import { SummaryComponent } from "./Pages/summary/summary.component";
+import { ModelComponent } from "./Pages/model/model.component";
 import { MapComponent } from "./Components/map/map.component";
 import { SearchComponent } from "./Components/search/search.component";
 import { AgmCoreModule } from "@agm/core";
@@ -32,6 +33,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     NavBarComponent,
     HomeComponent,
     SummaryComponent,
+    ModelComponent,
     MapComponent,
     MapArticlesPopupComponent,
     MapArticleModalComponent,
