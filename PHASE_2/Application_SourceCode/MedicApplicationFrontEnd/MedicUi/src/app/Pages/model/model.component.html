@@ -1,12 +1,20 @@
-<div *ngIf="!error && !loaded" class="m-3 text-center"><div class="spinner-border" role="status">
-  <span class="sr-only">Loading...</span>
-</div></div>
+<div *ngIf="!error && (!loaded || predict)" class="m-3 text-center" style="padding-top: 20%; padding-right: 25%; padding-left: 25%;">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" [style.width.%]="loadPercent" style="transition: none;"></div>
+  </div>
+  <div class="mt-1" *ngIf="!loaded">
+    Loading case data...
+  </div>
+  <div class="mt-1" *ngIf="loaded">
+    Calculating model...
+  </div>
+</div>
 <div *ngIf="error" class="alert alert-danger m-3" role="alert">
   {{error}}
   <a [href]="url">{{url}}</a>
 </div>
-<div *ngIf="loaded" class="p-3">
-  <h4>{{article.headline}} <span class="badge badge-info">ONGOING</span></h4>
+<div *ngIf="loaded && !predict" class="p-3">
+  <h4>{{article.headline}} <span *ngIf="ongoing" class="badge badge-info">ONGOING</span><span *ngIf="!ongoing" class="badge badge-success">COMPLETE</span></h4>
   <p>Source: CDC (<a href="https://www.cdc.gov">https://www.cdc.gov</a>)</p>
   <ngb-accordion #a="ngbAccordion" activeIds="statistics,articles">
     <ngb-panel id="statistics" type="info">
@@ -170,43 +178,43 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="checkSusceptible" disabled>
               <label class="form-check-label" for="checkSusceptible">Susceptible
-                <p class="small">Number of individuals susceptible to the disease</p>
+                <p class="small text-dark">Number of individuals susceptible to the disease</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkExposed" value="exposed" name="exposed" [(ngModel)]="exposed">
+              <input class="form-check-input" type="checkbox" id="checkExposed" value="exposed" name="exposed" [(ngModel)]="exposed" (input)="updateHidden(5, exposed)">
               <label class="form-check-label" for="checkExposed" style="color: #FF9800">Exposed
-                <p class="small">{{timeline[hoverIndex].exposed}}<br>Number of individuals currently in incubation</p>
+                <p class="small text-dark">{{timeline[hoverIndex].exposed}}<br>Number of individuals currently in incubation</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkInfectious" value="infectious" name="infectious" [(ngModel)]="infectious">
+              <input class="form-check-input" type="checkbox" id="checkInfectious" value="infectious" name="infectious" [(ngModel)]="infectious" (input)="updateHidden(4, infectious)">
               <label class="form-check-label" for="checkInfectious" style="color: #E91E63">Infectious
-                <p class="small">{{timeline[hoverIndex].infected}}<br>Number of infectious individuals</p>
+                <p class="small text-dark">{{timeline[hoverIndex].infected}}<br>Number of infectious individuals</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkRemoved" value="removed" name="removed" [(ngModel)]="removed">
+              <input class="form-check-input" type="checkbox" id="checkRemoved" value="removed" name="removed" [(ngModel)]="removed" (input)="updateHiddenRemoved(removed)">
               <label class="form-check-label" for="checkRemoved">Removed
-                <p class="small">Number of individuals no longer infectious</p>
+                <p class="small text-dark">{{timeline[hoverIndex].recovered + timeline[hoverIndex].hospitalized + timeline[hoverIndex].deaths}}<br>Number of individuals no longer infectious</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkRecovered" value="recovered" name="recovered" [(ngModel)]="recovered">
+              <input class="form-check-input" type="checkbox" id="checkRecovered" value="recovered" name="recovered" [(ngModel)]="recovered" (input)="updateHidden(3, recovered)">
               <label class="form-check-label" for="checkRecovered" style="color: #8BC34A;">Recovered
-                <p class="small">{{timeline[hoverIndex].recovered}}</p>
+                <p class="small text-dark">{{timeline[hoverIndex].recovered}}</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkHospitalised" value="hospitalised" name="hospitalised" [(ngModel)]="hospitalised">
+              <input class="form-check-input" type="checkbox" id="checkHospitalised" value="hospitalised" name="hospitalised" [(ngModel)]="hospitalised" (input)="updateHidden(2, hospitalised)">
               <label class="form-check-label" for="checkHospitalised" style="color: #03A9F4">Hospitalised
-                <p class="small">{{timeline[hoverIndex].hospitalized}}</p>
+                <p class="small text-dark">{{timeline[hoverIndex].hospitalized}}</p>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="checkDeaths" value="deaths" name="deaths" [(ngModel)]="deaths">
+              <input class="form-check-input" type="checkbox" id="checkDeaths" value="deaths" name="deaths" [(ngModel)]="deaths" (input)="updateHidden(1, deaths)">
               <label class="form-check-label" for="checkDeaths" style="color: #9E9E9E">Deaths
-                <p class="small">{{timeline[hoverIndex].deaths}}</p>
+                <p class="small text-dark">{{timeline[hoverIndex].deaths}}</p>
               </label>
             </div>
           </div>
