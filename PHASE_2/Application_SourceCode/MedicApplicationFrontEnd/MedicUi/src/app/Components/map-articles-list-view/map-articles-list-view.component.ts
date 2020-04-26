@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import StandardArticle from "../../types/StandardArticle";
 import { ArticleRetrieverService } from '../../../Services/article-retriever.service';
@@ -13,7 +14,7 @@ export class MapArticlesListViewComponent implements OnInit {
   articlesReal: StandardArticle[] = [];
   @Input() articles: StandardArticle[];
 
-  constructor(private articleRetriever: ArticleRetrieverService) { }
+  constructor(private articleRetriever: ArticleRetrieverService, private http: HttpClient) { }
 
   ngOnChanges() {
     if (!this.compareArticles()) {
@@ -45,6 +46,8 @@ export class MapArticlesListViewComponent implements OnInit {
     //     });
     //   }
     // })
+    
+    this.articlesReal.forEach(x => this.loadArticleCases(x))
 
   }
 
@@ -75,5 +78,25 @@ export class MapArticlesListViewComponent implements OnInit {
       sorted.reverse();
       return sorted;
     }
+  }
+  
+  loadArticleCases(article) {
+    if (article.source != "CDC") return;
+    this.http.get(
+      "https://localhost:5003/api/Reports/GetCases?url=" + article.url, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        }),
+        observe: 'response'
+      }
+    )
+    .subscribe(response => {
+      if (response.status != 200)
+        return;
+      else
+        article.model = true;
+    }, err => {
+      console.log(err);
+    });
   }
 }
