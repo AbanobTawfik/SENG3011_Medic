@@ -43,6 +43,18 @@
             </div>
             <div style="clear: both;"></div>
         </div>
+        
+        <hr *ngIf="article.model" style="margin: 0px; padding: 0px;">
+
+        <div *ngIf="article.model" style="padding: 10px; margin: 0px">
+            <div style="float: left; width: 20%;">
+                <span style="color: #888;">Model</span>
+            </div>
+            <div style="float: right; width: 80%;">
+                <a (click)="modalService.dismissAll()" routerLink="/model" [queryParams]="{article: article.url}" [state]="{ article: {dateOfPublicationStr:article.formatDateOfPublication(),headline:article.headline,mainText:article.mainText} }">Available</a>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
     </div>
 </div>
 

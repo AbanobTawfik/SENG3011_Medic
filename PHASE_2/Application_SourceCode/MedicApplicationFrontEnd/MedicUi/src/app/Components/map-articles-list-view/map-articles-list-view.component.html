@@ -59,7 +59,7 @@
                         <span style="color: #888;">Model</span>
                     </div>
                     <div style="float: right; width: 92%;">
-                        <a routerLink="/model" [queryParams]="{article: article.url}">Model</a>
+                        <a routerLink="/model" [queryParams]="{article: article.url}" [state]="{ article: {dateOfPublicationStr:article.formatDateOfPublication(),headline:article.headline,mainText:article.mainText} }">Available</a>
                     </div>
                     <div style="clear: both;"></div>
                 </div>

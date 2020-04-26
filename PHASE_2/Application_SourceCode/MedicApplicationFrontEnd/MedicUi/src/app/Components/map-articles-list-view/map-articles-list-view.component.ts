@@ -47,7 +47,7 @@ export class MapArticlesListViewComponent implements OnInit {
     //   }
     // })
     
-    this.articlesReal.forEach(x => this.loadArticleCases(x))
+    this.articlesReal.forEach(x => this.loadArticleCases(x)); // Check if case data is available
 
   }
 
@@ -82,6 +82,7 @@ export class MapArticlesListViewComponent implements OnInit {
   
   loadArticleCases(article) {
     if (article.source != "CDC") return;
+    console.log(article);
     this.http.get(
       "https://localhost:5003/api/Reports/GetCases?url=" + article.url, {
         headers: new HttpHeaders({

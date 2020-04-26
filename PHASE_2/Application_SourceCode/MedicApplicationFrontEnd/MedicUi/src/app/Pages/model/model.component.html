@@ -235,19 +235,13 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div class="card p-3">
-          <h5>"Cases in U.S."</h5>
+          <h5>"{{article.headline}}"</h5>
           <ul>
-            <li>Source: <a href="https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html">https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html</a></li>
-            <li>Date of publication: April 4, 2020</li>
+            <li>Source: <a [href]="url">{{url}}</a></li>
+            <li>Date of publication: {{article.dateOfPublicationStr}}</li>
           </ul>
-          <p>
-            This page will be updated daily. Numbers close out at 4 p.m. the day before reporting.
-          </p>
-          <p>
-            ***On Saturday and Sunday, the numbers in COVID-19: U.S. at a Glance and the figure describing the cumulative total number of COVID-19 cases in the United States will be updated. These numbers are preliminary and have not been confirmed by state and territorial health departments. CDC will update weekend numbers the following Monday to reflect health department updates.***
-          </p>
-          <p>
-            CDC is responding to an outbreak of respiratory illness caused by a novel (new) coronavirus. The outbreak first started in Wuhan, China, but cases have been identified in a growing number of other locations internationally, including the United States. In addition to CDC, many public health laboratories are now testing for the virus that causes COVID-19.
+          <p *ngFor="let p of article.mainText.split('\n')">
+            {{p}}
           </p>
         </div>
       </ng-template>
