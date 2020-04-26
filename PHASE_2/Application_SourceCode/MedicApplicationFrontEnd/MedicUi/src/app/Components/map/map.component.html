@@ -6,7 +6,7 @@
 
 
 <div style="border: none; position: relative;">
-  <div style="top: 10px; right: 10px; text-align: right; z-index: 64; position: absolute;">
+  <div style="top: 10px; right: 10px; z-index: 64; position: absolute;">
     <div class="m-2 btn-group btn-group-toggle" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
       <label ngbButtonLabel class="btn-md btn-info">
         <input ngbButton type="radio" [value]="true" (click)="toggleMapView(true)">
@@ -20,7 +20,7 @@
   </div>
 
   <div style="top: 65px; right: 10px; z-index: 64; position: absolute;">
-    <div class="m-2 btn-group btn-group-toggle" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
+    <div class="m-2 btn-group btn-group-toggle" style="width: 300px;" ngbRadioGroup name="map-view-toggle" [(ngModel)]="mapViewToggleState">
       <ng-multiselect-dropdown
         class="btn-md btn-info multiselect-dropdown"
         [placeholder]="'Diseases'"
@@ -62,6 +62,18 @@
       </agm-info-window>
     </agm-marker>
   </agm-map>
+
+  <div *ngIf="this.mapView"  style="bottom: 16px; left: 16px; z-index: 64; position: absolute;">
+    <div style="background-color: white; border-radius: 10px; opacity: 0.75; padding: 10px 10px 35px 10px;">
+      Number of Articles<br/>
+      <img src="./assets/scale/scale.png" width=300><br/>
+      <div>
+        <span style="float: left;">Low</span>
+        <span style="float: right;">High</span>
+        <span style="clear: both"></span>
+      </div>
+    </div>
+  </div>
 
   <div *ngIf="!this.mapView">
     <app-map-articles-list-view [articles]="this.filterResult"></app-map-articles-list-view>

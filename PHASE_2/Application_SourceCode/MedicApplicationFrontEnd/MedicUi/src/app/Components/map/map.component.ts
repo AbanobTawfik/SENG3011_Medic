@@ -5,7 +5,7 @@ import { LocationMapperService } from "../../../Services/location-mapper.service
 import { DateFormatterService } from "../../../Services/date-formatter.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
-import { faFilter, faMapMarkedAlt, faListAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faMapMarkedAlt, faListAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MapArticlesPopupComponent } from "../map-articles-popup/map-articles-popup.component";
 import { AgmInfoWindow } from '@agm/core/directives/info-window';
 
@@ -27,6 +27,7 @@ export class MapComponent implements OnInit {
   faMapMarkedAlt = faMapMarkedAlt;
   faListAlt = faListAlt;
   faFilter = faFilter;
+  faSearch = faSearch;
 
   selectedDiseases = [];
   masterMap: Map<string, StandardArticle[]> = new Map<string, StandardArticle[]>();
