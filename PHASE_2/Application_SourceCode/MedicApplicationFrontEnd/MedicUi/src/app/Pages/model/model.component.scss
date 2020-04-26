@@ -1,0 +1,18 @@
+#dropdownView:after {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.list-group-item-action {
+  cursor: pointer;
+}
+
+.close > .small {
+  position: absolute;
+  padding-right: .75rem;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+}

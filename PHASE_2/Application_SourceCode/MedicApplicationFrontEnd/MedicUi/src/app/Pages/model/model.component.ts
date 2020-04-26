@@ -87,17 +87,17 @@ export class ModelComponent implements OnInit {
   
   population: number = 10000000;
   initial: number = 1;
-  r0: number = 3; // 1.55
+  r0: number = 3;
   dIncubation: number = 5;
   dInfectious: number = 4;
-  cfr: number = 10; // 0
+  cfr: number = 10;
   dDeath: number = 14;
   dRecoveryMild: number = 11.1;
   dRecoverySevere: number = 28.6;
   pServere: number = 20;
   dHospitalLag: number = 5;
-  r0ReductionPercent: number = 70; // 100
-  r0ReductionDay: number = 78; // 2020-02-18
+  r0ReductionPercent: number = 70;
+  r0ReductionDay: number = 78;
   
   bestError: number;
   bestDay: number;
@@ -142,6 +142,16 @@ export class ModelComponent implements OnInit {
       this.r0 = this.bestR0;
       this.predict = false;
       this.updateTimeline();
+      this.currentView = this.getCurrentView();
+      this.currentView.name = "Auto-generated";
+      this.views.push(this.currentView);
+      
+      if (localStorage.getItem("views:" + this.url) === null)
+        return;
+      let saved = JSON.parse(localStorage.getItem("views:" + this.url))
+      if (saved[0].name == "Auto-generated")
+        saved.splice(0, 1);
+      this.views = this.views.concat(saved);
     }
   }
   
@@ -241,6 +251,67 @@ export class ModelComponent implements OnInit {
   }
   updateInput(input) {
     input.dispatchEvent(new Event("input"));
+  }
+  openFocus(event, input) {
+    if (event)
+      setTimeout(() => input.focus(), 10);
+  }
+  clearInput(input) {
+    input.value = "";
+    input.dispatchEvent(new Event("input"));
+    input.focus();
+  }
+  
+  currentView;
+  viewName: string;
+  views = [];
+  newView() {
+    if (this.viewName != '') {
+      this.currentView = this.getCurrentView();
+      this.currentView.name = this.viewName;
+      this.views.push(this.currentView);
+      this.viewName = '';
+      localStorage.setItem("views:" + this.url, JSON.stringify(this.views));
+    }
+  }
+  delView(index) {
+    this.views.splice(index, 1);
+    localStorage.setItem("views:" + this.url, JSON.stringify(this.views));
+  }
+  selectView(index) {
+    this.currentView = this.views[index];
+    this.population = this.currentView.population;
+    this.initial = this.currentView.initial;
+    this.r0 = this.currentView.r0;
+    this.dIncubation = this.currentView.dIncubation;
+    this.dInfectious = this.currentView.dInfectious;
+    this.cfr = this.currentView.cfr;
+    this.dDeath = this.currentView.dDeath;
+    this.dRecoveryMild = this.currentView.dRecoveryMild;
+    this.dRecoverySevere = this.currentView.dRecoverySevere;
+    this.pServere = this.currentView.pServere;
+    this.dHospitalLag = this.currentView.dHospitalLag;
+    this.r0ReductionPercent = this.currentView.r0ReductionPercent;
+    this.r0ReductionDay = this.currentView.r0ReductionDay;
+    this.updatePopulation();
+    this.updateTimeline();
+  }
+  getCurrentView() {
+    return {
+      population: this.population,
+      initial: this.initial,
+      r0: this.r0,
+      dIncubation: this.dIncubation,
+      dInfectious: this.dInfectious,
+      cfr: this.cfr,
+      dDeath: this.dDeath,
+      dRecoveryMild: this.dRecoveryMild,
+      dRecoverySevere: this.dRecoverySevere,
+      pServere: this.pServere,
+      dHospitalLag: this.dHospitalLag,
+      r0ReductionPercent: this.r0ReductionPercent,
+      r0ReductionDay: this.r0ReductionDay
+    }
   }
   
   public totalChartData = [{

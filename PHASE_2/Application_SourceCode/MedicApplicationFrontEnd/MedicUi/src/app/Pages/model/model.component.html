@@ -24,7 +24,7 @@
         </div>
       </ng-template>
       <ng-template ngbPanelContent>
-        <ngb-tabset [destroyOnHide]="false">
+        <ngb-tabset [destroyOnHide]="true">
           <ngb-tab title="Transmission">
             <ng-template ngbTabContent>
               <div class="form-row mb-1 p-3 border-bottom">
@@ -150,9 +150,9 @@
                 </div>
                 <div class="col-md-3 px-3 border-left">
                   <div class="row">
-                    <label class="col-sm-5 col-form-label-sm mb-1 pr-0" for="initial">Reduction date</label>
+                    <label class="col-sm-5 col-form-label-sm mb-1 pr-0" for="r0ReductionDate">Reduction date</label>
                     <div class="col-sm-7 input-group input-group-sm" id="peak">
-                      <input class="form-control" placeholder="yyyy-mm-dd" name="from" #peak (dateSelect)="updateInput(peak)" (input)="onDateChange()" ngbDatepicker #peakPicker="ngbDatepicker" [(ngModel)]="peakDate">
+                      <input class="form-control" id="r0ReductionDate" placeholder="yyyy-mm-dd" name="from" #peak (dateSelect)="updateInput(peak)" (input)="onDateChange()" ngbDatepicker #peakPicker="ngbDatepicker" [(ngModel)]="peakDate">
                       <div class="input-group-append input-group-sm">
                         <button class="btn btn-outline-secondary form-control pt-0" (click)="peakPicker.toggle()" type="button">
                           <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -167,9 +167,48 @@
               </div>
             </ng-template>
           </ngb-tab>
-          <ngb-tab title="View" [disabled]="true">
+          <ngb-tab title="View">
             <ng-template ngbTabContent>
-              <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi. Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio. Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna, egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.</p>
+              <div class="form-row mb-1 p-3 border-bottom">
+                <div class="col-md-3 pr-3">
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label-sm mb-1 pr-0" for="dropdownView">Current view</label>
+                    <div ngbDropdown class="col-sm-7 btn-group" (openChange)="openFocus($event, save)">
+                      <button class="btn btn-sm btn-outline-primary text-left" id="dropdownView"
+                        ngbDropdownToggle>{{currentView.name}}</button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownView" id="dropView">
+                        <div class="form-inline">
+                          <div class="input-group px-2 w-100">
+                            <input type="text" name="save" class="form-control" placeholder="View name"
+                              [(ngModel)]="viewName" #save (keyup.enter)="addView.click()">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-success pt-0" type="button" #addView
+                                (click)="newView(); clearInput(save)">
+                                <svg class="bi bi-file-earmark-plus" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9 1H4a2 2 0 00-2 2v10a2 2 0 002 2h5v-1H4a1 1 0 01-1-1V3a1 1 0 011-1h5v2.5A1.5 1.5 0 0010.5 6H13v2h1V6L9 1z"/>
+                                  <path fill-rule="evenodd" d="M13.5 10a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-2a.5.5 0 010-1H13v-1.5a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                                  <path fill-rule="evenodd" d="M13 12.5a.5.5 0 01.5-.5h2a.5.5 0 010 1H14v1.5a.5.5 0 01-1 0v-2z" clip-rule="evenodd"/>
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                          <div class="px-2 pt-2 w-100" *ngIf="views">
+                            <ul class="list-group">
+                              <li *ngFor="let view of views; let i = index" [style.z-index]="views.length-i"
+                                class="list-group-item list-group-item-action d-table" style="padding: .375rem .75rem;" (click)="selectView(i)">
+                                <span class="align-top d-table-cell pr-3">{{view.name}}</span>
+                                <button type="button" class="close" aria-label="Close" (click)="delView(i)">
+                                  <span aria-hidden="true" class="small"> &times; </span>
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>
