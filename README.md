@@ -12,7 +12,7 @@
 Part 1: Our API documentation can be accessed at https://seng3011medics.azurewebsites.net/swagger/index.html
 
 ### Final Github Breakdown
- Markup : 1. SENG3011_Medic/PHASE_1
+ 1. SENG3011_Medic/PHASE_1
      1. API_Documentation (Empty) documentation was handled in backend
      2. API_SourceCode/MedicApi/MedicApi/Controllers
           1. contains all of our endpoints
